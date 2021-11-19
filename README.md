@@ -1,4 +1,4 @@
-# ProiectLicenta
+# Proiect Licenta - Segmentarea tumorilor cerebrale din RMN-uri
 
 Proiectul consta intr-o aplicatie cu titlul **"Segmentarea tumorilor cerebrale din RMN-uri"**.
 
