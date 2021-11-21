@@ -119,7 +119,7 @@ void Utils::WriteCSVFile()
 	csv_file.open("mse_results.csv");
 	csv_file << "Filename, Algorithm, Kernel Size, MSE, \n";
 	
-	std::cout << "Writing the Average Blurring results.." << std::endl;
+	std::cout << "\tWriting the Average Blurring results.." << std::endl;
 	for (int i = 0; i < allMSE_Average_3.size(); i++)
 		csv_file << files.at(i) << ", " << "Average Blurring, " << "3x3," << allMSE_Average_3.at(i) << ", \n";
 	for (int i = 0; i < allMSE_Average_5.size(); i++)
@@ -127,7 +127,7 @@ void Utils::WriteCSVFile()
 	for (int i = 0; i < allMSE_Average_7.size(); i++)
 		csv_file << files.at(i) << ", " << "Average Blurring, " << "7x7," << allMSE_Average_7.at(i) << ", \n";
 	
-	std::cout << "Writing the Median Blurring results.." << std::endl;
+	std::cout << "\tWriting the Median Blurring results.." << std::endl;
 	for (int i = 0; i < allMSE_Median_3.size(); i++)
 		csv_file << files.at(i) << ", " << "Median Blurring, " << "3x3, " << allMSE_Median_3.at(i) << ", \n";
 	for (int i = 0; i < allMSE_Median_5.size(); i++)
@@ -135,7 +135,7 @@ void Utils::WriteCSVFile()
 	for (int i = 0; i < allMSE_Median_7.size(); i++)
 		csv_file << files.at(i) << ", " << "Median Blurring, " << "7x7, " << allMSE_Median_7.at(i) << ", \n";
 	
-	std::cout << "Writing the Gaussian Blurring results.." << std::endl;
+	std::cout << "\tWriting the Gaussian Blurring results.." << std::endl;
 	for (int i = 0; i < allMSE_Gaussian_3.size(); i++)
 		csv_file << files.at(i) << ", " << "Gaussian Blurring, " << "3x3, " << allMSE_Gaussian_3.at(i) << ", \n";
 	for (int i = 0; i < allMSE_Gaussian_5.size(); i++)
@@ -143,13 +143,13 @@ void Utils::WriteCSVFile()
 	for (int i = 0; i < allMSE_Gaussian_7.size(); i++)
 		csv_file << files.at(i) << ", " << "Gaussian Blurring, " << "7x7, " << allMSE_Gaussian_7.at(i) << ", \n";
 	
-	std::cout << "Writing the Bilateral Filtering results.." << std::endl;
+	std::cout << "\tWriting the Bilateral Filtering results.." << std::endl;
 	for (int i = 0; i < allMSE_Bilateral_3.size(); i++)
 		csv_file << files.at(i) << ", " << "Bialteral Filtering, " << "3x3, " << allMSE_Bilateral_3.at(i) << ", \n";
 	for (int i = 0; i < allMSE_Bilateral_5.size(); i++)
 		csv_file << files.at(i) << ", " << "Bialteral Filtering, " << "5x5, " << allMSE_Bilateral_5.at(i) << ", \n";
 	for (int i = 0; i < allMSE_Bilateral_7.size(); i++)
-		csv_file << files.at(i) << ", " << "Bialteral Filtering, " << "5x5, " << allMSE_Bilateral_7.at(i) << ", \n";
+		csv_file << files.at(i) << ", " << "Bialteral Filtering, " << "7x7, " << allMSE_Bilateral_7.at(i) << ", \n";
 
 	std::cout << "File was written successfully" << std::endl;
 	csv_file.close();
