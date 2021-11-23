@@ -2,7 +2,8 @@
 
 int main() {
 
-	Utils::WriteCSVFile();
+	Utils::WriteMSECSVFile();
+	Utils::WriteNoiseCSVFile();
 
 	return 0;
 }
