@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <numbers>
+#include <chrono>
 
 static class Utils 
 {
@@ -15,6 +16,7 @@ public:
 	inline static const std::string RELATIVE_PATH = "E:\\FACULTATE\\UniTBv\\Anul III\\Licenta\\ProiectLicenta\\TestData\\";
 	static void WriteMSECSVFile();
 	static void WriteNoiseCSVFile();
+	static void WriteTimesCSVFile();
 
 private:
 	static cv::Mat ApplyDenoisingAlgorithm(const cv::Mat& img, const int kernel_size, Denoising_Algorithms type);
@@ -23,4 +25,6 @@ private:
 	static std::vector<double> GetAllMSE(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size);
 	static double EstimateNoise(const cv::Mat& img);
 	static std::vector<double> GetSigmaWithFilter(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size);
+	static std::chrono::microseconds GetRunningTime(const cv::Mat& img, const int kernel_size, const Denoising_Algorithms& type);
+	static std::vector<std::chrono::microseconds> GetAllRunningTimes(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size);
 };

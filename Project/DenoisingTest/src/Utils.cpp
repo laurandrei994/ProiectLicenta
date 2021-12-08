@@ -113,6 +113,32 @@ std::vector<double> Utils::GetSigmaWithFilter(const std::vector<std::string>& fi
 	return results;
 }
 
+std::chrono::microseconds Utils::GetRunningTime(const cv::Mat& img, const int kernel_size, const Denoising_Algorithms& type)
+{
+	using Duration = std::chrono::microseconds;
+
+	auto start = std::chrono::high_resolution_clock::now();
+	cv::Mat modified = ApplyDenoisingAlgorithm(img, kernel_size, type);
+	auto stop = std::chrono::high_resolution_clock::now();
+	const Duration duration = std::chrono::duration_cast<Duration>(stop - start);
+
+	return duration;
+}
+
+std::vector<std::chrono::microseconds> Utils::GetAllRunningTimes(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size)
+{
+	using Duration = std::chrono::microseconds;
+
+	std::vector<Duration> results;
+	for (std::string path : files)
+	{
+		cv::Mat initial = cv::imread(path);
+		const Duration duration = GetRunningTime(initial, kernel_size, type);
+		results.push_back(duration);
+	}
+	return results;
+}
+
 void Utils::WriteMSECSVFile()
 {
 	std::cout << "Getting the filepaths from the TestData folder..." << std::endl;
@@ -251,6 +277,63 @@ void Utils::WriteNoiseCSVFile()
 								", " << gaussian_3.at(i) << ", " << gaussian_5.at(i) << ", " << gaussian_7.at(i) <<
 								", " << bilateral_3.at(i) << ", " << bilateral_5.at(i) << ", " << bilateral_7.at(i) << ", \n";
 	
+	std::cout << "File was written successfully" << std::endl << std::endl;
+	csv_file.close();
+}
+
+void Utils::WriteTimesCSVFile()
+{
+	using Duration = std::chrono::microseconds;
+	std::cout << "Getting the filepaths from the TestData folder..." << std::endl;
+	std::vector<std::string> files = Utils::GetFilePaths(Utils::RELATIVE_PATH);
+
+	std::cout << "Calculating duration vector for images modified with Average Blurring algorithm..." << std::endl;
+	std::cout << "\t Kernel size = 3 ..." << std::endl;
+	std::vector<Duration> average_3 = GetAllRunningTimes(files, Denoising_Algorithms::AVERAGE, 3);
+	std::cout << "\t Kernel size = 5 ..." << std::endl;
+	std::vector<Duration> average_5 = GetAllRunningTimes(files, Denoising_Algorithms::AVERAGE, 5);
+	std::cout << "\t Kernel size = 7 ..." << std::endl;
+	std::vector<Duration> average_7 = GetAllRunningTimes(files, Denoising_Algorithms::AVERAGE, 7);
+
+	std::cout << "Calculating sigma vector for images modified with Median Blurring algorithm..." << std::endl;
+	std::cout << "\t Kernel size = 3 ..." << std::endl;
+	std::vector<Duration> median_3 = GetAllRunningTimes(files, Denoising_Algorithms::MEDIAN, 3);
+	std::cout << "\t Kernel size = 5 ..." << std::endl;
+	std::vector<Duration> median_5 = GetAllRunningTimes(files, Denoising_Algorithms::MEDIAN, 5);
+	std::cout << "\t Kernel size = 7 ..." << std::endl;
+	std::vector<Duration> median_7 = GetAllRunningTimes(files, Denoising_Algorithms::MEDIAN, 7);
+
+	std::cout << "Calculating sigma vector for images modified with Gaussian Blurring algorithm..." << std::endl;
+	std::cout << "\t Kernel size = 3 ..." << std::endl;
+	std::vector<Duration> gaussian_3 = GetAllRunningTimes(files, Denoising_Algorithms::GAUSSIAN, 3);
+	std::cout << "\t Kernel size = 5 ..." << std::endl;
+	std::vector<Duration> gaussian_5 = GetAllRunningTimes(files, Denoising_Algorithms::GAUSSIAN, 5);
+	std::cout << "\t Kernel size = 7 ..." << std::endl;
+	std::vector<Duration> gaussian_7 = GetAllRunningTimes(files, Denoising_Algorithms::GAUSSIAN, 7);
+
+	std::cout << "Calculating sigma vector for images modified with Bilateral Filtering algorithm..." << std::endl;
+	std::cout << "\t Kernel size = 3 ..." << std::endl;
+	std::vector<Duration> bilateral_3 = GetAllRunningTimes(files, Denoising_Algorithms::BILATERAL, 3);
+	std::cout << "\t Kernel size = 5 ..." << std::endl;
+	std::vector<Duration> bilateral_5 = GetAllRunningTimes(files, Denoising_Algorithms::BILATERAL, 5);
+	std::cout << "\t Kernel size = 7 ..." << std::endl;
+	std::vector<Duration> bilateral_7 = GetAllRunningTimes(files, Denoising_Algorithms::BILATERAL, 7);
+
+	std::cout << "Started writing the file with algorithm duration results ... " << std::endl;
+	std::ofstream csv_file;
+	csv_file.open("time_results.csv");
+	csv_file << "Filename, Average3 Duration, Average5 Duration, Average7 Duration, " <<
+		"Median3 duration, Median5 duration, Median7 duration, " <<
+		"Gaussian3 Duration, Gaussian5 Duration, Gaussian7 duration, " <<
+		"Bilateral3 Duration, Bilateral5 Duration, Bilateral7 Duration, \n";
+
+	std::cout << "\tWriting the results to the file..." << std::endl;
+	for (int i = 0; i < files.size(); i++)
+		csv_file << files.at(i) << ", " << average_3.at(i) << ", " << average_5.at(i) << ", " << average_7.at(i) <<
+		", " << median_3.at(i) << ", " << median_5.at(i) << ", " << median_7.at(i) <<
+		", " << gaussian_3.at(i) << ", " << gaussian_5.at(i) << ", " << gaussian_7.at(i) <<
+		", " << bilateral_3.at(i) << ", " << bilateral_5.at(i) << ", " << bilateral_7.at(i) << ", \n";
+
 	std::cout << "File was written successfully" << std::endl << std::endl;
 	csv_file.close();
 }
