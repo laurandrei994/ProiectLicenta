@@ -3,7 +3,7 @@
 int main() {
 
 	//Utils::WriteMSECSVFile();
-	//Utils::WriteNoiseCSVFile();
+	Utils::WriteNoiseCSVFile();
 	Utils::WriteTimesCSVFile();
 
 	return 0;

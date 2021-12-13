@@ -9,6 +9,7 @@
 #include <fstream>
 #include <numbers>
 #include <chrono>
+#include <omp.h>
 
 static class Utils 
 {
@@ -19,6 +20,13 @@ public:
 	static void WriteTimesCSVFile();
 
 private:
+	//Algorithms:
+	static cv::Mat AverageFilter(const cv::Mat& initial, const int kernel_size);
+	static uchar AdaptiveProcess(const cv::Mat& initial, const int row, const int col, int kernel_size, const int maxSize);
+	static cv::Mat AdaptiveMedianFilter(const cv::Mat& initial);
+	static cv::Mat GaussianFilter(const cv::Mat& initial, const int kernel_size, const double sigma);
+	static cv::Mat BilateralFilter(const cv::Mat& initial, const int kernel_size, const double space_sigma, const double color_sigma);
+	//Utils
 	static cv::Mat ApplyDenoisingAlgorithm(const cv::Mat& img, const int kernel_size, Denoising_Algorithms type);
 	static std::vector<std::string> GetFilePaths(const std::string& path);
 	static double GetMSE(const cv::Mat& initial, const cv::Mat& modified);
