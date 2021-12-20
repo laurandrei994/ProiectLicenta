@@ -1,6 +1,6 @@
 #include "Utils.h"
 
-cv::Mat Utils::AverageFilter(const cv::Mat& initial, const int kernel_size)
+cv::Mat Utils::AverageFilter(cv::Mat& initial, const int kernel_size)
 {
 	cv::Mat result;
 	cv::Point anchorPoint = cv::Point(-1, -1);
@@ -12,26 +12,30 @@ cv::Mat Utils::AverageFilter(const cv::Mat& initial, const int kernel_size)
 	return result;
 }
 
-uchar Utils::AdaptiveProcess(const cv::Mat& initial, const int row, const int col, int kernel_size, const int maxSize)
+uchar Utils::AdaptiveProcess(cv::Mat& initial, const int row, const int col, int kernel_size, const int maxSize)
 {
 	std::vector<uchar> pixels;
 	for (int a = -kernel_size / 2; a <= kernel_size / 2; a++) 
 	{
+		uchar* row_ptr = initial.ptr<uchar>(row + a);
 		for (int b = -kernel_size / 2; b <= kernel_size / 2; b++)
 		{
-			pixels.push_back(initial.at<uchar>(row + a, col + b));
+			pixels.push_back(row_ptr[col + b]);
+			//pixels.push_back(initial.at<uchar>(row + a, col + b);
 		}
 	}
 	std::sort(pixels.begin(), pixels.end());
 	auto min = pixels[0];
 	auto max = pixels[kernel_size * kernel_size - 1];
 	auto med = pixels[kernel_size * kernel_size / 2];
-	auto zxy = initial.at<uchar>(row, col);
+	//auto zxy = initial.at<uchar>(row, col);
+	uchar* zxy = initial.ptr<uchar>(row);
 	if (med > min && med < max)
 	{
-		if (zxy > min && zxy < max)
+		if (zxy[col] > min && zxy[col] < max)
 		{
-			return zxy;
+			return zxy[col];
+			//return zxy;
 		}
 		else
 		{
@@ -48,7 +52,7 @@ uchar Utils::AdaptiveProcess(const cv::Mat& initial, const int row, const int co
 	}
 }
 
-cv::Mat Utils::AdaptiveMedianFilter(const cv::Mat& initial)
+cv::Mat Utils::AdaptiveMedianFilter(cv::Mat& initial)
 {
 omp_set_num_threads(8);
 	cv::Mat result;
@@ -60,15 +64,17 @@ omp_set_num_threads(8);
 #pragma omp parallel for
 	for (int j = maxSize / 2; j < rows - maxSize / 2; j++)
 	{
+		uchar* ptr = result.ptr<uchar>(j);
 		for (int i = maxSize / 2; i < cols * result.channels() - maxSize / 2; i++)
 		{
-			result.at<uchar>(j, i) = AdaptiveProcess(result, j, i, minSize, maxSize);
+			//result.at<uchar>(j, i) = AdaptiveProcess(result, j, i, minSize, maxSize);
+			ptr[i] = AdaptiveProcess(result, j, i, minSize, maxSize);
 		}
 	}
 	return result;
 }
 
-cv::Mat Utils::GaussianFilter(const cv::Mat& initial, const int kernel_size, const double sigma)
+cv::Mat Utils::GaussianFilter(cv::Mat& initial, const int kernel_size, const double sigma)
 {
 	CV_Assert(initial.channels() == 1 || initial.channels() == 3);
 	cv::Mat result = initial.clone();
@@ -86,7 +92,7 @@ cv::Mat Utils::GaussianFilter(const cv::Mat& initial, const int kernel_size, con
 	for (int i = 0; i < kernel_size; i++)
 		matrix[i] /= sum;
 
-	//Apply template to image
+	//Apply border to image
 	int border = kernel_size / 2;
 	cv::copyMakeBorder(initial, result, border, border, border, border, cv::BorderTypes::BORDER_REFLECT);
 	int channels = result.channels();
@@ -96,18 +102,26 @@ cv::Mat Utils::GaussianFilter(const cv::Mat& initial, const int kernel_size, con
 	//Orizontal
 	for (int i = border; i < rows; i++)
 	{
+		uchar* row_ptr = result.ptr<uchar>(i);
+		cv::Vec3b* row_ptr_vec = result.ptr<cv::Vec3b>(i);
+
 		for (int j = border; j < cols; j++)
 		{
-			double sum[3] = { 0 };
+			//double sum[3] = { 0 };
+			std::vector<double> sum(3, 0);
 			for (int k = -border; k <= border; k++)
 			{
 				if (channels == 1)
 				{
-					sum[0] += matrix[border + k] * result.at<uchar>(i, j + k);
+					//sum[0] += matrix[border + k] * result.at<uchar>(i, j + k);
+					sum[0] += matrix[border + k] * row_ptr[j + k];
 				}
 				else if (channels == 3)
 				{
-					cv::Vec3b rgb = result.at<cv::Vec3b>(i, j + k);
+					//int pixel = j * channels;
+				
+					//cv::Vec3b rgb = result.at<cv::Vec3b>(i, j + k);
+					cv::Vec3b rgb = row_ptr_vec[j + k];
 					sum[0] += matrix[border + k] * rgb[0];
 					sum[1] += matrix[border + k] * rgb[1];
 					sum[2] += matrix[border + k] * rgb[2];
@@ -121,11 +135,13 @@ cv::Mat Utils::GaussianFilter(const cv::Mat& initial, const int kernel_size, con
 					sum[k] = 255;
 			}
 			if (channels == 1)
-				result.at<uchar>(i, j) = static_cast<uchar>(sum[0]);
+				//result.at<uchar>(i, j) = static_cast<uchar>(sum[0]);
+				row_ptr[j] = static_cast<uchar>(sum[0]);
 			else if (channels == 3)
 			{
 				cv::Vec3b rgb = { static_cast<uchar>(sum[0]), static_cast<uchar>(sum[1]), static_cast<uchar>(sum[2]) };
-				result.at<cv::Vec3b>(i, j) = rgb;
+				row_ptr_vec[j] = rgb;
+				//result.at<cv::Vec3b>(i, j) = rgb;
 			}
 		}
 	}
@@ -133,18 +149,24 @@ cv::Mat Utils::GaussianFilter(const cv::Mat& initial, const int kernel_size, con
 	//Vertical
 	for (int i = border; i < rows; i++)
 	{
+		uchar* ptr = result.ptr<uchar>(i);
+		cv::Vec3b* ptr_vec = result.ptr<cv::Vec3b>(i);
 		for (int j = border; j < cols; j++)
 		{
 			double sum[3] = { 0 };
 			for (int k = -border; k < border; k++)
 			{
+				uchar* row_ptr = result.ptr<uchar>(i + k);
+				cv::Vec3b* row_ptr_vec = result.ptr<cv::Vec3b>(i + k);
 				if (channels == 1)
 				{
-					sum[0] += matrix[border + k] * result.at<uchar>(i + k, j);
+					//sum[0] += matrix[border + k] * result.at<uchar>(i + k, j);
+					sum[0] += matrix[border + k] * row_ptr[j];
 				}
 				else if (channels == 3)
 				{
-					cv::Vec3b rgb = result.at<cv::Vec3b>(i + k, j);
+					//cv::Vec3b rgb = result.at<cv::Vec3b>(i + k, j);
+					cv::Vec3b rgb = row_ptr_vec[j];
 					sum[0] += matrix[border + k] * rgb[0];
 					sum[1] += matrix[border + k] * rgb[1];
 					sum[2] += matrix[border + k] * rgb[2];
@@ -158,11 +180,13 @@ cv::Mat Utils::GaussianFilter(const cv::Mat& initial, const int kernel_size, con
 					sum[k] = 255;
 			}
 			if (channels == 1)
-				result.at<uchar>(i, j) = static_cast<uchar>(sum[0]);
+				//result.at<uchar>(i, j) = static_cast<uchar>(sum[0]);
+				ptr[j] = static_cast<uchar>(sum[0]);
 			else if (channels == 3)
 			{
 				cv::Vec3b rgb = { static_cast<uchar>(sum[0]), static_cast<uchar>(sum[1]), static_cast<uchar>(sum[2]) };
-				result.at<cv::Vec3b>(i, j) = rgb;
+				ptr_vec[j] = rgb;
+				//result.at<cv::Vec3b>(i, j) = rgb;
 			}
 		}
 	}
@@ -170,7 +194,7 @@ cv::Mat Utils::GaussianFilter(const cv::Mat& initial, const int kernel_size, con
 	return result;
 }
 
-cv::Mat Utils::BilateralFilter(const cv::Mat& initial, const int kernel_size, const double space_sigma, const double color_sigma)
+cv::Mat Utils::BilateralFilter(cv::Mat& initial, const int kernel_size, const double space_sigma, const double color_sigma)
 {
 	cv::Mat result = initial.clone();
 	int channels = initial.channels();
@@ -257,7 +281,7 @@ cv::Mat Utils::BilateralFilter(const cv::Mat& initial, const int kernel_size, co
 	return result;
 }
 
-cv::Mat Utils::ApplyDenoisingAlgorithm(const cv::Mat& img, const int kernel_size, Denoising_Algorithms type)
+cv::Mat Utils::ApplyDenoisingAlgorithm(cv::Mat& img, const int kernel_size, Denoising_Algorithms type)
 {
 	cv::Mat result;
 	//cv::Size size(kernel_size, kernel_size);
@@ -367,9 +391,9 @@ std::vector<double> Utils::GetSigmaWithFilter(const std::vector<std::string>& fi
 	return results;
 }
 
-std::chrono::microseconds Utils::GetRunningTime(const cv::Mat& img, const int kernel_size, const Denoising_Algorithms& type)
+std::chrono::milliseconds Utils::GetRunningTime(cv::Mat& img, const int kernel_size, const Denoising_Algorithms& type)
 {
-	using Duration = std::chrono::microseconds;
+	using Duration = std::chrono::milliseconds;
 
 	auto start = std::chrono::high_resolution_clock::now();
 	cv::Mat modified = ApplyDenoisingAlgorithm(img, kernel_size, type);
@@ -379,16 +403,17 @@ std::chrono::microseconds Utils::GetRunningTime(const cv::Mat& img, const int ke
 	return duration;
 }
 
-std::vector<std::chrono::microseconds> Utils::GetAllRunningTimes(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size)
+std::vector<std::chrono::milliseconds> Utils::GetAllRunningTimes(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size)
 {
-	using Duration = std::chrono::microseconds;
-
+	using Duration = std::chrono::milliseconds;
+	int index = 0;
 	std::vector<Duration> results;
 	for (std::string path : files)
 	{
 		cv::Mat initial = cv::imread(path);
 		const Duration duration = GetRunningTime(initial, kernel_size, type);
 		results.push_back(duration);
+		std::cout << index++ << std::endl;
 	}
 	return results;
 }
@@ -456,6 +481,7 @@ void Utils::WriteNoiseCSVFile()
 	std::cout << "Calculating sigma for inital images..." << std::endl;
 	std::vector<double> initial; 
 	for (std::string path : files) {
+		std::cout << "Calculating" << std::endl;
 		cv::Mat img = cv::imread(path);
 		double sigma = EstimateNoise(img);
 		initial.push_back(sigma);
@@ -511,7 +537,7 @@ void Utils::WriteNoiseCSVFile()
 
 void Utils::WriteTimesCSVFile()
 {
-	using Duration = std::chrono::microseconds;
+	using Duration = std::chrono::milliseconds;
 	std::cout << "Getting the filepaths from the TestData folder..." << std::endl;
 	std::vector<std::string> files = Utils::GetFilePaths(Utils::RELATIVE_PATH);
 
@@ -526,10 +552,6 @@ void Utils::WriteTimesCSVFile()
 	std::cout << "Calculating sigma vector for images modified with Median Blurring algorithm..." << std::endl;
 	std::cout << "\t Kernel size = 3 ..." << std::endl;
 	std::vector<Duration> adaptive_median = GetAllRunningTimes(files, Denoising_Algorithms::MEDIAN, 3);
-	//std::cout << "\t Kernel size = 5 ..." << std::endl;
-	//std::vector<Duration> median_5 = GetAllRunningTimes(files, Denoising_Algorithms::MEDIAN, 5);
-	//std::cout << "\t Kernel size = 7 ..." << std::endl;
-	//std::vector<Duration> median_7 = GetAllRunningTimes(files, Denoising_Algorithms::MEDIAN, 7);
 
 	std::cout << "Calculating sigma vector for images modified with Gaussian Blurring algorithm..." << std::endl;
 	std::cout << "\t Kernel size = 3 ..." << std::endl;

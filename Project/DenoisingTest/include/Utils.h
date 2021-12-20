@@ -19,20 +19,22 @@ public:
 	static void WriteNoiseCSVFile();
 	static void WriteTimesCSVFile();
 
+	static cv::Mat GaussianFilter(cv::Mat& initial, const int kernel_size, const double sigma);
+	static cv::Mat AverageFilter(cv::Mat& initial, const int kernel_size);
+	static uchar AdaptiveProcess(cv::Mat& initial, const int row, const int col, int kernel_size, const int maxSize);
+	static cv::Mat AdaptiveMedianFilter(cv::Mat& initial);
+	static cv::Mat BilateralFilter(cv::Mat& initial, const int kernel_size, const double space_sigma, const double color_sigma);
+
 private:
 	//Algorithms:
-	static cv::Mat AverageFilter(const cv::Mat& initial, const int kernel_size);
-	static uchar AdaptiveProcess(const cv::Mat& initial, const int row, const int col, int kernel_size, const int maxSize);
-	static cv::Mat AdaptiveMedianFilter(const cv::Mat& initial);
-	static cv::Mat GaussianFilter(const cv::Mat& initial, const int kernel_size, const double sigma);
-	static cv::Mat BilateralFilter(const cv::Mat& initial, const int kernel_size, const double space_sigma, const double color_sigma);
+
 	//Utils
-	static cv::Mat ApplyDenoisingAlgorithm(const cv::Mat& img, const int kernel_size, Denoising_Algorithms type);
+	static cv::Mat ApplyDenoisingAlgorithm(cv::Mat& img, const int kernel_size, Denoising_Algorithms type);
 	static std::vector<std::string> GetFilePaths(const std::string& path);
 	static double GetMSE(const cv::Mat& initial, const cv::Mat& modified);
 	static std::vector<double> GetAllMSE(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size);
 	static double EstimateNoise(const cv::Mat& img);
 	static std::vector<double> GetSigmaWithFilter(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size);
-	static std::chrono::microseconds GetRunningTime(const cv::Mat& img, const int kernel_size, const Denoising_Algorithms& type);
-	static std::vector<std::chrono::microseconds> GetAllRunningTimes(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size);
+	static std::chrono::milliseconds GetRunningTime(cv::Mat& img, const int kernel_size, const Denoising_Algorithms& type);
+	static std::vector<std::chrono::milliseconds> GetAllRunningTimes(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size);
 };
