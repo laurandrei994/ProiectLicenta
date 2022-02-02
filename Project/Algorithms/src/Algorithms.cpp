@@ -1,6 +1,16 @@
-#include "Utils.h"
+#include "Algorithms.h"
+#include <iostream>
+#include <filesystem>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <numbers>
+#include <chrono>
+#include <omp.h>
 
-cv::Mat Utils::AverageFilter(cv::Mat& initial, const int kernel_size)
+static std::string RELATIVE_PATH = "E:\\FACULTATE\\UniTBv\\Anul III\\Licenta\\ProiectLicenta\\TestData\\";
+
+ALGORITHMSLIBRARY_API cv::Mat AverageFilter(cv::Mat& initial, const int kernel_size)
 {
 	cv::Mat result;
 	cv::Point anchorPoint = cv::Point(-1, -1);
@@ -12,7 +22,7 @@ cv::Mat Utils::AverageFilter(cv::Mat& initial, const int kernel_size)
 	return result;
 }
 
-uchar Utils::AdaptiveProcess(cv::Mat& initial, const int row, const int col, int kernel_size, const int maxSize)
+ALGORITHMSLIBRARY_API uchar AdaptiveProcess(cv::Mat& initial, const int row, const int col, int kernel_size, const int maxSize)
 {
 	std::vector<uchar> pixels;
 	for (int a = -kernel_size / 2; a <= kernel_size / 2; a++) 
@@ -52,7 +62,7 @@ uchar Utils::AdaptiveProcess(cv::Mat& initial, const int row, const int col, int
 	}
 }
 
-cv::Mat Utils::AdaptiveMedianFilter(cv::Mat& initial)
+ALGORITHMSLIBRARY_API cv::Mat AdaptiveMedianFilter(cv::Mat& initial)
 {
 omp_set_num_threads(8);
 	cv::Mat result;
@@ -74,7 +84,7 @@ omp_set_num_threads(8);
 	return result;
 }
 
-cv::Mat Utils::GaussianFilter(cv::Mat& initial, const int kernel_size, const double sigma)
+ALGORITHMSLIBRARY_API cv::Mat GaussianFilter(cv::Mat& initial, const int kernel_size, const double sigma)
 {
 	CV_Assert(initial.channels() == 1 || initial.channels() == 3);
 	cv::Mat result = initial.clone();
@@ -118,8 +128,6 @@ cv::Mat Utils::GaussianFilter(cv::Mat& initial, const int kernel_size, const dou
 				}
 				else if (channels == 3)
 				{
-					//int pixel = j * channels;
-				
 					//cv::Vec3b rgb = result.at<cv::Vec3b>(i, j + k);
 					cv::Vec3b rgb = row_ptr_vec[j + k];
 					sum[0] += matrix[border + k] * rgb[0];
@@ -194,7 +202,7 @@ cv::Mat Utils::GaussianFilter(cv::Mat& initial, const int kernel_size, const dou
 	return result;
 }
 
-cv::Mat Utils::BilateralFilter(cv::Mat& initial, const int kernel_size, const double space_sigma, const double color_sigma)
+ALGORITHMSLIBRARY_API cv::Mat BilateralFilter(cv::Mat& initial, const int kernel_size, const double space_sigma, const double color_sigma)
 {
 	cv::Mat result = initial.clone();
 	int channels = initial.channels();
@@ -281,7 +289,7 @@ cv::Mat Utils::BilateralFilter(cv::Mat& initial, const int kernel_size, const do
 	return result;
 }
 
-cv::Mat Utils::ApplyDenoisingAlgorithm(cv::Mat& img, const int kernel_size, Denoising_Algorithms type)
+ALGORITHMSLIBRARY_API cv::Mat ApplyDenoisingAlgorithm(cv::Mat& img, const int kernel_size, Denoising_Algorithms type)
 {
 	cv::Mat result;
 	//cv::Size size(kernel_size, kernel_size);
@@ -318,7 +326,7 @@ cv::Mat Utils::ApplyDenoisingAlgorithm(cv::Mat& img, const int kernel_size, Deno
 	return result;
 }
 
-std::vector<std::string> Utils::GetFilePaths(const std::string& path)
+ALGORITHMSLIBRARY_API std::vector<std::string> GetFilePaths(const std::string& path)
 {
 	const std::filesystem::path dir_path{ path };
 	std::vector<std::string> files;
@@ -330,7 +338,7 @@ std::vector<std::string> Utils::GetFilePaths(const std::string& path)
 	return files;
 }
 
-double Utils::GetMSE(const cv::Mat& initial, const cv::Mat& modified)
+ALGORITHMSLIBRARY_API double GetMSE(const cv::Mat& initial, const cv::Mat& modified)
 {
 	cv::Mat s1;
 	cv::absdiff(initial, modified, s1);
@@ -344,20 +352,20 @@ double Utils::GetMSE(const cv::Mat& initial, const cv::Mat& modified)
 	return mse;
 }
 
-std::vector<double> Utils::GetAllMSE(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size)
+ALGORITHMSLIBRARY_API std::vector<double> GetAllMSE(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size)
 {
 	std::vector<double> allMSE;
 	for (std::string path : files)
 	{
 		cv::Mat initial = cv::imread(path);
-		cv::Mat modified = Utils::ApplyDenoisingAlgorithm(initial, kernel_size, type);
-		double mse = Utils::GetMSE(initial, modified);
+		cv::Mat modified = ApplyDenoisingAlgorithm(initial, kernel_size, type);
+		double mse = GetMSE(initial, modified);
 		allMSE.push_back(mse);
 	}
 	return allMSE;
 }
 
-double Utils::EstimateNoise(const cv::Mat& img)
+ALGORITHMSLIBRARY_API double EstimateNoise(const cv::Mat& img)
 {
 	cv::Mat greyImg;
 	cv::cvtColor(img, greyImg, cv::COLOR_BGR2GRAY);
@@ -376,7 +384,7 @@ double Utils::EstimateNoise(const cv::Mat& img)
 	return sigma[0];
 }
 
-std::vector<double> Utils::GetSigmaWithFilter(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size)
+ALGORITHMSLIBRARY_API std::vector<double> GetSigmaWithFilter(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size)
 {
 	int index = 0;
 	std::vector<double> results;
@@ -391,7 +399,7 @@ std::vector<double> Utils::GetSigmaWithFilter(const std::vector<std::string>& fi
 	return results;
 }
 
-std::chrono::milliseconds Utils::GetRunningTime(cv::Mat& img, const int kernel_size, const Denoising_Algorithms& type)
+ALGORITHMSLIBRARY_API std::chrono::milliseconds GetRunningTime(cv::Mat& img, const int kernel_size, const Denoising_Algorithms& type)
 {
 	using Duration = std::chrono::milliseconds;
 
@@ -403,7 +411,7 @@ std::chrono::milliseconds Utils::GetRunningTime(cv::Mat& img, const int kernel_s
 	return duration;
 }
 
-std::vector<std::chrono::milliseconds> Utils::GetAllRunningTimes(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size)
+ALGORITHMSLIBRARY_API std::vector<std::chrono::milliseconds> GetAllRunningTimes(const std::vector<std::string>& files, const Denoising_Algorithms& type, const int kernel_size)
 {
 	using Duration = std::chrono::milliseconds;
 	int index = 0;
@@ -418,42 +426,42 @@ std::vector<std::chrono::milliseconds> Utils::GetAllRunningTimes(const std::vect
 	return results;
 }
 
-void Utils::WriteMSECSVFile()
+ALGORITHMSLIBRARY_API void WriteMSECSVFile()
 {
 	std::cout << "Getting the filepaths from the TestData folder..." << std::endl;
-	std::vector<std::string> files = Utils::GetFilePaths(Utils::RELATIVE_PATH);
+	std::vector<std::string> files = GetFilePaths(RELATIVE_PATH);
 
 	std::cout << "Getting the MSE vector using Average Blurring algorithm..." << std::endl;
 	std::cout << "\tKernel size = 3..." << std::endl;
-	std::vector<double> allMSE_Average_3 = Utils::GetAllMSE(files, Denoising_Algorithms::AVERAGE, 3);
+	std::vector<double> allMSE_Average_3 = GetAllMSE(files, Denoising_Algorithms::AVERAGE, 3);
 	std::cout << "\tKernel size = 5..." << std::endl;
-	std::vector<double> allMSE_Average_5 = Utils::GetAllMSE(files, Denoising_Algorithms::AVERAGE, 5);
+	std::vector<double> allMSE_Average_5 = GetAllMSE(files, Denoising_Algorithms::AVERAGE, 5);
 	std::cout << "\tKernel size = 7..." << std::endl;
-	std::vector<double> allMSE_Average_7 = Utils::GetAllMSE(files, Denoising_Algorithms::AVERAGE, 7);
+	std::vector<double> allMSE_Average_7 = GetAllMSE(files, Denoising_Algorithms::AVERAGE, 7);
 
 	std::cout << "Getting the MSE vector using Median Blurring algorithm..." << std::endl;
 	std::cout << "\tKernel size = 3..." << std::endl;
-	std::vector<double> allMSE_Median_3 = Utils::GetAllMSE(files, Denoising_Algorithms::MEDIAN, 3);
+	std::vector<double> allMSE_Median_3 = GetAllMSE(files, Denoising_Algorithms::MEDIAN, 3);
 	std::cout << "\tKernel size = 5..." << std::endl;
-	std::vector<double> allMSE_Median_5 = Utils::GetAllMSE(files, Denoising_Algorithms::MEDIAN, 5);
+	std::vector<double> allMSE_Median_5 = GetAllMSE(files, Denoising_Algorithms::MEDIAN, 5);
 	std::cout << "\tKernel size = 7..." << std::endl;
-	std::vector<double> allMSE_Median_7 = Utils::GetAllMSE(files, Denoising_Algorithms::MEDIAN, 7);
+	std::vector<double> allMSE_Median_7 = GetAllMSE(files, Denoising_Algorithms::MEDIAN, 7);
 
 	std::cout << "Getting the MSE vector using Gaussian Blurring algorithm..." << std::endl;
 	std::cout << "\tKernel size = 3..." << std::endl;
-	std::vector<double> allMSE_Gaussian_3 = Utils::GetAllMSE(files, Denoising_Algorithms::GAUSSIAN, 3);
+	std::vector<double> allMSE_Gaussian_3 = GetAllMSE(files, Denoising_Algorithms::GAUSSIAN, 3);
 	std::cout << "\tKernel size = 5..." << std::endl;
-	std::vector<double> allMSE_Gaussian_5 = Utils::GetAllMSE(files, Denoising_Algorithms::GAUSSIAN, 5);
+	std::vector<double> allMSE_Gaussian_5 = GetAllMSE(files, Denoising_Algorithms::GAUSSIAN, 5);
 	std::cout << "\tKernel size = 7..." << std::endl;
-	std::vector<double> allMSE_Gaussian_7 = Utils::GetAllMSE(files, Denoising_Algorithms::GAUSSIAN, 7);
+	std::vector<double> allMSE_Gaussian_7 = GetAllMSE(files, Denoising_Algorithms::GAUSSIAN, 7);
 
 	std::cout << "Getting the MSE vector using Bilateral Filtering algorithm..." << std::endl;
 	std::cout << "\tKernel size = 3..." << std::endl;
-	std::vector<double> allMSE_Bilateral_3 = Utils::GetAllMSE(files, Denoising_Algorithms::BILATERAL, 3);
+	std::vector<double> allMSE_Bilateral_3 = GetAllMSE(files, Denoising_Algorithms::BILATERAL, 3);
 	std::cout << "\tKernel size = 5..." << std::endl;
-	std::vector<double> allMSE_Bilateral_5 = Utils::GetAllMSE(files, Denoising_Algorithms::BILATERAL, 5);
+	std::vector<double> allMSE_Bilateral_5 = GetAllMSE(files, Denoising_Algorithms::BILATERAL, 5);
 	std::cout << "\tKernel size = 7..." << std::endl;
-	std::vector<double> allMSE_Bilateral_7 = Utils::GetAllMSE(files, Denoising_Algorithms::BILATERAL, 7);
+	std::vector<double> allMSE_Bilateral_7 = GetAllMSE(files, Denoising_Algorithms::BILATERAL, 7);
 
 	std::cout << "Started writing the file with the MSE results.. " << std::endl;
 	std::ofstream csv_file;
@@ -473,10 +481,10 @@ void Utils::WriteMSECSVFile()
 	csv_file.close();
 }
 
-void Utils::WriteNoiseCSVFile()
+ALGORITHMSLIBRARY_API void WriteNoiseCSVFile()
 {
 	std::cout << "Getting the filepaths from the TestData folder..." << std::endl;
-	std::vector<std::string> files = Utils::GetFilePaths(Utils::RELATIVE_PATH);
+	std::vector<std::string> files = GetFilePaths(RELATIVE_PATH);
 
 	std::cout << "Calculating sigma for inital images..." << std::endl;
 	std::vector<double> initial; 
@@ -535,11 +543,11 @@ void Utils::WriteNoiseCSVFile()
 	csv_file.close();
 }
 
-void Utils::WriteTimesCSVFile()
+ALGORITHMSLIBRARY_API void WriteTimesCSVFile()
 {
 	using Duration = std::chrono::milliseconds;
 	std::cout << "Getting the filepaths from the TestData folder..." << std::endl;
-	std::vector<std::string> files = Utils::GetFilePaths(Utils::RELATIVE_PATH);
+	std::vector<std::string> files = GetFilePaths(RELATIVE_PATH);
 
 	std::cout << "Calculating duration vector for images modified with Average Blurring algorithm..." << std::endl;
 	std::cout << "\t Kernel size = 3 ..." << std::endl;

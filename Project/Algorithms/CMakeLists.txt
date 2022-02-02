@@ -1,13 +1,12 @@
-cmake_minimum_required (VERSION 3.8)
-project (DenoisingTest)
+project (Algorithms)
 
 set(OpenCV_STATIC OFF)
-set(DenoisingTest_IncludeDir "${CMAKE_CURRENT_SOURCE_DIR}/include" CACHE INTERNAL "")
+set(Algorithms_IncludeDir "${CMAKE_CURRENT_SOURCE_DIR}/include" CACHE INTERNAL "")
 
-FIND_PACKAGE(OpenCV REQUIRED)
-if (NOT OpenCV_FOUND)
-	message( FATAL_ERROR "Cannot build without OpenCV! Please provide location of OpenCV make files!")
-endif()
+#FIND_PACKAGE(OpenCV REQUIRED)
+#if (NOT OpenCV_FOUND)
+#	message( FATAL_ERROR "Cannot build without OpenCV! Please provide location of OpenCV make files!")
+#endif()
 
 add_subdirectory("src")
 add_subdirectory("include")
@@ -15,10 +14,10 @@ add_subdirectory("include")
 source_group ("Header Files" FILES ${headers})
 source_group ("Source Files" FILES ${sources})
 
-include_directories (${DenoisingTest_IncludeDir})
+include_directories (${Algorithms_IncludeDir})
 link_directories (${OpenCV_LIB_DIR})
 
-add_executable (DenoisingTest ${sources} ${headers})
+#add_executable (DenoisingTest ${sources} ${headers})
 
 message("OpenCV library status:")
 message(STATUS "	version: ${OpenCV_VERSION}")
@@ -57,4 +56,9 @@ SET (OpenCV_DLLs_R 	${OpenCV_DLL_Path}/opencv_core452.dll
 install (FILES ${OpenCV_DLLs_D} DESTINATION ${CMAKE_BINARY_DIR}/Debug CONFIGURATIONS Debug)
 install (FILES ${OpenCV_DLLs_R} DESTINATION ${CMAKE_BINARY_DIR}/Release CONFIGURATIONS Release)
 
-target_link_libraries (DenoisingTest ${OpenCV_LIBS})
+#target_link_libraries (DenoisingTest ${OpenCV_LIBS})
+add_library (Algorithms SHARED ${headers} ${sources})
+
+add_definitions(-DG_LIB_as_DLL)
+
+target_link_libraries (Algorithms ${OpenCV_LIBS})
