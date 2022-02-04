@@ -11,6 +11,8 @@ int main(int argc, char* argv[]) {
 	cv::imshow("Image", image2);
 	cv::waitKey(0);*/
 
+	//set_property(TARGET tgt PROPERTY CXX_STANDARD 11)
+
 	QApplication a(argc, argv);
 	MainWindow w;
 	w.show();

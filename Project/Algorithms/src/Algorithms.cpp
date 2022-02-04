@@ -10,6 +10,30 @@
 
 static std::string RELATIVE_PATH = "E:\\FACULTATE\\UniTBv\\Anul III\\Licenta\\ProiectLicenta\\TestData\\";
 
+ALGORITHMSLIBRARY_API cv::Mat GrayScale_Average(const cv::Mat& image)
+{
+	cv::Mat cpyImage = image;
+	cv::Mat grayMat = cv::Mat(cpyImage.rows, cpyImage.cols, CV_8UC1);
+
+	for (int row = 0; row < image.rows; ++row)
+	{
+		uchar* cpyImageRow = cpyImage.ptr<uchar>(row);
+		uchar* grayMatRow = grayMat.ptr<uchar>(row);
+
+		for (int col = 0; col < image.cols; ++col)
+		{
+			int sum = 0;
+			int pixel = col * cpyImage.channels();
+			for (int i = 0; i < cpyImage.channels(); ++i)
+			{
+				sum += cpyImageRow[pixel + i];
+			}
+			grayMatRow[col] = round(sum / cpyImage.channels());
+		}
+	}
+	return grayMat;
+}
+
 ALGORITHMSLIBRARY_API cv::Mat AverageFilter(cv::Mat& initial, const int kernel_size)
 {
 	cv::Mat result;
@@ -379,7 +403,8 @@ ALGORITHMSLIBRARY_API double EstimateNoise(const cv::Mat& img)
 	cv::filter2D(greyImg, greyImg, -1, transformMat);
 
 	cv::Scalar sigma = cv::sum(cv::sum(cv::abs(greyImg)));
-	sigma = sigma * sqrt(0.5 * std::numbers::pi) / (6 * (width - 2) * (height - 1));
+	//CV_PI
+	sigma = sigma * sqrt(0.5 * CV_PI) / (6 * (width - 2) * (height - 1));
 
 	return sigma[0];
 }

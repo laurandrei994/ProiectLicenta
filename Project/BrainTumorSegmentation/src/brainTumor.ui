@@ -27,7 +27,7 @@
      <string>Next Step</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -191,7 +191,7 @@
     <property name="title">
      <string>Preprocessing</string>
     </property>
-    <addaction name="actionStep1"/>
+    <addaction name="actionConvert_To_Grayscale"/>
     <addaction name="actionStep_X"/>
    </widget>
    <widget class="QMenu" name="menuSegmantation">
@@ -223,9 +223,9 @@
     <string>Close</string>
    </property>
   </action>
-  <action name="actionStep1">
+  <action name="actionConvert_To_Grayscale">
    <property name="text">
-    <string>Step1</string>
+    <string>Convert Image To Grayscale</string>
    </property>
   </action>
   <action name="actionStep_X">

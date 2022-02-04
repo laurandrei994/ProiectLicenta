@@ -1,4 +1,8 @@
 #pragma once
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+
 #include <qimage.h>
 #include <QMainWindow>
 #include <QGraphicsScene>
@@ -20,6 +24,13 @@ public:
 	MainWindow(QWidget* parent = 0);
 	~MainWindow();
 
+private slots:
+	void OpenFile();
+	void ConvertToGrayScale();
+
 private:
 	Ui::MainWindow* ui;
+	cv::Mat image;
+	QImage qImage;
+	void CreateActions();
 };
