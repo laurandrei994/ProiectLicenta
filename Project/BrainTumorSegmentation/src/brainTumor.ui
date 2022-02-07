@@ -185,6 +185,7 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen_Image"/>
+    <addaction name="actionOpen_Random_Image"/>
     <addaction name="actionClose"/>
    </widget>
    <widget class="QMenu" name="menuPreprocessing">
@@ -192,7 +193,7 @@
      <string>Preprocessing</string>
     </property>
     <addaction name="actionConvert_To_Grayscale"/>
-    <addaction name="actionStep_X"/>
+    <addaction name="actionGaussian_Filter"/>
    </widget>
    <widget class="QMenu" name="menuSegmantation">
     <property name="title">
@@ -228,9 +229,9 @@
     <string>Convert Image To Grayscale</string>
    </property>
   </action>
-  <action name="actionStep_X">
+  <action name="actionGaussian_Filter">
    <property name="text">
-    <string>Step X</string>
+    <string>Apply Gaussian Filter</string>
    </property>
   </action>
   <action name="actionStep_1">
@@ -246,6 +247,11 @@
   <action name="actionFinal_Image">
    <property name="text">
     <string>Final Image</string>
+   </property>
+  </action>
+  <action name="actionOpen_Random_Image">
+   <property name="text">
+    <string>Open Random Image</string>
    </property>
   </action>
  </widget>

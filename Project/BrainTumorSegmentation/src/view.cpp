@@ -6,6 +6,8 @@
 #include <qfile.h>
 #include <qfiledialog.h>
 
+#include <random>
+
 MainWindow::MainWindow(QWidget* parent)
 	:QMainWindow(parent),
 	ui(new Ui::MainWindow)
@@ -24,8 +26,10 @@ MainWindow::~MainWindow()
 void MainWindow::CreateActions()
 {
 	connect(ui->actionOpen_Image, SIGNAL(triggered()), this, SLOT(OpenFile()));
+	connect(ui->actionOpen_Random_Image, SIGNAL(triggered()), this, SLOT(OpenRandomFile()));
 	connect(ui->actionConvert_To_Grayscale, SIGNAL(triggered()), this, SLOT(ConvertToGrayScale()));
 	connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(close()));
+	connect(ui->actionGaussian_Filter, SIGNAL(triggered()), this, SLOT(ApplyGaussianFilter()));
 }
 
 //SLOTS
@@ -38,14 +42,43 @@ void MainWindow::OpenFile()
 	if (filepath.isEmpty())
 	{
 		std::cout << "File is not an image!!" << std::endl;
+		ui->inputImgText->setText("You have not selected an image!!");
 		return;
 	}
 	image = Utils::ReadImage(filepath.toStdString());
 	cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
 	QImage convertedImage = Utils::ConvertMatToQImage(image);
 	qImage = convertedImage;
-	
-	//ui->inputImg->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+	ui->inputImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->inputImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->inputImgText->setText("Initial Image");
+}
+
+void MainWindow::OpenRandomFile()
+{
+	QDir source(QString::fromStdString(Utils::dataSetPath));
+	if (!source.exists())
+	{
+		std::cout << "Bad path!!" << std::endl;
+		ui->inputImgText->setText("Can't open random image!!");
+		return;
+	}
+	//Generating a list with the name of all the files in the source folder
+	QStringList fileList = source.entryList();
+
+	//Generating a random number in range (0, lenght of list) for the random image
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> distr(0, fileList.length());
+	int generatedNumber = distr(gen);
+
+	QString filepath = QString::fromStdString(Utils::dataSetPath) + fileList[generatedNumber];
+	std::cout << filepath.toStdString() << std::endl;
+
+	image = Utils::ReadImage(filepath.toStdString());
+	cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
+	QImage convertedImage = Utils::ConvertMatToQImage(image);
+	qImage = convertedImage;
 
 	ui->inputImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->inputImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->inputImgText->setText("Initial Image");
@@ -60,6 +93,18 @@ void MainWindow::ConvertToGrayScale()
 	qImage = convertedImage;
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->preprocImgText->setText("Image after aplying the grayscale algorithm");
+	ui->preprocImgText->setText("Image after applying the grayscale algorithm");
+}
+
+void MainWindow::ApplyGaussianFilter()
+{
+	cv::Mat modifiedImg = GaussianFilter(image, 5, 0.8);
+	image = modifiedImg;
+
+	QImage convertedImage = Utils::ConvertMatToQImage(modifiedImg);
+	qImage = convertedImage;
+
+	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->preprocImgText->setText("Image after applying the Gaussian Filter with a kernel of 5x5");
 }
 

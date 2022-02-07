@@ -26,7 +26,9 @@ public:
 
 private slots:
 	void OpenFile();
+	void OpenRandomFile();
 	void ConvertToGrayScale();
+	void ApplyGaussianFilter();
 
 private:
 	Ui::MainWindow* ui;
