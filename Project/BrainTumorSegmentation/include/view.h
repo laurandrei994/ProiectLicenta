@@ -29,6 +29,7 @@ private slots:
 	void OpenRandomFile();
 	void ConvertToGrayScale();
 	void ApplyGaussianFilter();
+	void SkullStripping();
 
 private:
 	Ui::MainWindow* ui;

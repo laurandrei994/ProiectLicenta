@@ -194,6 +194,7 @@
     </property>
     <addaction name="actionConvert_To_Grayscale"/>
     <addaction name="actionGaussian_Filter"/>
+    <addaction name="actionRemove_the_skull_from_the_image"/>
    </widget>
    <widget class="QMenu" name="menuSegmantation">
     <property name="title">
@@ -252,6 +253,11 @@
   <action name="actionOpen_Random_Image">
    <property name="text">
     <string>Open Random Image</string>
+   </property>
+  </action>
+  <action name="actionRemove_the_skull_from_the_image">
+   <property name="text">
+    <string>Remove the skull from the image</string>
    </property>
   </action>
  </widget>
