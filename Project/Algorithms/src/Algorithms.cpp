@@ -34,6 +34,47 @@ ALGORITHMSLIBRARY_API cv::Mat GrayScale_Average(const cv::Mat& image)
 	return grayMat;
 }
 
+ALGORITHMSLIBRARY_API cv::Mat drawHistogram(cv::Mat& histogram, int height, int width, int size, cv::Scalar color, int type, std::string title)
+{
+	int bin_w = cvRound((double)width / size);
+	cv::Mat histogramImage(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
+	
+	//Normalizarea rezultatului
+	cv::normalize(histogram, histogram, 0, histogramImage.rows, cv::NORM_MINMAX, -1, cv::Mat());
+
+	switch (type)
+	{
+	case 1:
+		for (int i = 0; i < size; i++)
+		{
+			const unsigned x = i;
+			const unsigned y = height;
+
+			cv::line(histogramImage, cv::Point(bin_w * x, y), cv::Point(bin_w * x, y - cvRound(histogram.at<float>(i))), color);
+		}
+		break;
+	case 2:
+		for (int i = 1; i < size; i++)
+		{
+			cv::Point p1 = cv::Point(bin_w * (i - 1), height);
+			cv::Point p2 = cv::Point(bin_w * i, height);
+			cv::Point p3 = cv::Point(bin_w * i, height - cvRound(histogram.at<float>(i)));
+			cv::Point p4 = cv::Point(bin_w * (i - 1), height - cvRound(histogram.at<float>(i - 1)));
+			cv::Point points[] = { p1, p2, p3, p4, p1 };
+			cv::fillConvexPoly(histogramImage, points, 5, color);
+		}
+		break;
+	default:
+		for (int i = 1; i < size; i++)
+		{
+			cv::line(histogramImage, cv::Point(bin_w * (i - 1), height - cvRound(histogram.at<float>(i - 1))), cv::Point(bin_w * i, height - cvRound(histogram.at<float>(i))), color, 1, 8, 0);
+		}
+		break;
+	}
+
+	return histogramImage;
+}
+
 ALGORITHMSLIBRARY_API cv::Mat AverageFilter(cv::Mat& initial, const int kernel_size)
 {
 	cv::Mat result;

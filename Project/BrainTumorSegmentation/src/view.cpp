@@ -115,6 +115,33 @@ void MainWindow::SkullStripping()
 	image.copyTo(cpyImage);
 	//image.convertTo(openedImage, CV_16SC1);
 
+	// Calculez histograma
+	int histSize = 256;
+	float range[] = { 0, 256 };
+	const float* histRange = { range };
+	bool uniform = true;
+	bool accumulate = false;
+
+	cv::Mat histogram;
+	cv::calcHist(&cpyImage, 1, 0, cv::Mat(), histogram, 1,  &histSize, &histRange, uniform, accumulate);
+
+	// Calcul histograma cumulata 
+	cv::Mat cumulativeHistogram(histogram.size(), histogram.type());
+	cumulativeHistogram.at<float>(0) = histogram.at<float>(0);
+	for (int k = 1; k < histogram.rows; ++k)
+	{
+		cumulativeHistogram.at<float>(k) = histogram.at<float>(k) + cumulativeHistogram.at<float>(k - 1);
+	}
+
+	// Desenez histograma
+	cv::Mat hist = drawHistogram(histogram, 400, 1024, histogram.rows, cv::Scalar(255, 255, 255), 2);
+	cv::Mat c_hist = drawHistogram(cumulativeHistogram, 400, 1024, cumulativeHistogram.rows, cv::Scalar(255, 255, 255), 2);
+	
+	// Regula triunghiului 
+	// Binarization Method Based on Pixel-level Dynamic Thresholds for Change Detection in Image Sequences
+
+	// Compar cu ce voiam sa fac
+
 	double th = cv::threshold(cpyImage, openedImage, 90, 255, cv::THRESH_BINARY);
 
 	cv::Mat skullImage = cpyImage - openedImage;
@@ -122,8 +149,17 @@ void MainWindow::SkullStripping()
 	cv::dilate(skullImage, skullImage, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(11, 11)));
 	
 	QImage convertedImg = Utils::ConvertMatToQImage(skullImage);
+	QImage convertedHist = Utils::ConvertMatToQImage(hist);
+	QImage convertedCumulativeHist = Utils::ConvertMatToQImage(c_hist);
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after applying dilatation");
+	
+
+	ui->segmImg->setPixmap(QPixmap::fromImage(convertedHist).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->segmImgText->setText("Histogram of the image");
+
+	ui->resultImg->setPixmap(QPixmap::fromImage(convertedCumulativeHist).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->resultImgText->setText("Cumulative histogram of the image");
 }
 

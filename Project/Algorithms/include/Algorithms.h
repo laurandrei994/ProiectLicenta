@@ -52,3 +52,6 @@ extern "C++" ALGORITHMSLIBRARY_API std::vector<std::chrono::milliseconds> GetAll
 //Graphical Algorithms
 extern "C" ALGORITHMSLIBRARY_API cv::Mat GrayScale_Average(const cv::Mat & image);
 
+// Helper Algorithms
+extern"C" ALGORITHMSLIBRARY_API cv::Mat drawHistogram(cv::Mat & histogram, int height = 400, int width = 1012, int size = 256, cv::Scalar color = cv::Scalar(255, 255, 255), int type = 2, std::string title = "Histogram");
+
