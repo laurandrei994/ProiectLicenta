@@ -34,47 +34,6 @@ ALGORITHMSLIBRARY_API cv::Mat GrayScale_Average(const cv::Mat& image)
 	return grayMat;
 }
 
-ALGORITHMSLIBRARY_API cv::Mat drawHistogram(cv::Mat& histogram, int height, int width, int size, cv::Scalar color, int type, std::string title)
-{
-	int bin_w = cvRound((double)width / size);
-	cv::Mat histogramImage(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-	
-	//Normalizarea rezultatului
-	cv::normalize(histogram, histogram, 0, histogramImage.rows, cv::NORM_MINMAX, -1, cv::Mat());
-
-	switch (type)
-	{
-	case 1:
-		for (int i = 0; i < size; i++)
-		{
-			const unsigned x = i;
-			const unsigned y = height;
-
-			cv::line(histogramImage, cv::Point(bin_w * x, y), cv::Point(bin_w * x, y - cvRound(histogram.at<float>(i))), color);
-		}
-		break;
-	case 2:
-		for (int i = 1; i < size; i++)
-		{
-			cv::Point p1 = cv::Point(bin_w * (i - 1), height);
-			cv::Point p2 = cv::Point(bin_w * i, height);
-			cv::Point p3 = cv::Point(bin_w * i, height - cvRound(histogram.at<float>(i)));
-			cv::Point p4 = cv::Point(bin_w * (i - 1), height - cvRound(histogram.at<float>(i - 1)));
-			cv::Point points[] = { p1, p2, p3, p4, p1 };
-			cv::fillConvexPoly(histogramImage, points, 5, color);
-		}
-		break;
-	default:
-		for (int i = 1; i < size; i++)
-		{
-			cv::line(histogramImage, cv::Point(bin_w * (i - 1), height - cvRound(histogram.at<float>(i - 1))), cv::Point(bin_w * i, height - cvRound(histogram.at<float>(i))), color, 1, 8, 0);
-		}
-		break;
-	}
-
-	return histogramImage;
-}
-
 ALGORITHMSLIBRARY_API cv::Mat AverageFilter(cv::Mat& initial, const int kernel_size)
 {
 	cv::Mat result;
@@ -658,5 +617,118 @@ ALGORITHMSLIBRARY_API void WriteTimesCSVFile()
 
 	std::cout << "File was written successfully" << std::endl << std::endl;
 	csv_file.close();
+}
+
+ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& histImage)
+{
+	int bins = 256;
+	std::vector<int> histogram(256, 0);
+	for (int row = 0; row < img.rows; ++row)
+	{
+		uchar* imgRow = img.ptr<uchar>(row);
+		for (int col = 0; col < img.cols; ++col)
+		{
+			++histogram[(int)imgRow[col]];
+		}
+	}
+
+	std::vector<int> cumulativeHistogram = histogram;
+	for (int i = 1; i < histogram.size(); i++)
+	{
+		cumulativeHistogram[i] += cumulativeHistogram[i - 1];
+	}
+
+	cv::Point startPoint;
+	for (int i = 0; i < cumulativeHistogram.size(); i++)
+	{
+		if (cumulativeHistogram[i] > 0)
+		{
+			startPoint.x = i;
+			startPoint.y = cumulativeHistogram[i];
+			break;
+		}
+	}
+
+	cv::Point endPoint;
+	for (int i = cumulativeHistogram.size() - 1; i > 0; --i)
+	{
+		if (abs(cumulativeHistogram[i - 1] - cumulativeHistogram[i]) != 0)
+		{
+			endPoint.x = i;
+			endPoint.y = cumulativeHistogram[i];
+			break;
+		}
+	}
+
+	// Ecuatia dreptei: y = m * x + n
+	double m = 0;
+	m = (endPoint.y - startPoint.y) / (endPoint.x - startPoint.x);
+
+	double n = 0;
+	n = ((startPoint.y * (startPoint.x + endPoint.x)) - (startPoint.x * (startPoint.y + endPoint.y))) / (endPoint.x - startPoint.x);
+
+	std::vector<double> distancePointToLine(bins);
+	for (int i = startPoint.x; i <= endPoint.x; i++)
+	{
+		cv::Point count = cv::Point(i, cumulativeHistogram[i]);
+		distancePointToLine[i] = std::abs(count.y - (m * count.x) - n) / sqrt(1 + (m * n));
+	}
+
+	double maxDistance = distancePointToLine[0];
+	int threshold = 0;
+
+	for (int i = 1; i < distancePointToLine.size(); ++i)
+	{
+		if (maxDistance < distancePointToLine[i])
+		{
+			maxDistance = distancePointToLine[i];
+			threshold = i;
+		}
+	}
+
+	histImage = histogramDisplay(cumulativeHistogram, "Cumulative Histogram", startPoint, endPoint, threshold);
+	return threshold;
+}
+
+ALGORITHMSLIBRARY_API cv::Mat histogramDisplay(const std::vector<int>& histogram, const char* name, const cv::Point& startPoint, const cv::Point& endPoint, int thresh)
+{
+	// draw the histograms
+	int hist_w = 512; int hist_h = 512;
+	int bin_w = cvRound((double)hist_w / histogram.size());
+
+	cv::Mat histImage(hist_h, hist_w, CV_8UC3, cv::Scalar(0, 0, 0));
+
+	// find the maximum intensity element from histogram
+	int max = *(histogram.end() - 1);
+
+	float yScaleFactor = hist_h / (max * 1.f);
+
+	// draw the intensity line for histogram
+	for (int i = 0; i < histogram.size(); i++)
+	{
+		cv::Point startPt;
+		startPt.x = bin_w * i;
+		startPt.y = histogram[i] * yScaleFactor + hist_h - 1;
+
+		cv::Point endPt;
+		endPt.x = startPt.x;
+		endPt.y = hist_h - histogram[i] * yScaleFactor;
+
+		cv::line(histImage, startPt, endPt, cv::Scalar(255, 255, 255), 1, 8, 0);
+	}
+
+	cv::Point startPt;
+	startPt.x = bin_w * startPoint.x;
+	startPt.y = startPoint.y * yScaleFactor + hist_h - 1;
+
+	cv::Point endPt;
+	endPt.x = bin_w * endPoint.x;
+	endPt.y = hist_h - endPoint.y * yScaleFactor;
+
+	cv::line(histImage, startPt, endPt, cv::Scalar(0, 0, 255), 2, 8, 0);
+
+	cv::line(histImage, cv::Point(bin_w * thresh, 0), cv::Point(bin_w * thresh, hist_h - 1), cv::Scalar(0, 255, 0), 2, 8, 0);
+
+	return histImage;
 }
 
