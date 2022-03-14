@@ -35,5 +35,10 @@ private:
 	Ui::MainWindow* ui;
 	cv::Mat image;
 	QImage qImage;
+
 	void CreateActions();
+	cv::Mat OpenImage();
+	cv::Mat OpenRandomImage();
+	cv::Mat SkullStripping_DynamicThreshold();
+	void ClearLabels();
 };

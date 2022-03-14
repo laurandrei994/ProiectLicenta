@@ -54,4 +54,4 @@ extern "C" ALGORITHMSLIBRARY_API cv::Mat GrayScale_Average(const cv::Mat & image
 
 // Helper Algorithms
 extern "C" ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat & img, cv::Mat& histImage);
-extern "C" ALGORITHMSLIBRARY_API cv::Mat histogramDisplay(const std::vector<int> &histogram, const char *name, const cv::Point &startPoint, const cv::Point &endPoint, int thresh);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat histogramDisplay(const std::vector<int> &histogram, const cv::Point &startPoint, const cv::Point &endPoint, int thresh);

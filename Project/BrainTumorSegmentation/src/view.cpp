@@ -36,53 +36,24 @@ void MainWindow::CreateActions()
 //SLOTS
 void MainWindow::OpenFile()
 {
-	QString filter = "All files (*.*);;JPEG(*.jpg);;PNG(*.png);;TIF(*.tif)";
-	QFile file(QString::fromStdString(Utils::dataSetPath));
-	QString filepath = QFileDialog::getOpenFileName(this, tr("Open File"), QString::fromStdString(Utils::dataSetPath), filter);
-
-	if (filepath.isEmpty())
-	{
-		std::cout << "File is not an image!!" << std::endl;
-		ui->inputImgText->setText("You have not selected an image!!");
-		return;
-	}
-	image = Utils::ReadImage(filepath.toStdString());
-	cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
-	QImage convertedImage = Utils::ConvertMatToQImage(image);
+	cv::Mat img = OpenImage();
+	QImage convertedImage = Utils::ConvertMatToQImage(img);
 	qImage = convertedImage;
 
 	ui->inputImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->inputImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->inputImgText->setText("Initial Image");
+	ClearLabels();
 }
 
 void MainWindow::OpenRandomFile()
 {
-	QDir source(QString::fromStdString(Utils::dataSetPath));
-	if (!source.exists())
-	{
-		std::cout << "Bad path!!" << std::endl;
-		ui->inputImgText->setText("Can't open random image!!");
-		return;
-	}
-	//Generating a list with the name of all the files in the source folder
-	QStringList fileList = source.entryList();
-
-	//Generating a random number in range (0, lenght of list) for the random image
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> distr(0, fileList.length());
-	int generatedNumber = distr(gen);
-
-	QString filepath = QString::fromStdString(Utils::dataSetPath) + fileList[generatedNumber];
-	std::cout << filepath.toStdString() << std::endl;
-
-	image = Utils::ReadImage(filepath.toStdString());
-	cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
-	QImage convertedImage = Utils::ConvertMatToQImage(image);
+	cv::Mat img = OpenRandomImage();
+	QImage convertedImage = Utils::ConvertMatToQImage(img);
 	qImage = convertedImage;
 
 	ui->inputImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->inputImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->inputImgText->setText("Initial Image");
+	ClearLabels();
 }
 
 void MainWindow::ConvertToGrayScale()
@@ -111,22 +82,8 @@ void MainWindow::ApplyGaussianFilter()
 
 void MainWindow::SkullStripping()
 {
-	cv::Mat openedImage, cpyImage;
-	image.copyTo(cpyImage);
-	image.copyTo(openedImage);
-
-	cv::Mat histImage;
-	int threshold = extractThresholdFromHistogram(cpyImage, histImage);
-	std::cout << threshold << std::endl;
-
-	cv::threshold(cpyImage, openedImage, threshold, 255, cv::THRESH_BINARY);
-
-	cv::Mat skullImage = cpyImage - openedImage;
-	cv::erode(skullImage, skullImage, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7)));
-	cv::dilate(skullImage, skullImage, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(9, 9)));
-	
+	cv::Mat skullImage = SkullStripping_DynamicThreshold();
 	QImage convertedImg = Utils::ConvertMatToQImage(skullImage);
-	QImage convertedHist = Utils::ConvertMatToQImage(histImage);
 
 	// Compar cu ce voiam sa fac
 
@@ -134,3 +91,76 @@ void MainWindow::SkullStripping()
 	ui->preprocImgText->setText("Image after skull stripping");
 }
 
+cv::Mat MainWindow::OpenImage()
+{
+	QString filter = "All files (*.*);;JPEG(*.jpg);;PNG(*.png);;TIF(*.tif)";
+	QFile file(QString::fromStdString(Utils::dataSetPath));
+	QString filepath = QFileDialog::getOpenFileName(this, tr("Open File"), QString::fromStdString(Utils::dataSetPath), filter);
+
+	if (filepath.isEmpty())
+	{
+		std::cout << "File is not an image!!" << std::endl;
+		ui->inputImgText->setText("You have not selected an image!!");
+		return cv::Mat();
+	}
+	image = Utils::ReadImage(filepath.toStdString());
+	cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
+	
+	return image;
+}
+
+cv::Mat MainWindow::OpenRandomImage()
+{
+	QDir source(QString::fromStdString(Utils::dataSetPath));
+	if (!source.exists())
+	{
+		std::cout << "Bad path!!" << std::endl;
+		ui->inputImgText->setText("Can't open random image!!");
+		return cv::Mat();
+	}
+	//Generating a list with the name of all the files in the source folder
+	QStringList fileList = source.entryList();
+
+	//Generating a random number in range (0, lenght of list) for the random image
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> distr(0, fileList.length());
+	int generatedNumber = distr(gen);
+
+	QString filepath = QString::fromStdString(Utils::dataSetPath) + fileList[generatedNumber];
+	std::cout << filepath.toStdString() << std::endl;
+
+	image = Utils::ReadImage(filepath.toStdString());
+	cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
+
+	return image;
+}
+
+cv::Mat MainWindow::SkullStripping_DynamicThreshold()
+{
+	cv::Mat openedImage, cpyImage;
+	image.copyTo(cpyImage);
+	image.copyTo(openedImage);
+
+	cv::Mat histImage;
+	int threshold = extractThresholdFromHistogram(cpyImage, histImage);
+	std::cout << "Threshold: " << threshold << std::endl;
+
+	cv::threshold(cpyImage, openedImage, threshold, 255, cv::THRESH_BINARY);
+
+	cv::Mat skullImage = cpyImage - openedImage;
+	//cv::erode(skullImage, skullImage, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7)));
+	//cv::dilate(skullImage, skullImage, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(9, 9)));
+
+	return skullImage;
+}
+
+void MainWindow::ClearLabels()
+{
+	ui->preprocImg->clear();
+	ui->preprocImgText->clear();
+	ui->segmImg->clear();
+	ui->segmImgText->clear();
+	ui->resultImg->clear();
+	ui->resultImgText->clear();
+}

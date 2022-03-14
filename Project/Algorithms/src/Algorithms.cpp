@@ -648,6 +648,8 @@ ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& h
 			break;
 		}
 	}
+	std::cout << "Start x: " << startPoint.x << std::endl;
+	std::cout << "Start y: " << startPoint.y << std::endl;
 
 	cv::Point endPoint;
 	for (int i = cumulativeHistogram.size() - 1; i > 0; --i)
@@ -659,6 +661,8 @@ ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& h
 			break;
 		}
 	}
+	std::cout << "End x: " << endPoint.x << std::endl;
+	std::cout << "End y: " << endPoint.y << std::endl;
 
 	// Ecuatia dreptei: y = m * x + n
 	double m = 0;
@@ -686,11 +690,11 @@ ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& h
 		}
 	}
 
-	histImage = histogramDisplay(cumulativeHistogram, "Cumulative Histogram", startPoint, endPoint, threshold);
+	histImage = histogramDisplay(cumulativeHistogram, startPoint, endPoint, threshold);
 	return threshold;
 }
 
-ALGORITHMSLIBRARY_API cv::Mat histogramDisplay(const std::vector<int>& histogram, const char* name, const cv::Point& startPoint, const cv::Point& endPoint, int thresh)
+ALGORITHMSLIBRARY_API cv::Mat histogramDisplay(const std::vector<int>& histogram, const cv::Point& startPoint, const cv::Point& endPoint, int thresh)
 {
 	// draw the histograms
 	int hist_w = 512; int hist_h = 512;
@@ -700,8 +704,9 @@ ALGORITHMSLIBRARY_API cv::Mat histogramDisplay(const std::vector<int>& histogram
 
 	// find the maximum intensity element from histogram
 	int max = *(histogram.end() - 1);
+	//int min = *(histogram.begin());
 
-	float yScaleFactor = hist_h / (max * 1.f);
+	float yScaleFactor = hist_h / (max * 1.f);// -min * 1.f);
 
 	// draw the intensity line for histogram
 	for (int i = 0; i < histogram.size(); i++)
