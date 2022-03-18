@@ -737,3 +737,106 @@ ALGORITHMSLIBRARY_API cv::Mat histogramDisplay(const std::vector<int>& histogram
 	return histImage;
 }
 
+ALGORITHMSLIBRARY_API cv::Mat SkullStripping_DynamicThreshold(cv::Mat& image)
+{
+	cv::Mat openedImage, cpyImage;
+	image.copyTo(cpyImage);
+	image.copyTo(openedImage);
+
+	cv::Mat histImage;
+	int threshold = extractThresholdFromHistogram(cpyImage, histImage);
+	std::cout << "Threshold: " << threshold << std::endl;
+
+	cv::threshold(cpyImage, openedImage, threshold, 255, cv::THRESH_BINARY);
+
+	cv::Mat skullImage = cpyImage - openedImage;
+	//cv::erode(skullImage, skullImage, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7)));
+	//cv::dilate(skullImage, skullImage, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(9, 9)));
+
+	return skullImage;
+}
+
+ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input, double k)
+{
+	//Declaring output image
+	cv::Mat output = cv::Mat(input.rows, input.cols, CV_8UC1);
+
+	//Compute integral images
+	cv::Mat sumImage, squaredSumImage;
+	cv::integral(input, sumImage, squaredSumImage, CV_64F);
+
+	int maxStep = std::max(input.rows, input.cols);
+
+	for (int row = 0; row < input.rows; ++row)
+	{
+		const uchar* inputPtr = input.ptr<uchar>(row);
+		uchar* outputPtr = output.ptr<uchar>(row);
+
+		for (int col = 0; col < input.cols; ++col)
+		{
+			int window_size = 3;
+			int step = window_size / 2;
+
+			double previousWindowStdDevLog = std::numeric_limits<double>::lowest();
+			double currentWindowStdDevLog = std::numeric_limits<double>::lowest();
+			double currentKernelStdDev = std::numeric_limits<double>::lowest();
+			double mean = 0;
+
+			do
+			{
+				previousWindowStdDevLog = currentWindowStdDevLog;
+				int rowUp = row - step;
+				int rowDown = row + step;
+				int colLeft = col - step;
+				int colRight = col + step;
+
+				//Checking for borders
+				if (rowUp < 0)
+					rowUp = 0;
+				if (rowDown >= input.rows)
+					rowDown = input.rows - 1;
+				if (colLeft < 0)
+					colLeft = 0;
+				if (colRight >= input.cols)
+					colRight = input.cols - 1;
+
+				const double* sumRowUpPtr = sumImage.ptr<double>(rowUp);
+				const double* sumRowDownPtr = sumImage.ptr<double>(rowDown + 1);
+				double sum = sumRowUpPtr[colLeft] + sumRowDownPtr[colRight + 1] - sumRowUpPtr[colRight + 1] - sumRowDownPtr[colLeft];
+
+				const double* squaredSumRowUpPtr = squaredSumImage.ptr<double>(rowUp);
+				const double* squaredSumRowDownPtr = squaredSumImage.ptr<double>(rowDown + 1);
+				double squaredSum = squaredSumRowUpPtr[colLeft] + squaredSumRowDownPtr[colRight + 1] - squaredSumRowUpPtr[colRight + 1] - squaredSumRowDownPtr[colLeft];
+
+				int windowWidth = colRight - colLeft + 1;
+				int windowHeight = rowDown - rowUp + 1;
+				int pixelsInWindow = windowHeight * windowWidth;
+				mean = sum / pixelsInWindow;
+				
+				double currentWindowVariance = (squaredSum / pixelsInWindow) - (mean) * (mean);
+				currentKernelStdDev = sqrt(currentWindowVariance);
+				currentWindowStdDevLog = currentKernelStdDev * log(pixelsInWindow);
+				
+				++step;
+			} while ((step <= maxStep) && (currentWindowStdDevLog > previousWindowStdDevLog));
+			
+			double threshold = mean + k * currentKernelStdDev;
+			
+			if (inputPtr[col] >= threshold)
+				outputPtr[col] = 255;
+			else
+				outputPtr[col] = 0;
+		}
+	}
+	return output;
+}
+
+ALGORITHMSLIBRARY_API cv::Mat SkullStripping_AdaptiveWindow(cv::Mat& image)
+{
+	cv::Mat openedImage, cpyImage;
+	image.copyTo(cpyImage);
+	image.copyTo(openedImage);
+
+	cv::Mat result = AdaptiveWindow_Threshold(image, 0.2);
+	return result;
+}

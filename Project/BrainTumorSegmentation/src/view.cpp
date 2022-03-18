@@ -82,10 +82,9 @@ void MainWindow::ApplyGaussianFilter()
 
 void MainWindow::SkullStripping()
 {
-	cv::Mat skullImage = SkullStripping_DynamicThreshold();
+	//cv::Mat skullImage = SkullStripping_DynamicThreshold(this->image);
+	cv::Mat skullImage = SkullStripping_AdaptiveWindow(this->image);
 	QImage convertedImg = Utils::ConvertMatToQImage(skullImage);
-
-	// Compar cu ce voiam sa fac
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after skull stripping");
@@ -134,25 +133,6 @@ cv::Mat MainWindow::OpenRandomImage()
 	cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
 
 	return image;
-}
-
-cv::Mat MainWindow::SkullStripping_DynamicThreshold()
-{
-	cv::Mat openedImage, cpyImage;
-	image.copyTo(cpyImage);
-	image.copyTo(openedImage);
-
-	cv::Mat histImage;
-	int threshold = extractThresholdFromHistogram(cpyImage, histImage);
-	std::cout << "Threshold: " << threshold << std::endl;
-
-	cv::threshold(cpyImage, openedImage, threshold, 255, cv::THRESH_BINARY);
-
-	cv::Mat skullImage = cpyImage - openedImage;
-	//cv::erode(skullImage, skullImage, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7)));
-	//cv::dilate(skullImage, skullImage, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(9, 9)));
-
-	return skullImage;
 }
 
 void MainWindow::ClearLabels()

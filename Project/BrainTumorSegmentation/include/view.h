@@ -39,6 +39,5 @@ private:
 	void CreateActions();
 	cv::Mat OpenImage();
 	cv::Mat OpenRandomImage();
-	cv::Mat SkullStripping_DynamicThreshold();
 	void ClearLabels();
 };
