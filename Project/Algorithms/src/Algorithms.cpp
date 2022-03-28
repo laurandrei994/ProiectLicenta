@@ -758,14 +758,11 @@ ALGORITHMSLIBRARY_API cv::Mat SkullStripping_DynamicThreshold(cv::Mat& image)
 
 ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input, double k)
 {
-	//Declaring output image
 	cv::Mat output = cv::Mat(input.rows, input.cols, CV_8UC1);
-
-	//Compute integral images
 	cv::Mat sumImage, squaredSumImage;
 	cv::integral(input, sumImage, squaredSumImage, CV_64F);
-
 	int maxStep = std::max(input.rows, input.cols);
+	const double epsilon = 1e-02;
 
 	for (int row = 0; row < input.rows; ++row)
 	{
@@ -777,20 +774,19 @@ ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input, double k)
 			int window_size = 3;
 			int step = window_size / 2;
 
-			double previousWindowStdDevLog = std::numeric_limits<double>::lowest();
-			double currentWindowStdDevLog = std::numeric_limits<double>::lowest();
-			double currentKernelStdDev = std::numeric_limits<double>::lowest();
+			double previousStdDevLog = 0;
+			double currentStdDevLog = 0;
+			double currentKernelStdDev = 0;
 			double mean = 0;
 
 			do
 			{
-				previousWindowStdDevLog = currentWindowStdDevLog;
+				previousStdDevLog = currentStdDevLog;
 				int rowUp = row - step;
 				int rowDown = row + step;
 				int colLeft = col - step;
 				int colRight = col + step;
 
-				//Checking for borders
 				if (rowUp < 0)
 					rowUp = 0;
 				if (rowDown >= input.rows)
@@ -815,17 +811,19 @@ ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input, double k)
 				
 				double currentWindowVariance = (squaredSum / pixelsInWindow) - (mean) * (mean);
 				currentKernelStdDev = sqrt(currentWindowVariance);
-				currentWindowStdDevLog = currentKernelStdDev * log(pixelsInWindow);
+				currentStdDevLog = currentKernelStdDev * log(windowWidth);
 				
 				++step;
-			} while ((step <= maxStep) && (currentWindowStdDevLog > previousWindowStdDevLog));
+			} while ((step <= maxStep) && 
+							((previousStdDevLog - currentStdDevLog) <= epsilon));
 			
-			double threshold = mean + k * currentKernelStdDev;
+			//double threshold = mean +k * currentKernelStdDev;
+			double threshold = mean;
 			
 			if (inputPtr[col] >= threshold)
-				outputPtr[col] = 255;
-			else
 				outputPtr[col] = 0;
+			else
+				outputPtr[col] = 255;
 		}
 	}
 	return output;

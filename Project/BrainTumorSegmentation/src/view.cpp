@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->setupUi(this);
 
 	CreateActions();
+	ClearLabels();
 }
 
 MainWindow::~MainWindow()
@@ -38,7 +39,6 @@ void MainWindow::OpenFile()
 {
 	cv::Mat img = OpenImage();
 	QImage convertedImage = Utils::ConvertMatToQImage(img);
-	qImage = convertedImage;
 
 	ui->inputImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->inputImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->inputImgText->setText("Initial Image");
@@ -49,7 +49,6 @@ void MainWindow::OpenRandomFile()
 {
 	cv::Mat img = OpenRandomImage();
 	QImage convertedImage = Utils::ConvertMatToQImage(img);
-	qImage = convertedImage;
 
 	ui->inputImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->inputImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->inputImgText->setText("Initial Image");
@@ -62,7 +61,6 @@ void MainWindow::ConvertToGrayScale()
 	grayImg.copyTo(image);
 
 	QImage convertedImage = Utils::ConvertMatToQImage(grayImg);
-	qImage = convertedImage;
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after applying the grayscale algorithm");
@@ -74,7 +72,6 @@ void MainWindow::ApplyGaussianFilter()
 	modifiedImg.copyTo(image);
 
 	QImage convertedImage = Utils::ConvertMatToQImage(modifiedImg);
-	qImage = convertedImage;
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after applying the Gaussian Filter with a kernel of 5x5");
@@ -84,7 +81,11 @@ void MainWindow::SkullStripping()
 {
 	//cv::Mat skullImage = SkullStripping_DynamicThreshold(this->image);
 	cv::Mat skullImage = SkullStripping_AdaptiveWindow(this->image);
+	//cv::Mat skullImage2 = SkullStripping_AdaptiveWindow(skullImage);
 	QImage convertedImg = Utils::ConvertMatToQImage(skullImage);
+
+	//cv::erode(skullImage2, skullImage2,cv::getStructuringElement(cv::MORPH_ELLIPSE,cv::Size(7,7)));
+	//cv::dilate(skullImage2, skullImage2,cv::getStructuringElement(cv::MORPH_ELLIPSE,cv::Size(3,3)));
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after skull stripping");
@@ -143,4 +144,5 @@ void MainWindow::ClearLabels()
 	ui->segmImgText->clear();
 	ui->resultImg->clear();
 	ui->resultImgText->clear();
+	ui->nestStep->setText("Open Image");
 }
