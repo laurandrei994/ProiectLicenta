@@ -30,10 +30,12 @@ private slots:
 	void ConvertToGrayScale();
 	void ApplyGaussianFilter();
 	void SkullStripping();
+	void NextStepClick();
 
 private:
 	Ui::MainWindow* ui;
 	cv::Mat image;
+	int index;
 
 	void CreateActions();
 	cv::Mat OpenImage();

@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget* parent)
 {
 	ui->setupUi(this);
 
+	index = 0;
 	CreateActions();
 	ClearLabels();
 }
@@ -32,27 +33,32 @@ void MainWindow::CreateActions()
 	connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(close()));
 	connect(ui->actionGaussian_Filter, SIGNAL(triggered()), this, SLOT(ApplyGaussianFilter()));
 	connect(ui->actionRemove_the_skull_from_the_image, SIGNAL(triggered()), this, SLOT(SkullStripping()));
+	connect(ui->nestStep, SIGNAL(clicked()), this, SLOT(NextStepClick()));
 }
 
 //SLOTS
 void MainWindow::OpenFile()
 {
+	ClearLabels();
+	ui->nestStep->setText("Convert image to grayscale");
+	index = 1;
 	cv::Mat img = OpenImage();
 	QImage convertedImage = Utils::ConvertMatToQImage(img);
 
 	ui->inputImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->inputImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->inputImgText->setText("Initial Image");
-	ClearLabels();
 }
 
 void MainWindow::OpenRandomFile()
 {
+	ClearLabels();
+	ui->nestStep->setText("Convert image to grayscale");
+	index = 1;
 	cv::Mat img = OpenRandomImage();
 	QImage convertedImage = Utils::ConvertMatToQImage(img);
 
 	ui->inputImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->inputImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->inputImgText->setText("Initial Image");
-	ClearLabels();
 }
 
 void MainWindow::ConvertToGrayScale()
@@ -90,6 +96,38 @@ void MainWindow::SkullStripping()
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after skull stripping");
 }
+
+void MainWindow::NextStepClick()
+{
+	switch (index)
+	{
+	case 0:
+		OpenFile();
+		if (index < 1)
+			index++;
+		ui->nestStep->setText("Convert image to grayscale");
+		break;
+	case 1:
+		ConvertToGrayScale();
+		index++;
+		ui->nestStep->setText("Apply Gaussian Blurring algorithm");
+		break;
+	case 2:
+		ApplyGaussianFilter();
+		index++;
+		ui->nestStep->setText("Apply skull stripping algorithm");
+		break;
+	case 3:
+		SkullStripping();
+		index++;
+		ui->nestStep->setText("Begin segmentation process");
+		break;
+	default:
+		break;
+	}
+}
+
+
 
 cv::Mat MainWindow::OpenImage()
 {
