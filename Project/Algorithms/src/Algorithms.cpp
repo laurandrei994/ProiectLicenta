@@ -141,18 +141,15 @@ ALGORITHMSLIBRARY_API cv::Mat GaussianFilter(cv::Mat& initial, const int kernel_
 
 		for (int j = border; j < cols; j++)
 		{
-			//double sum[3] = { 0 };
 			std::vector<double> sum(3, 0);
 			for (int k = -border; k <= border; k++)
 			{
 				if (channels == 1)
 				{
-					//sum[0] += matrix[border + k] * result.at<uchar>(i, j + k);
 					sum[0] += matrix[border + k] * row_ptr[j + k];
 				}
 				else if (channels == 3)
 				{
-					//cv::Vec3b rgb = result.at<cv::Vec3b>(i, j + k);
 					cv::Vec3b rgb = row_ptr_vec[j + k];
 					sum[0] += matrix[border + k] * rgb[0];
 					sum[1] += matrix[border + k] * rgb[1];
@@ -167,13 +164,11 @@ ALGORITHMSLIBRARY_API cv::Mat GaussianFilter(cv::Mat& initial, const int kernel_
 					sum[k] = 255;
 			}
 			if (channels == 1)
-				//result.at<uchar>(i, j) = static_cast<uchar>(sum[0]);
 				row_ptr[j] = static_cast<uchar>(sum[0]);
 			else if (channels == 3)
 			{
 				cv::Vec3b rgb = { static_cast<uchar>(sum[0]), static_cast<uchar>(sum[1]), static_cast<uchar>(sum[2]) };
 				row_ptr_vec[j] = rgb;
-				//result.at<cv::Vec3b>(i, j) = rgb;
 			}
 		}
 	}
@@ -192,12 +187,10 @@ ALGORITHMSLIBRARY_API cv::Mat GaussianFilter(cv::Mat& initial, const int kernel_
 				cv::Vec3b* row_ptr_vec = result.ptr<cv::Vec3b>(i + k);
 				if (channels == 1)
 				{
-					//sum[0] += matrix[border + k] * result.at<uchar>(i + k, j);
 					sum[0] += matrix[border + k] * row_ptr[j];
 				}
 				else if (channels == 3)
 				{
-					//cv::Vec3b rgb = result.at<cv::Vec3b>(i + k, j);
 					cv::Vec3b rgb = row_ptr_vec[j];
 					sum[0] += matrix[border + k] * rgb[0];
 					sum[1] += matrix[border + k] * rgb[1];
@@ -212,13 +205,11 @@ ALGORITHMSLIBRARY_API cv::Mat GaussianFilter(cv::Mat& initial, const int kernel_
 					sum[k] = 255;
 			}
 			if (channels == 1)
-				//result.at<uchar>(i, j) = static_cast<uchar>(sum[0]);
 				ptr[j] = static_cast<uchar>(sum[0]);
 			else if (channels == 3)
 			{
 				cv::Vec3b rgb = { static_cast<uchar>(sum[0]), static_cast<uchar>(sum[1]), static_cast<uchar>(sum[2]) };
 				ptr_vec[j] = rgb;
-				//result.at<cv::Vec3b>(i, j) = rgb;
 			}
 		}
 	}
@@ -308,6 +299,24 @@ ALGORITHMSLIBRARY_API cv::Mat BilateralFilter(cv::Mat& initial, const int kernel
 				dptr[j + 1] = (uchar)g0;
 				dptr[j + 2] = (uchar)r0;
 			}
+		}
+	}
+	return result;
+}
+
+ALGORITHMSLIBRARY_API cv::Mat RemoveBackground(cv::Mat& initial)
+{
+	cv::Mat result;
+	initial.copyTo(result);
+	for (int row = 0; row < initial.rows; ++row)
+	{
+		const uchar* initialRowPtr = initial.ptr<uchar>(row);
+		uchar* resultRowPtr = result.ptr<uchar>(row);
+
+		for (int col = 0; col < initial.cols; ++col)
+		{
+			if (initialRowPtr[col] < 20)
+				resultRowPtr[col] = 0;
 		}
 	}
 	return result;
@@ -756,17 +765,40 @@ ALGORITHMSLIBRARY_API cv::Mat SkullStripping_DynamicThreshold(cv::Mat& image)
 	return skullImage;
 }
 
-ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input, double k)
+ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input)
 {
-	cv::Mat output = cv::Mat(input.rows, input.cols, CV_8UC1);
+	// Make all the pixels in the background 0 
+	cv::Mat initial = RemoveBackground(input);
+
+	// Declaring output cv::Mat
+	cv::Mat output = cv::Mat(initial.rows, initial.cols, CV_8UC1);
+
+	// Compute integral and squared Integral image of the inital image
 	cv::Mat sumImage, squaredSumImage;
-	cv::integral(input, sumImage, squaredSumImage, CV_64F);
-	int maxStep = std::max(input.rows, input.cols);
-	const double epsilon = 1e-02;
+	cv::integral(initial, sumImage, squaredSumImage, CV_64F);
+
+	int maxStep = std::max(initial.rows, initial.cols);
+	
+	// Calculate the stdDev of the initial image
+	const double* initialSumRowUpPtr = sumImage.ptr<double>(0);
+	const double* initialSumRowDownPtr = sumImage.ptr<double>(512);
+	double initialSum = initialSumRowUpPtr[0] + initialSumRowDownPtr[512] - initialSumRowUpPtr[512] - initialSumRowDownPtr[0];
+
+	const double* initialSquaredSumRowUpPtr = squaredSumImage.ptr<double>(0);
+	const double* initialSquaredSumRowDownPtr = squaredSumImage.ptr<double>(512);
+	double initialSquaredSum = initialSquaredSumRowUpPtr[0] + initialSquaredSumRowDownPtr[512] - initialSquaredSumRowUpPtr[512] - initialSquaredSumRowDownPtr[0];
+
+	double initialMean = initialSum / (512 * 512);
+	const int totalPixels = 512 * 512;
+	double initialWindowVariance = (initialSquaredSum / totalPixels) - (initialMean) * (initialMean);
+	double initialImageStdDev = sqrt(initialWindowVariance);
+
+	const double weight = 0.1;
+	const double stdDevThreshold = weight * initialImageStdDev;
 
 	for (int row = 0; row < input.rows; ++row)
 	{
-		const uchar* inputPtr = input.ptr<uchar>(row);
+		const uchar* inputPtr = initial.ptr<uchar>(row);
 		uchar* outputPtr = output.ptr<uchar>(row);
 
 		for (int col = 0; col < input.cols; ++col)
@@ -787,6 +819,7 @@ ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input, double k)
 				int colLeft = col - step;
 				int colRight = col + step;
 
+				// Checking borders
 				if (rowUp < 0)
 					rowUp = 0;
 				if (rowDown >= input.rows)
@@ -814,10 +847,11 @@ ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input, double k)
 				currentStdDevLog = currentKernelStdDev * log(windowWidth);
 				
 				++step;
-			} while ((step <= maxStep) && 
-							((previousStdDevLog - currentStdDevLog) <= epsilon));
+			} while ((step <= maxStep) &&
+							(currentStdDevLog > previousStdDevLog));
+							//(currentKernelStdDev > stdDevThreshold));
+							//(currentStdDevLog - previousStdDevLog >= epsilon));
 			
-			//double threshold = mean +k * currentKernelStdDev;
 			double threshold = mean;
 			
 			if (inputPtr[col] >= threshold)
@@ -835,6 +869,6 @@ ALGORITHMSLIBRARY_API cv::Mat SkullStripping_AdaptiveWindow(cv::Mat& image)
 	image.copyTo(cpyImage);
 	image.copyTo(openedImage);
 
-	cv::Mat result = AdaptiveWindow_Threshold(image, 0.2);
+	cv::Mat result = AdaptiveWindow_Threshold(image);
 	return result;
 }

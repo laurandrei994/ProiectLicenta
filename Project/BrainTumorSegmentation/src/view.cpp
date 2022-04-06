@@ -63,6 +63,7 @@ void MainWindow::OpenRandomFile()
 
 void MainWindow::ConvertToGrayScale()
 {
+	ui->nestStep->setText("Apply Gaussian Blurring algorithm");
 	cv::Mat grayImg = GrayScale_Average(image);
 	grayImg.copyTo(image);
 
@@ -74,6 +75,7 @@ void MainWindow::ConvertToGrayScale()
 
 void MainWindow::ApplyGaussianFilter()
 {
+	ui->nestStep->setText("Apply skull stripping algorithm");
 	cv::Mat modifiedImg = GaussianFilter(image, 5, 0.8);
 	modifiedImg.copyTo(image);
 
@@ -85,13 +87,15 @@ void MainWindow::ApplyGaussianFilter()
 
 void MainWindow::SkullStripping()
 {
+	ui->nestStep->setText("Begin segmentation process");
 	//cv::Mat skullImage = SkullStripping_DynamicThreshold(this->image);
 	cv::Mat skullImage = SkullStripping_AdaptiveWindow(this->image);
 	//cv::Mat skullImage2 = SkullStripping_AdaptiveWindow(skullImage);
 	QImage convertedImg = Utils::ConvertMatToQImage(skullImage);
+	//QImage convertedImg = Utils::ConvertMatToQImage(skullImage2);
 
-	//cv::erode(skullImage2, skullImage2,cv::getStructuringElement(cv::MORPH_ELLIPSE,cv::Size(7,7)));
-	//cv::dilate(skullImage2, skullImage2,cv::getStructuringElement(cv::MORPH_ELLIPSE,cv::Size(3,3)));
+	//cv::erode(skullImage2, skullImage2,cv::getStructuringElement(cv::MORPH_ELLIPSE,cv::Size(9,9)));
+	//cv::dilate(skullImage2, skullImage2,cv::getStructuringElement(cv::MORPH_ELLIPSE,cv::Size(7,7)));
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after skull stripping");

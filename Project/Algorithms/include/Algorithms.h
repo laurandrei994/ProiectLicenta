@@ -24,8 +24,9 @@ extern "C" ALGORITHMSLIBRARY_API cv::Mat AverageFilter(cv::Mat & initial, const 
 extern "C" ALGORITHMSLIBRARY_API uchar AdaptiveProcess(cv::Mat & initial, const int row, const int col, int kernel_size, const int maxSize);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat AdaptiveMedianFilter(cv::Mat & initial);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat BilateralFilter(cv::Mat & initial, const int kernel_size, const double space_sigma, const double color_sigma);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat RemoveBackground(cv::Mat & initial);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat SkullStripping_DynamicThreshold(cv::Mat & image);
-extern "C" ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat & input, double k);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat & input);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat SkullStripping_AdaptiveWindow(cv::Mat & image);
 
 // Helper Algorithms
