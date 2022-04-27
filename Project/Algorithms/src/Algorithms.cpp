@@ -628,7 +628,7 @@ ALGORITHMSLIBRARY_API void WriteTimesCSVFile()
 	csv_file.close();
 }
 
-ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& histImage)
+ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& histImage, uchar thresh)
 {
 	int bins = 256;
 	std::vector<int> histogram(256, 0);
@@ -637,7 +637,8 @@ ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& h
 		uchar* imgRow = img.ptr<uchar>(row);
 		for (int col = 0; col < img.cols; ++col)
 		{
-			++histogram[(int)imgRow[col]];
+			if (imgRow[col] >= thresh)
+				++histogram[(int)imgRow[col]];
 		}
 	}
 
@@ -684,7 +685,7 @@ ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& h
 	for (int i = startPoint.x; i <= endPoint.x; i++)
 	{
 		cv::Point count = cv::Point(i, cumulativeHistogram[i]);
-		distancePointToLine[i] = std::abs(count.y - (m * count.x) - n) / sqrt(1 + (m * n));
+		distancePointToLine[i] = std::abs(count.y - (m * count.x) - n) / sqrt(1 + (m * m));
 	}
 
 	double maxDistance = distancePointToLine[0];
@@ -773,27 +774,25 @@ ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input)
 	// Declaring output cv::Mat
 	cv::Mat output = cv::Mat(initial.rows, initial.cols, CV_8UC1);
 
-	// Compute integral and squared Integral image of the inital image
+	// Compute integral and squared integral image of the inital image
 	cv::Mat sumImage, squaredSumImage;
 	cv::integral(initial, sumImage, squaredSumImage, CV_64F);
 
 	int maxStep = std::max(initial.rows, initial.cols);
 	
 	// Calculate the stdDev of the initial image
-	const double* initialSumRowUpPtr = sumImage.ptr<double>(0);
-	const double* initialSumRowDownPtr = sumImage.ptr<double>(512);
-	double initialSum = initialSumRowUpPtr[0] + initialSumRowDownPtr[512] - initialSumRowUpPtr[512] - initialSumRowDownPtr[0];
+	const double* initialLastRowPtr = sumImage.ptr<double>(sumImage.rows - 1);
+	double initialSum = initialLastRowPtr[sumImage.cols - 1];
 
-	const double* initialSquaredSumRowUpPtr = squaredSumImage.ptr<double>(0);
-	const double* initialSquaredSumRowDownPtr = squaredSumImage.ptr<double>(512);
-	double initialSquaredSum = initialSquaredSumRowUpPtr[0] + initialSquaredSumRowDownPtr[512] - initialSquaredSumRowUpPtr[512] - initialSquaredSumRowDownPtr[0];
+	const double* initialSquaredSumLastRowPtr = squaredSumImage.ptr<double>(squaredSumImage.rows - 1);
+	double initialSquaredSum = initialSquaredSumLastRowPtr[squaredSumImage.cols - 1];
 
-	double initialMean = initialSum / (512 * 512);
-	const int totalPixels = 512 * 512;
+	const long totalPixels = initial.rows * initial.cols;
+	double initialMean = initialSum / totalPixels;
 	double initialWindowVariance = (initialSquaredSum / totalPixels) - (initialMean) * (initialMean);
 	double initialImageStdDev = sqrt(initialWindowVariance);
 
-	const double weight = 0.1;
+	const double weight = 0.1; // 10 %
 	const double stdDevThreshold = weight * initialImageStdDev;
 
 	for (int row = 0; row < input.rows; ++row)
@@ -803,9 +802,9 @@ ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input)
 
 		for (int col = 0; col < input.cols; ++col)
 		{
+			// row = 80, col = 275
 			int window_size = 3;
 			int step = window_size / 2;
-
 			double previousStdDevLog = 0;
 			double currentStdDevLog = 0;
 			double currentKernelStdDev = 0;
@@ -852,7 +851,7 @@ ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat& input)
 							//(currentKernelStdDev > stdDevThreshold));
 							//(currentStdDevLog - previousStdDevLog >= epsilon));
 			
-			double threshold = mean;
+			double threshold = mean;// +0.1 * currentKernelStdDev;
 			
 			if (inputPtr[col] >= threshold)
 				outputPtr[col] = 0;
@@ -870,5 +869,12 @@ ALGORITHMSLIBRARY_API cv::Mat SkullStripping_AdaptiveWindow(cv::Mat& image)
 	image.copyTo(openedImage);
 
 	cv::Mat result = AdaptiveWindow_Threshold(image);
+	return result;
+}
+
+ALGORITHMSLIBRARY_API cv::Mat GradientTest(cv::Mat& image)
+{
+	cv::Mat result;
+	cv::morphologyEx(image, result, cv::MORPH_GRADIENT, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
 	return result;
 }

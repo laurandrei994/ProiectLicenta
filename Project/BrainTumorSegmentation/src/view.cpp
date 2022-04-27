@@ -66,6 +66,132 @@ void MainWindow::ConvertToGrayScale()
 	ui->nestStep->setText("Apply Gaussian Blurring algorithm");
 	cv::Mat grayImg = GrayScale_Average(image);
 	grayImg.copyTo(image);
+	cv::Mat hist;
+
+	cv::Mat erodedImg;
+	cv::erode(grayImg, erodedImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
+	///
+	cv::Mat res = GradientTest(image);
+	int thresh = extractThresholdFromHistogram(res, hist);
+
+	cv::Mat thresholdRes = cv::Mat(res.rows, res.cols, CV_8UC1);
+
+	for (int row = 0; row < res.rows; ++row)
+	{
+		uchar* resRow = res.ptr<uchar>(row);
+		uchar* thResRow = thresholdRes.ptr<uchar>(row);
+		
+		for (int col = 0; col < res.cols; ++col)
+		{
+			if (resRow[col] >= thresh)
+				thResRow[col] = 255;
+			else
+				thResRow[col] = 0;
+		}
+	}
+
+	cv::Scalar mean, stdDev;
+	cv::meanStdDev(image, mean, stdDev, thresholdRes);
+
+	cv::Mat binaryFullMask = cv::Mat(image.rows, image.cols, CV_8UC1);
+	for (int row = 0; row < res.rows; ++row)
+	{
+		uchar* imageRow = image.ptr<uchar>(row);
+		uchar* binaryImgRow = binaryFullMask.ptr<uchar>(row);
+
+		for (int col = 0; col < res.cols; ++col)
+		{
+			if (imageRow[col] >= (mean[0] - 1.5 * stdDev[0]))
+				binaryImgRow[col] = 255;
+			else
+				binaryImgRow[col] = 0;
+		}
+	}
+
+	cv::Mat binaryOuterMask = cv::Mat(image.rows, image.cols, CV_8UC1);
+	for (int row = 0; row < res.rows; ++row)
+	{
+		uchar* imageRow = image.ptr<uchar>(row);
+		uchar* binaryImgRow = binaryOuterMask.ptr<uchar>(row);
+
+		for (int col = 0; col < res.cols; ++col)
+		{
+			if (imageRow[col] >= (mean[0]))
+				binaryImgRow[col] = 255;
+			else
+				binaryImgRow[col] = 0;
+		}
+	}
+
+	cv::Mat initialDifference = grayImg - erodedImg;
+	cv::Mat maskDifference = binaryFullMask - binaryOuterMask;
+
+
+	cv::Mat imgAfterMask; 
+	cv::bitwise_and(grayImg, maskDifference, imgAfterMask);  // skull stripping
+
+	int thresh2 = extractThresholdFromHistogram(imgAfterMask, hist, 1);
+
+	cv::Mat binaryImgAfterMask = cv::Mat(imgAfterMask.rows, imgAfterMask.cols, CV_8UC1);
+	for (int row = 0; row < res.rows; ++row)
+	{
+		uchar* imgAfterMaskRow = imgAfterMask.ptr<uchar>(row);
+		uchar* binaryImgAfterMaskRow = binaryImgAfterMask.ptr<uchar>(row);
+
+		for (int col = 0; col < res.cols; ++col)
+		{
+			if (imgAfterMaskRow[col] == 0)
+			{
+				binaryImgAfterMaskRow[col] = 0;
+				continue;
+			}
+			// 0/255 pentru gl
+			// 255/0 pt me
+			if (imgAfterMaskRow[col] >= thresh2)
+				binaryImgAfterMaskRow[col] = 0;
+			else
+				binaryImgAfterMaskRow[col] = 255;
+		}
+	}
+
+	cv::Mat copy;
+	binaryImgAfterMask.copyTo(copy);
+
+	cv::erode(copy, copy, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+	cv::dilate(copy, copy, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+
+	cv::Mat labeledImage = cv::Mat(imgAfterMask.rows, imgAfterMask.cols, CV_8UC1);
+	cv::Mat stats, centroids;
+	int nrLabels = cv::connectedComponentsWithStats(copy, labeledImage,stats,centroids);
+
+	int max = -1;
+	int indexMaxLabel = 0;
+	std::vector<int> areas;
+	for (int i = 1; i < nrLabels; ++i)
+	{
+		int area = stats.at<int>(i, cv::CC_STAT_AREA);
+		areas.push_back(area);
+		if (area > max)
+		{
+			max = area;
+			indexMaxLabel = i;
+		}
+	}
+
+	cv::Mat tumora = cv::Mat::zeros(cv::Size(labeledImage.rows, labeledImage.cols), CV_8UC1);
+	for (int row = 0; row < labeledImage.rows; ++row)
+	{
+		int* imgRow = labeledImage.ptr<int>(row);
+		uchar* tumoraRow = tumora.ptr<uchar>(row);
+
+		for (int col = 0; col < labeledImage.cols; ++col)
+		{
+			if (imgRow[col] == indexMaxLabel)
+				tumoraRow[col] = 255;
+		}
+	}
+
+	/// 
 
 	QImage convertedImage = Utils::ConvertMatToQImage(grayImg);
 
@@ -88,8 +214,8 @@ void MainWindow::ApplyGaussianFilter()
 void MainWindow::SkullStripping()
 {
 	ui->nestStep->setText("Begin segmentation process");
-	//cv::Mat skullImage = SkullStripping_DynamicThreshold(this->image);
-	cv::Mat skullImage = SkullStripping_AdaptiveWindow(this->image);
+	cv::Mat skullImage = SkullStripping_DynamicThreshold(this->image);
+	//cv::Mat skullImage = SkullStripping_AdaptiveWindow(this->image);
 	//cv::Mat skullImage2 = SkullStripping_AdaptiveWindow(skullImage);
 	QImage convertedImg = Utils::ConvertMatToQImage(skullImage);
 	//QImage convertedImg = Utils::ConvertMatToQImage(skullImage2);
@@ -130,8 +256,6 @@ void MainWindow::NextStepClick()
 		break;
 	}
 }
-
-
 
 cv::Mat MainWindow::OpenImage()
 {

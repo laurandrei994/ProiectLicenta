@@ -28,6 +28,7 @@ extern "C" ALGORITHMSLIBRARY_API cv::Mat RemoveBackground(cv::Mat & initial);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat SkullStripping_DynamicThreshold(cv::Mat & image);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat & input);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat SkullStripping_AdaptiveWindow(cv::Mat & image);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat GradientTest(cv::Mat & image);
 
 // Helper Algorithms
 extern "C" ALGORITHMSLIBRARY_API cv::Mat ApplyDenoisingAlgorithm(cv::Mat & img, const int kernel_size, Denoising_Algorithms type);
@@ -42,5 +43,5 @@ extern "C" ALGORITHMSLIBRARY_API void WriteMSECSVFile();
 extern "C" ALGORITHMSLIBRARY_API void WriteNoiseCSVFile();
 extern "C" ALGORITHMSLIBRARY_API void WriteTimesCSVFile();
 
-extern "C" ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat & img, cv::Mat& histImage);
+extern "C" ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat & img, cv::Mat& histImage, uchar thresh = 0);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat histogramDisplay(const std::vector<int> &histogram, const cv::Point &startPoint, const cv::Point &endPoint, int thresh);
