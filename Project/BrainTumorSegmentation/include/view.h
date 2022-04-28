@@ -30,12 +30,17 @@ private slots:
 	void ConvertToGrayScale();
 	void ApplyGaussianFilter();
 	void SkullStripping();
+	void OpeningImage_UsingMask();
+	void ConnectedComponentsWithStats();
+	void ExtractTumor();
 	void NextStepClick();
 
 private:
 	Ui::MainWindow* ui;
 	cv::Mat image;
+	cv::Mat labeledImg;
 	int index;
+	int maxLabelIndex;
 
 	void CreateActions();
 	cv::Mat OpenImage();

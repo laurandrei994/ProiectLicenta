@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->setupUi(this);
 
 	index = 0;
+	maxLabelIndex = 0;
 	CreateActions();
 	ClearLabels();
 }
@@ -33,6 +34,10 @@ void MainWindow::CreateActions()
 	connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(close()));
 	connect(ui->actionGaussian_Filter, SIGNAL(triggered()), this, SLOT(ApplyGaussianFilter()));
 	connect(ui->actionRemove_the_skull_from_the_image, SIGNAL(triggered()), this, SLOT(SkullStripping()));
+	connect(ui->actionOpen_Skull_Stripped, SIGNAL(triggered()), this, SLOT(OpeningImage_UsingMask()));
+	connect(ui->actionConnected_Components, SIGNAL(triggered()), this, SLOT(ConnectedComponentsWithStats()));
+	connect(ui->actionExtract_the_tumor_from_the_image, SIGNAL(triggered()), this, SLOT(ExtractTumor()));
+
 	connect(ui->nestStep, SIGNAL(clicked()), this, SLOT(NextStepClick()));
 }
 
@@ -66,12 +71,14 @@ void MainWindow::ConvertToGrayScale()
 	ui->nestStep->setText("Apply Gaussian Blurring algorithm");
 	cv::Mat grayImg = GrayScale_Average(image);
 	grayImg.copyTo(image);
-	cv::Mat hist;
-
+	
+	//cv::Mat res = GradientTest(image);
+	//cv::Mat hist;
+	//cv::Mat imgAfterMask = SkullStripping_UsingMask(grayImg);
+	/*
 	cv::Mat erodedImg;
 	cv::erode(grayImg, erodedImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
 	///
-	cv::Mat res = GradientTest(image);
 	int thresh = extractThresholdFromHistogram(res, hist);
 
 	cv::Mat thresholdRes = cv::Mat(res.rows, res.cols, CV_8UC1);
@@ -129,6 +136,7 @@ void MainWindow::ConvertToGrayScale()
 
 	cv::Mat imgAfterMask; 
 	cv::bitwise_and(grayImg, maskDifference, imgAfterMask);  // skull stripping
+	
 
 	int thresh2 = extractThresholdFromHistogram(imgAfterMask, hist, 1);
 
@@ -159,6 +167,7 @@ void MainWindow::ConvertToGrayScale()
 
 	cv::erode(copy, copy, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
 	cv::dilate(copy, copy, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+	
 
 	cv::Mat labeledImage = cv::Mat(imgAfterMask.rows, imgAfterMask.cols, CV_8UC1);
 	cv::Mat stats, centroids;
@@ -177,8 +186,13 @@ void MainWindow::ConvertToGrayScale()
 			indexMaxLabel = i;
 		}
 	}
-
-	cv::Mat tumora = cv::Mat::zeros(cv::Size(labeledImage.rows, labeledImage.cols), CV_8UC1);
+	*/
+	//cv::Mat copy = ImageAfterOpening_UsingBinaryMask(imgAfterMask);
+	//cv::Mat labeledImage = cv::Mat(imgAfterMask.rows, imgAfterMask.cols, CV_8UC1);
+	//std::pair<cv::Mat, int> pair = ConnectedComponents(copy);
+	//cv::Mat labeledImage = pair.first;
+	//int indexMaxLabel = pair.second;
+	/* cv::Mat tumora = cv::Mat::zeros(cv::Size(labeledImage.rows, labeledImage.cols), CV_8UC1);
 	for (int row = 0; row < labeledImage.rows; ++row)
 	{
 		int* imgRow = labeledImage.ptr<int>(row);
@@ -190,8 +204,8 @@ void MainWindow::ConvertToGrayScale()
 				tumoraRow[col] = 255;
 		}
 	}
-
-	/// 
+	//cv::Mat tumora = ExtractTumorFromImage(labeledImage, indexMaxLabel);
+	*/
 
 	QImage convertedImage = Utils::ConvertMatToQImage(grayImg);
 
@@ -214,17 +228,55 @@ void MainWindow::ApplyGaussianFilter()
 void MainWindow::SkullStripping()
 {
 	ui->nestStep->setText("Begin segmentation process");
-	cv::Mat skullImage = SkullStripping_DynamicThreshold(this->image);
-	//cv::Mat skullImage = SkullStripping_AdaptiveWindow(this->image);
-	//cv::Mat skullImage2 = SkullStripping_AdaptiveWindow(skullImage);
-	QImage convertedImg = Utils::ConvertMatToQImage(skullImage);
-	//QImage convertedImg = Utils::ConvertMatToQImage(skullImage2);
+	cv::Mat skullImage = SkullStripping_UsingMask(this->image);
+	//cv::Mat skullImage = SkullStripping_DynamicThreshold(this->image);
 
-	//cv::erode(skullImage2, skullImage2,cv::getStructuringElement(cv::MORPH_ELLIPSE,cv::Size(9,9)));
-	//cv::dilate(skullImage2, skullImage2,cv::getStructuringElement(cv::MORPH_ELLIPSE,cv::Size(7,7)));
+	QImage convertedImg = Utils::ConvertMatToQImage(skullImage);
+	skullImage.copyTo(image);
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after skull stripping");
+}
+
+void MainWindow::OpeningImage_UsingMask()
+{
+	ui->nestStep->setText("Connected Components With Stats");
+	cv::Mat openedImage = ImageAfterOpening_UsingBinaryMask(this->image);
+
+	QImage convertedImg = Utils::ConvertMatToQImage(openedImage);
+	openedImage.copyTo(this->image);
+
+	ui->segmImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->segmImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->segmImgText->setText("Image after opening using binary mask");
+}
+
+void MainWindow::ConnectedComponentsWithStats()
+{
+	ui->nestStep->setText("Extract the tumor from the image");
+	std::pair<cv::Mat, int> labeledImg_MaxIndex = ConnectedComponents(this->image);
+
+	this->labeledImg = labeledImg_MaxIndex.first;
+	this->maxLabelIndex = labeledImg_MaxIndex.second;
+
+	QImage convertedImg = Utils::ConvertMatToQImage(this->image);
+
+	std::cout << "MAX LABEL INDEX: " << maxLabelIndex << std::endl;
+
+	ui->segmImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->segmImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->segmImgText->setText("Labeled Image");
+}
+
+void MainWindow::ExtractTumor()
+{
+	ui->nestStep->setText("Final Image");
+	cv::Mat tumora = ExtractTumorFromImage(this->labeledImg, this->maxLabelIndex);
+
+	QImage convertedImg = Utils::ConvertMatToQImage(tumora);
+	tumora.copyTo(this->image);
+
+	ui->segmImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->segmImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->segmImgText->setText("Extracted tumor from the MRI");
+
 }
 
 void MainWindow::NextStepClick()
@@ -251,6 +303,21 @@ void MainWindow::NextStepClick()
 		SkullStripping();
 		index++;
 		ui->nestStep->setText("Begin segmentation process");
+		break;
+	case 4: 
+		OpeningImage_UsingMask();
+		index++;
+		ui->nestStep->setText("Connected Components With Stats");
+		break;
+	case 5:
+		ConnectedComponentsWithStats();
+		index++;
+		ui->nestStep->setText("Extract the tumor from the image");
+		break;
+	case 6:
+		ExtractTumor();
+		index++;
+		ui->nestStep->setText("Final image");
 		break;
 	default:
 		break;

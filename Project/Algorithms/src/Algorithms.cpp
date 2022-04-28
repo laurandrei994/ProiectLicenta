@@ -872,9 +872,154 @@ ALGORITHMSLIBRARY_API cv::Mat SkullStripping_AdaptiveWindow(cv::Mat& image)
 	return result;
 }
 
+ALGORITHMSLIBRARY_API cv::Mat SkullStripping_UsingMask(cv::Mat& image)
+{
+	cv::Mat hist;
+
+	cv::Mat erodedImg;
+	cv::erode(image, erodedImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
+	///
+	cv::Mat res = GradientTest(image);
+	int thresh = extractThresholdFromHistogram(res, hist);
+
+	cv::Mat thresholdRes = cv::Mat(res.rows, res.cols, CV_8UC1);
+
+	for (int row = 0; row < res.rows; ++row)
+	{
+		uchar* resRow = res.ptr<uchar>(row);
+		uchar* thResRow = thresholdRes.ptr<uchar>(row);
+
+		for (int col = 0; col < res.cols; ++col)
+		{
+			if (resRow[col] >= thresh)
+				thResRow[col] = 255;
+			else
+				thResRow[col] = 0;
+		}
+	}
+
+	cv::Scalar mean, stdDev;
+	cv::meanStdDev(image, mean, stdDev, thresholdRes);
+
+	cv::Mat binaryFullMask = cv::Mat(image.rows, image.cols, CV_8UC1);
+	for (int row = 0; row < res.rows; ++row)
+	{
+		uchar* imageRow = image.ptr<uchar>(row);
+		uchar* binaryImgRow = binaryFullMask.ptr<uchar>(row);
+
+		for (int col = 0; col < res.cols; ++col)
+		{
+			if (imageRow[col] >= (mean[0] - 1.5 * stdDev[0]))
+				binaryImgRow[col] = 255;
+			else
+				binaryImgRow[col] = 0;
+		}
+	}
+
+	cv::Mat binaryOuterMask = cv::Mat(image.rows, image.cols, CV_8UC1);
+	for (int row = 0; row < res.rows; ++row)
+	{
+		uchar* imageRow = image.ptr<uchar>(row);
+		uchar* binaryImgRow = binaryOuterMask.ptr<uchar>(row);
+
+		for (int col = 0; col < res.cols; ++col)
+		{
+			if (imageRow[col] >= (mean[0]))
+				binaryImgRow[col] = 255;
+			else
+				binaryImgRow[col] = 0;
+		}
+	}
+
+	cv::Mat initialDifference = image - erodedImg;
+	cv::Mat maskDifference = binaryFullMask - binaryOuterMask;
+
+
+	cv::Mat imgAfterMask;
+	cv::bitwise_and(image, maskDifference, imgAfterMask);
+	return imgAfterMask;// skull stripping
+}
+
 ALGORITHMSLIBRARY_API cv::Mat GradientTest(cv::Mat& image)
 {
 	cv::Mat result;
 	cv::morphologyEx(image, result, cv::MORPH_GRADIENT, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
 	return result;
+}
+
+ALGORITHMSLIBRARY_API cv::Mat ImageAfterOpening_UsingBinaryMask(cv::Mat& image)
+{
+	cv::Mat hist;
+	int thresh2 = extractThresholdFromHistogram(image, hist, 1);
+
+	cv::Mat binaryImgAfterMask = cv::Mat(image.rows, image.cols, CV_8UC1);
+	for (int row = 0; row < image.rows; ++row)
+	{
+		uchar* imgAfterMaskRow = image.ptr<uchar>(row);
+		uchar* binaryImgAfterMaskRow = binaryImgAfterMask.ptr<uchar>(row);
+
+		for (int col = 0; col < image.cols; ++col)
+		{
+			if (imgAfterMaskRow[col] == 0)
+			{
+				binaryImgAfterMaskRow[col] = 0;
+				continue;
+			}
+			// 0/255 pentru gl
+			// 255/0 pt me
+			if (imgAfterMaskRow[col] >= thresh2)
+				binaryImgAfterMaskRow[col] = 0;
+			else
+				binaryImgAfterMaskRow[col] = 255;
+		}
+	}
+
+	cv::Mat openedImage;
+	binaryImgAfterMask.copyTo(openedImage);
+
+	cv::erode(openedImage, openedImage, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+	cv::dilate(openedImage, openedImage, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+
+	return openedImage;
+}
+
+ALGORITHMSLIBRARY_API std::pair<cv::Mat, int> ConnectedComponents(cv::Mat& image)
+{
+	cv::Mat labeledImage = cv::Mat(image.rows, image.cols, CV_8UC1);
+	cv::Mat stats, centroids;
+	int nrLabels = cv::connectedComponentsWithStats(image, labeledImage, stats, centroids);
+
+	int max = -1;
+	int indexMaxLabel = 0;
+	std::vector<int> areas;
+	for (int i = 1; i < nrLabels; ++i)
+	{
+		int area = stats.at<int>(i, cv::CC_STAT_AREA);
+		areas.push_back(area);
+		if (area > max)
+		{
+			max = area;
+			indexMaxLabel = i;
+		}
+	}
+
+	return std::pair(labeledImage, indexMaxLabel);
+}
+
+ALGORITHMSLIBRARY_API cv::Mat ExtractTumorFromImage(cv::Mat& image, const int indexMaxLabel)
+{
+	cv::Mat tumora = cv::Mat::zeros(cv::Size(image.rows, image.cols), CV_8UC1);
+	for (int row = 0; row < image.rows; ++row)
+	{
+		int* imgRow = image.ptr<int>(row);
+		uchar* tumoraRow = tumora.ptr<uchar>(row);
+
+		for (int col = 0; col < image.cols; ++col)
+		{
+			if (imgRow[col] == indexMaxLabel)
+				tumoraRow[col] = 255;
+		}
+	}
+
+	return tumora;
 }
