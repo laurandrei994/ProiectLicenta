@@ -33,9 +33,10 @@ void MainWindow::CreateActions()
 	connect(ui->actionConvert_To_Grayscale, SIGNAL(triggered()), this, SLOT(ConvertToGrayScale()));
 	connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(close()));
 	connect(ui->actionGaussian_Filter, SIGNAL(triggered()), this, SLOT(ApplyGaussianFilter()));
+	connect(ui->actionRemove_background_from_image, SIGNAL(triggered()), this, SLOT(RemoveBackground()));
 	connect(ui->actionRemove_the_skull_from_the_image, SIGNAL(triggered()), this, SLOT(SkullStripping()));
 	connect(ui->actionOpen_Skull_Stripped, SIGNAL(triggered()), this, SLOT(OpeningImage_UsingMask()));
-	connect(ui->actionConnected_Components, SIGNAL(triggered()), this, SLOT(ConnectedComponentsWithStats()));
+	connect(ui->actionKmeans_clustering, SIGNAL(triggered()), this, SLOT(KMeans_clustering()));
 	connect(ui->actionExtract_the_tumor_from_the_image, SIGNAL(triggered()), this, SLOT(ExtractTumor()));
 
 	connect(ui->nestStep, SIGNAL(clicked()), this, SLOT(NextStepClick()));
@@ -72,150 +73,248 @@ void MainWindow::ConvertToGrayScale()
 	cv::Mat grayImg = GrayScale_Average(image);
 	grayImg.copyTo(image);
 	
-	//cv::Mat res = GradientTest(image);
-	//cv::Mat hist;
-	//cv::Mat imgAfterMask = SkullStripping_UsingMask(grayImg);
 	/*
-	cv::Mat erodedImg;
-	cv::erode(grayImg, erodedImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
-	///
-	int thresh = extractThresholdFromHistogram(res, hist);
+	// Remove background from image.
+	cv::Mat hist;
 
-	cv::Mat thresholdRes = cv::Mat(res.rows, res.cols, CV_8UC1);
+	cv::Mat otsuImg(grayImg.rows, grayImg.cols, CV_8UC1);
+	double thresh = 0;
+	double maxVal = 255;
 
-	for (int row = 0; row < res.rows; ++row)
-	{
-		uchar* resRow = res.ptr<uchar>(row);
-		uchar* thResRow = thresholdRes.ptr<uchar>(row);
-		
-		for (int col = 0; col < res.cols; ++col)
-		{
-			if (resRow[col] >= thresh)
-				thResRow[col] = 255;
-			else
-				thResRow[col] = 0;
-		}
-	}
+	cv::threshold(grayImg, otsuImg, thresh, maxVal, cv::THRESH_BINARY | cv::THRESH_OTSU);
 
-	cv::Scalar mean, stdDev;
-	cv::meanStdDev(image, mean, stdDev, thresholdRes);
+	cv::Mat imgAfterMask;
 
-	cv::Mat binaryFullMask = cv::Mat(image.rows, image.cols, CV_8UC1);
-	for (int row = 0; row < res.rows; ++row)
-	{
-		uchar* imageRow = image.ptr<uchar>(row);
-		uchar* binaryImgRow = binaryFullMask.ptr<uchar>(row);
+	cv::dilate(otsuImg, otsuImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(25, 25)));
+	cv::erode(otsuImg, otsuImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(25, 25)));
 
-		for (int col = 0; col < res.cols; ++col)
-		{
-			if (imageRow[col] >= (mean[0] - 1.5 * stdDev[0]))
-				binaryImgRow[col] = 255;
-			else
-				binaryImgRow[col] = 0;
-		}
-	}
-
-	cv::Mat binaryOuterMask = cv::Mat(image.rows, image.cols, CV_8UC1);
-	for (int row = 0; row < res.rows; ++row)
-	{
-		uchar* imageRow = image.ptr<uchar>(row);
-		uchar* binaryImgRow = binaryOuterMask.ptr<uchar>(row);
-
-		for (int col = 0; col < res.cols; ++col)
-		{
-			if (imageRow[col] >= (mean[0]))
-				binaryImgRow[col] = 255;
-			else
-				binaryImgRow[col] = 0;
-		}
-	}
-
-	cv::Mat initialDifference = grayImg - erodedImg;
-	cv::Mat maskDifference = binaryFullMask - binaryOuterMask;
-
-
-	cv::Mat imgAfterMask; 
-	cv::bitwise_and(grayImg, maskDifference, imgAfterMask);  // skull stripping
-	
+	cv::bitwise_and(grayImg, otsuImg, imgAfterMask);
 
 	int thresh2 = extractThresholdFromHistogram(imgAfterMask, hist, 1);
 
-	cv::Mat binaryImgAfterMask = cv::Mat(imgAfterMask.rows, imgAfterMask.cols, CV_8UC1);
-	for (int row = 0; row < res.rows; ++row)
+	cv::Mat binaryMask = cv::Mat(grayImg.rows, grayImg.cols, CV_8UC1);
+	for (int row = 0; row < grayImg.rows; ++row)
 	{
-		uchar* imgAfterMaskRow = imgAfterMask.ptr<uchar>(row);
-		uchar* binaryImgAfterMaskRow = binaryImgAfterMask.ptr<uchar>(row);
+		uchar* imageRow = grayImg.ptr<uchar>(row);
+		uchar* binaryImgRow = binaryMask.ptr<uchar>(row);
 
-		for (int col = 0; col < res.cols; ++col)
+		for (int col = 0; col < grayImg.cols; ++col)
 		{
-			if (imgAfterMaskRow[col] == 0)
-			{
-				binaryImgAfterMaskRow[col] = 0;
-				continue;
-			}
-			// 0/255 pentru gl
-			// 255/0 pt me
-			if (imgAfterMaskRow[col] >= thresh2)
-				binaryImgAfterMaskRow[col] = 0;
+			if (imageRow[col] >= thresh2)
+				binaryImgRow[col] = 255;
 			else
-				binaryImgAfterMaskRow[col] = 255;
+				binaryImgRow[col] = 0;
+		}
+	}
+ // End Remove background from image
+	// ---------------------------------------------------------------------------------------------------
+	// Skull stripping
+	cv::Mat erodedImg;
+	imgAfterMask.copyTo(erodedImg);
+	cv::dilate(erodedImg, erodedImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(13, 13)));
+	cv::erode(erodedImg, erodedImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(11, 11)));
+
+	cv::Mat result = GradientTest(erodedImg);
+
+	cv::Mat maskSkullStripping = SkullStripping_UsingMask(erodedImg);
+
+	// K-means clustering for skull stripping
+	cv::Mat samples = erodedImg.reshape(1, erodedImg.rows * erodedImg.cols);
+	samples.convertTo(samples, CV_32FC1);
+
+	cv::Mat bestLabels, centers;
+
+	cv::kmeans(samples, 3, bestLabels, cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 10, 1.0), 3, cv::KMEANS_PP_CENTERS, centers);
+
+	cv::Mat labelsImg = bestLabels.reshape(1, erodedImg.rows);
+	labelsImg.convertTo(labelsImg, CV_8U);
+
+	float maxIntensityCenter = -5000;
+	int threshValue = 0;
+	for (int col = 0; col < centers.cols; ++col) 
+	{
+		float* imgCenterCol = centers.ptr<float>(0);
+		for (int row = 0; row < centers.rows; ++row)
+		{
+			maxIntensityCenter = std::max(maxIntensityCenter, imgCenterCol[row]);
+			if (imgCenterCol[row] == maxIntensityCenter)
+				threshValue = row;
+		}
+	}
+
+	cv::Mat skullImage = cv::Mat::zeros(labelsImg.rows, labelsImg.cols, labelsImg.type());
+	for (int row = 0; row < labelsImg.rows; ++row)
+	{
+		uchar* currentRow = labelsImg.ptr<uchar>(row);
+		uchar* skullImageRow = skullImage.ptr<uchar>(row);
+
+		for (int col = 0; col < labelsImg.cols; ++col)
+		{
+			if (currentRow[col] == threshValue)
+				skullImageRow[col] = 255;
+			else
+				skullImageRow[col] = 0;
 		}
 	}
 
 	cv::Mat copy;
-	binaryImgAfterMask.copyTo(copy);
+	erodedImg.copyTo(copy);
 
-	cv::erode(copy, copy, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
-	cv::dilate(copy, copy, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+	for (int row = 0; row < copy.rows; ++row)
+	{
+		uchar* currentRow = skullImage.ptr<uchar>(row);
+		uchar* copyRow = copy.ptr<uchar>(row);
+
+		for (int col = 0; col < copy.cols; ++col)
+		{
+			if (currentRow[col] == 255)
+				copyRow[col] = 0;
+		}
+	}
+
+	// Connected components on skull stripped image and finding the max area component
+	std::pair<cv::Mat, int> connectedComp_result = ConnectedComponents(copy);
+	int max_index = connectedComp_result.second;
+	cv::Mat labeledImg = connectedComp_result.first;
+
+	// Finding the contour of the brain region
+	cv::Mat creier = ExtractTumorFromImage(labeledImg, max_index);
+	std::vector<std::vector<cv::Point>> contours;
+	std::vector<cv::Vec4i> hierarchy;
+	cv::findContours(creier, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+	// Finding the center of mass of the max area component
+	cv::Point center;
+	int sumofx = 0, sumofy = 0;
+	for (int i = 0; i < contours[0].size(); ++i) {
+		sumofx = sumofx + contours[0][i].x;
+		sumofy = sumofy + contours[0][i].y;
+	}
+	center.x = sumofx / contours[0].size();
+	center.y = sumofy / contours[0].size();
 	
-
-	cv::Mat labeledImage = cv::Mat(imgAfterMask.rows, imgAfterMask.cols, CV_8UC1);
-	cv::Mat stats, centroids;
-	int nrLabels = cv::connectedComponentsWithStats(copy, labeledImage,stats,centroids);
-
-	int max = -1;
-	int indexMaxLabel = 0;
-	std::vector<int> areas;
-	for (int i = 1; i < nrLabels; ++i)
+	double maxDist = 0.0;
+	double minDist = 5000.0;
+	for (int i = 0; i < contours[0].size(); ++i)
 	{
-		int area = stats.at<int>(i, cv::CC_STAT_AREA);
-		areas.push_back(area);
-		if (area > max)
+		double distCentrePoint = cv::norm(center - contours[0][i]);
+		maxDist = std::max(maxDist, distCentrePoint);
+		minDist = std::min(minDist, distCentrePoint);
+	}
+
+	// Aproximate a contour for the entire brain region
+	std::vector<std::vector<cv::Point>> full_contour(contours.size());
+
+	cv::convexHull(contours[0], full_contour[0]);
+
+	cv::Mat drawn_contour = cv::Mat::zeros(grayImg.size(), CV_8UC1);
+
+	cv::drawContours(drawn_contour, full_contour, -1, 255, 1);// , cv::noArray(), 1);
+	cv::fillConvexPoly(drawn_contour, full_contour[0], 255);
+
+	// Extracting the brain region from the original image
+	cv::Mat brain_image = cv::Mat::zeros(cv::Size(grayImg.rows, grayImg.cols), CV_8UC1);
+	for (int row = 0; row < grayImg.rows; ++row)
+	{
+		uchar* imgAfterMaskRow = imgAfterMask.ptr<uchar>(row);
+		uchar* drawnContourRow = drawn_contour.ptr<uchar>(row);
+		uchar* brain_imageRow = brain_image.ptr<uchar>(row);
+
+		for (int col = 0; col < grayImg.cols; ++col)
 		{
-			max = area;
-			indexMaxLabel = i;
+			if (drawnContourRow[col] == 255)
+				brain_imageRow[col] = imgAfterMaskRow[col];
 		}
 	}
-	*/
-	//cv::Mat copy = ImageAfterOpening_UsingBinaryMask(imgAfterMask);
-	//cv::Mat labeledImage = cv::Mat(imgAfterMask.rows, imgAfterMask.cols, CV_8UC1);
-	//std::pair<cv::Mat, int> pair = ConnectedComponents(copy);
-	//cv::Mat labeledImage = pair.first;
-	//int indexMaxLabel = pair.second;
-	/* cv::Mat tumora = cv::Mat::zeros(cv::Size(labeledImage.rows, labeledImage.cols), CV_8UC1);
-	for (int row = 0; row < labeledImage.rows; ++row)
-	{
-		int* imgRow = labeledImage.ptr<int>(row);
-		uchar* tumoraRow = tumora.ptr<uchar>(row);
 
-		for (int col = 0; col < labeledImage.cols; ++col)
+	// End skull stripping
+// -----------------------------------------------------------------------------
+	// K-means clustering on brain image
+	cv::Mat samples1 = brain_image.reshape(1, brain_image.rows * brain_image.cols);
+	samples1.convertTo(samples1, CV_32FC1);
+
+	cv::Mat bestLabels1, centers1;
+
+	cv::kmeans(samples1, 3, bestLabels1, cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 10, 1.0), 3, cv::KMEANS_PP_CENTERS, centers1);
+
+	cv::Mat labelsImg1 = bestLabels1.reshape(1, brain_image.rows);
+	labelsImg1.convertTo(labelsImg1, CV_8U);
+
+	float maxIntensityCenter1 = -5000;
+	int threshValue1 = 0;
+	for (int col = 0; col < centers1.cols; ++col)
+	{
+		float* imgCenterCol = centers1.ptr<float>(0);
+		for (int row = 0; row < centers1.rows; ++row)
 		{
-			if (imgRow[col] == indexMaxLabel)
-				tumoraRow[col] = 255;
+			maxIntensityCenter1 = std::max(maxIntensityCenter1, imgCenterCol[row]);
+			if (imgCenterCol[row] == maxIntensityCenter1)
+				threshValue = row;
 		}
 	}
-	//cv::Mat tumora = ExtractTumorFromImage(labeledImage, indexMaxLabel);
-	*/
 
+	std::vector<int> areas(centers1.rows, 0);
+	for (int center_row = 0; center_row < centers1.rows; ++center_row)
+	{
+		for (int row = 0; row < labelsImg1.rows; ++row)
+		{
+			uchar* currentRow = labelsImg1.ptr<uchar>(row);
+
+			for (int col = 0; col < labelsImg1.cols; ++col)
+			{
+				if (currentRow[col] == center_row)
+					areas[center_row]++;
+			}
+		}
+	}
+
+	// Min area cluster is the tumor region
+	int minElementIndex = std::min_element(areas.begin(), areas.end()) - areas.begin();
+
+	// Extracting the min area cluster from the image
+	cv::Mat tumorImg = cv::Mat::zeros(labelsImg1.rows, labelsImg1.cols, labelsImg1.type());
+	for (int row = 0; row < labelsImg1.rows; ++row)
+	{
+		uchar* currentRow = labelsImg1.ptr<uchar>(row);
+		uchar* tumorImageRow = tumorImg.ptr<uchar>(row);
+
+		for (int col = 0; col < labelsImg1.cols; ++col)
+		{
+			if (currentRow[col] == minElementIndex)
+				tumorImageRow[col] = 255;
+			else
+				tumorImageRow[col] = 0;
+		}
+	}
+
+	// ----------------------------------------------------
+
+	// Pixels from image in the range of tumor
+	cv::Mat openedImage;
+	tumorImg.copyTo(openedImage);
+
+	cv::erode(openedImage, openedImage, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(7, 7)));
+	cv::dilate(openedImage, openedImage, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(7, 7)));
+
+	// ------------------------------------------------------------
+	// Extracting the tumor from the image
+	std::pair<cv::Mat, int> pair_result = ConnectedComponents(openedImage);
+	cv::Mat labels_result = pair_result.first;
+	int max_index_result = pair_result.second;
+
+	cv::Mat tumora = ExtractTumorFromImage(labels_result, max_index_result);
+	*/
+	
 	QImage convertedImage = Utils::ConvertMatToQImage(grayImg);
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after applying the grayscale algorithm");
+
 }
 
 void MainWindow::ApplyGaussianFilter()
 {
-	ui->nestStep->setText("Apply skull stripping algorithm");
+	ui->nestStep->setText("Remove background from the image");
 	cv::Mat modifiedImg = GaussianFilter(image, 5, 0.8);
 	modifiedImg.copyTo(image);
 
@@ -225,15 +324,26 @@ void MainWindow::ApplyGaussianFilter()
 	ui->preprocImgText->setText("Image after applying the Gaussian Filter with a kernel of 5x5");
 }
 
+void MainWindow::RemoveBackground()
+{
+	ui->nestStep->setText("Apply skull stripping algorithm");
+	cv::Mat modifiedImg = RemoveBackgroundFromImage(image);
+	modifiedImg.copyTo(image);
+
+	QImage convertedImage = Utils::ConvertMatToQImage(modifiedImg);
+	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->preprocImgText->setText("Image after removing the background");
+
+}
+
 void MainWindow::SkullStripping()
 {
 	ui->nestStep->setText("Begin segmentation process");
-	cv::Mat skullImage = SkullStripping_UsingMask(this->image);
-	//cv::Mat skullImage = SkullStripping_DynamicThreshold(this->image);
+	cv::Mat brainImage = SkullStripping_KMeans(this->image);
+	brainImage.copyTo(image);
 
-	QImage convertedImg = Utils::ConvertMatToQImage(skullImage);
-	skullImage.copyTo(image);
-
+	QImage convertedImg = Utils::ConvertMatToQImage(brainImage);
+	
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after skull stripping");
 }
@@ -242,40 +352,36 @@ void MainWindow::OpeningImage_UsingMask()
 {
 	ui->nestStep->setText("Connected Components With Stats");
 	cv::Mat openedImage = ImageAfterOpening_UsingBinaryMask(this->image);
+	openedImage.copyTo(image);
 
 	QImage convertedImg = Utils::ConvertMatToQImage(openedImage);
-	openedImage.copyTo(this->image);
 
 	ui->segmImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->segmImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->segmImgText->setText("Image after opening using binary mask");
+	ui->segmImgText->setText("Image after opening");
 }
 
-void MainWindow::ConnectedComponentsWithStats()
+void MainWindow::KMeans_clustering()
 {
-	ui->nestStep->setText("Extract the tumor from the image");
-	std::pair<cv::Mat, int> labeledImg_MaxIndex = ConnectedComponents(this->image);
+	ui->nestStep->setText("Apply opening on the image to remove unwanted pixels");
+	cv::Mat tumorImg = KMeansClustering_Brain(this->image);
+	tumorImg.copyTo(image);
 
-	this->labeledImg = labeledImg_MaxIndex.first;
-	this->maxLabelIndex = labeledImg_MaxIndex.second;
-
-	QImage convertedImg = Utils::ConvertMatToQImage(this->image);
-
-	std::cout << "MAX LABEL INDEX: " << maxLabelIndex << std::endl;
+	QImage convertedImg = Utils::ConvertMatToQImage(tumorImg);
 
 	ui->segmImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->segmImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->segmImgText->setText("Labeled Image");
+	ui->segmImgText->setText("Image after Kmeans algorithm");
 }
 
 void MainWindow::ExtractTumor()
 {
 	ui->nestStep->setText("Final Image");
-	cv::Mat tumora = ExtractTumorFromImage(this->labeledImg, this->maxLabelIndex);
-
-	QImage convertedImg = Utils::ConvertMatToQImage(tumora);
+	cv::Mat tumora = ExtractTumorArea(this->image);
 	tumora.copyTo(this->image);
 
+	QImage convertedImg = Utils::ConvertMatToQImage(tumora);
+
 	ui->segmImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->segmImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->segmImgText->setText("Extracted tumor from the MRI");
+	ui->segmImgText->setText("Extracted tumor area from the MRI");
 
 }
 
@@ -297,24 +403,28 @@ void MainWindow::NextStepClick()
 	case 2:
 		ApplyGaussianFilter();
 		index++;
-		ui->nestStep->setText("Apply skull stripping algorithm");
+		ui->nestStep->setText("Remove background from image");
 		break;
 	case 3:
+		RemoveBackground();
+		index++;
+		ui->nestStep->setText("Apply skull stripping algorithm");
+	case 4:
 		SkullStripping();
 		index++;
 		ui->nestStep->setText("Begin segmentation process");
 		break;
-	case 4: 
-		OpeningImage_UsingMask();
-		index++;
-		ui->nestStep->setText("Connected Components With Stats");
-		break;
 	case 5:
-		ConnectedComponentsWithStats();
+		KMeans_clustering();
 		index++;
-		ui->nestStep->setText("Extract the tumor from the image");
+		ui->nestStep->setText("Apply opening on the image to remove unwanted pixels");
 		break;
 	case 6:
+		OpeningImage_UsingMask();
+		index++;
+		ui->nestStep->setText("Extract tumor area from image using Connected Components Algorithm");
+		break;
+	case 7:
 		ExtractTumor();
 		index++;
 		ui->nestStep->setText("Final image");

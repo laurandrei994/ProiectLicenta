@@ -33,12 +33,15 @@ extern "C" ALGORITHMSLIBRARY_API cv::Mat SkullStripping_DynamicThreshold(cv::Mat
 extern "C" ALGORITHMSLIBRARY_API cv::Mat AdaptiveWindow_Threshold(cv::Mat & input);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat SkullStripping_AdaptiveWindow(cv::Mat & image);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat SkullStripping_UsingMask(cv::Mat & image);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat SkullStripping_KMeans(cv::Mat & image);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat GradientTest(cv::Mat & image);
 
 // Segmentation Algorithms
 extern "C" ALGORITHMSLIBRARY_API cv::Mat ImageAfterOpening_UsingBinaryMask(cv::Mat & image);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat KMeansClustering_Brain(cv::Mat & image);
 extern "C++" ALGORITHMSLIBRARY_API std::pair<cv::Mat, int> ConnectedComponents(cv::Mat & image);
-extern "C" ALGORITHMSLIBRARY_API cv::Mat ExtractTumorFromImage(cv::Mat & image, const int indexMaxLabel);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat ExtractTumorArea(cv::Mat & image);
+
 
 
 // Helper Algorithms
@@ -57,3 +60,5 @@ extern "C" ALGORITHMSLIBRARY_API void WriteTimesCSVFile();
 extern "C" ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat & img, cv::Mat& histImage, uchar thresh = 0);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat histogramDisplay(const std::vector<int> &histogram, const cv::Point &startPoint, const cv::Point &endPoint, int thresh);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat RemoveBackground(cv::Mat & initial);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat RemoveBackgroundFromImage(cv::Mat & initial);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat ExtractTumorFromImage(cv::Mat & image, const int indexMaxLabel);

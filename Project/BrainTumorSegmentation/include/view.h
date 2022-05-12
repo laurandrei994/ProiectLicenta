@@ -29,9 +29,10 @@ private slots:
 	void OpenRandomFile();
 	void ConvertToGrayScale();
 	void ApplyGaussianFilter();
+	void RemoveBackground();
 	void SkullStripping();
 	void OpeningImage_UsingMask();
-	void ConnectedComponentsWithStats();
+	void KMeans_clustering();
 	void ExtractTumor();
 	void NextStepClick();
 

@@ -62,14 +62,12 @@ ALGORITHMSLIBRARY_API uchar AdaptiveProcess(cv::Mat& initial, const int row, con
 	auto min = pixels[0];
 	auto max = pixels[kernel_size * kernel_size - 1];
 	auto med = pixels[kernel_size * kernel_size / 2];
-	//auto zxy = initial.at<uchar>(row, col);
 	uchar* zxy = initial.ptr<uchar>(row);
 	if (med > min && med < max)
 	{
 		if (zxy[col] > min && zxy[col] < max)
 		{
 			return zxy[col];
-			//return zxy;
 		}
 		else
 		{
@@ -101,7 +99,6 @@ omp_set_num_threads(8);
 		uchar* ptr = result.ptr<uchar>(j);
 		for (int i = maxSize / 2; i < cols * result.channels() - maxSize / 2; i++)
 		{
-			//result.at<uchar>(j, i) = AdaptiveProcess(result, j, i, minSize, maxSize);
 			ptr[i] = AdaptiveProcess(result, j, i, minSize, maxSize);
 		}
 	}
@@ -320,6 +317,43 @@ ALGORITHMSLIBRARY_API cv::Mat RemoveBackground(cv::Mat& initial)
 		}
 	}
 	return result;
+}
+
+ALGORITHMSLIBRARY_API cv::Mat RemoveBackgroundFromImage(cv::Mat& initial)
+{
+	cv::Mat hist;
+
+	cv::Mat otsuImg(initial.rows, initial.cols, CV_8UC1);
+	double thresh = 0;
+	double maxVal = 255;
+
+	cv::threshold(initial, otsuImg, thresh, maxVal, cv::THRESH_BINARY | cv::THRESH_OTSU);
+
+	cv::Mat imgAfterMask;
+
+	cv::dilate(otsuImg, otsuImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(25, 25)));
+	cv::erode(otsuImg, otsuImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(25, 25)));
+
+	cv::bitwise_and(initial, otsuImg, imgAfterMask);
+
+	int thresh2 = extractThresholdFromHistogram(imgAfterMask, hist, 1);
+
+	cv::Mat binaryMask = cv::Mat(initial.rows, initial.cols, CV_8UC1);
+	for (int row = 0; row < initial.rows; ++row)
+	{
+		uchar* imageRow = initial.ptr<uchar>(row);
+		uchar* binaryImgRow = binaryMask.ptr<uchar>(row);
+
+		for (int col = 0; col < initial.cols; ++col)
+		{
+			if (imageRow[col] >= thresh2)
+				binaryImgRow[col] = 255;
+			else
+				binaryImgRow[col] = 0;
+		}
+	}
+
+	return imgAfterMask;
 }
 
 ALGORITHMSLIBRARY_API cv::Mat ApplyDenoisingAlgorithm(cv::Mat& img, const int kernel_size, Denoising_Algorithms type)
@@ -649,7 +683,9 @@ ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& h
 	}
 
 	cv::Point startPoint;
-	for (int i = 0; i < cumulativeHistogram.size(); i++)
+	startPoint.x = 0;
+	startPoint.y = cumulativeHistogram[0];
+	/*for (int i = 0; i < cumulativeHistogram.size(); i++)
 	{
 		if (cumulativeHistogram[i] > 0)
 		{
@@ -658,6 +694,7 @@ ALGORITHMSLIBRARY_API int extractThresholdFromHistogram(cv::Mat& img, cv::Mat& h
 			break;
 		}
 	}
+	*/
 	std::cout << "Start x: " << startPoint.x << std::endl;
 	std::cout << "Start y: " << startPoint.y << std::endl;
 
@@ -878,7 +915,7 @@ ALGORITHMSLIBRARY_API cv::Mat SkullStripping_UsingMask(cv::Mat& image)
 
 	cv::Mat erodedImg;
 	cv::erode(image, erodedImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
-	///
+	
 	cv::Mat res = GradientTest(image);
 	int thresh = extractThresholdFromHistogram(res, hist);
 
@@ -937,7 +974,130 @@ ALGORITHMSLIBRARY_API cv::Mat SkullStripping_UsingMask(cv::Mat& image)
 
 	cv::Mat imgAfterMask;
 	cv::bitwise_and(image, maskDifference, imgAfterMask);
-	return imgAfterMask;// skull stripping
+	return imgAfterMask;
+}
+
+ALGORITHMSLIBRARY_API cv::Mat SkullStripping_KMeans(cv::Mat& image)
+{
+	cv::Mat erodedImg;
+	image.copyTo(erodedImg);
+	cv::dilate(erodedImg, erodedImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(13, 13)));
+	cv::erode(erodedImg, erodedImg, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(11, 11)));
+
+	cv::Mat result = GradientTest(erodedImg);
+
+	cv::Mat maskSkullStripping = SkullStripping_UsingMask(erodedImg);
+
+	// K-means clustering for skull stripping
+	cv::Mat samples = erodedImg.reshape(1, erodedImg.rows * erodedImg.cols);
+	samples.convertTo(samples, CV_32FC1);
+
+	cv::Mat bestLabels, centers;
+
+	cv::kmeans(samples, 3, bestLabels, cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 10, 1.0), 3, cv::KMEANS_PP_CENTERS, centers);
+
+	cv::Mat labelsImg = bestLabels.reshape(1, erodedImg.rows);
+	labelsImg.convertTo(labelsImg, CV_8U);
+
+	float maxIntensityCenter = -5000;
+	int threshValue = 0;
+	for (int col = 0; col < centers.cols; ++col)
+	{
+		float* imgCenterCol = centers.ptr<float>(0);
+		for (int row = 0; row < centers.rows; ++row)
+		{
+			maxIntensityCenter = std::max(maxIntensityCenter, imgCenterCol[row]);
+			if (imgCenterCol[row] == maxIntensityCenter)
+				threshValue = row;
+		}
+	}
+
+	cv::Mat skullImage = cv::Mat::zeros(labelsImg.rows, labelsImg.cols, labelsImg.type());
+	for (int row = 0; row < labelsImg.rows; ++row)
+	{
+		uchar* currentRow = labelsImg.ptr<uchar>(row);
+		uchar* skullImageRow = skullImage.ptr<uchar>(row);
+
+		for (int col = 0; col < labelsImg.cols; ++col)
+		{
+			if (currentRow[col] == threshValue)
+				skullImageRow[col] = 255;
+			else
+				skullImageRow[col] = 0;
+		}
+	}
+
+	cv::Mat copy;
+	erodedImg.copyTo(copy);
+
+	for (int row = 0; row < copy.rows; ++row)
+	{
+		uchar* currentRow = skullImage.ptr<uchar>(row);
+		uchar* copyRow = copy.ptr<uchar>(row);
+
+		for (int col = 0; col < copy.cols; ++col)
+		{
+			if (currentRow[col] == 255)
+				copyRow[col] = 0;
+		}
+	}
+
+	// Connected components on skull stripped image and finding the max area component
+	std::pair<cv::Mat, int> connectedComp_result = ConnectedComponents(copy);
+	int max_index = connectedComp_result.second;
+	cv::Mat labeledImg = connectedComp_result.first;
+
+	// Finding the contour of the brain region
+	cv::Mat creier = ExtractTumorFromImage(labeledImg, max_index);
+	std::vector<std::vector<cv::Point>> contours;
+	std::vector<cv::Vec4i> hierarchy;
+	cv::findContours(creier, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+	// Finding the center of mass of the max area component
+	cv::Point center;
+	int sumofx = 0, sumofy = 0;
+	for (int i = 0; i < contours[0].size(); ++i) {
+		sumofx = sumofx + contours[0][i].x;
+		sumofy = sumofy + contours[0][i].y;
+	}
+	center.x = sumofx / contours[0].size();
+	center.y = sumofy / contours[0].size();
+
+	double maxDist = 0.0;
+	double minDist = 5000.0;
+	for (int i = 0; i < contours[0].size(); ++i)
+	{
+		double distCentrePoint = cv::norm(center - contours[0][i]);
+		maxDist = std::max(maxDist, distCentrePoint);
+		minDist = std::min(minDist, distCentrePoint);
+	}
+
+	// Aproximate a contour for the entire brain region
+	std::vector<std::vector<cv::Point>> full_contour(contours.size());
+
+	cv::convexHull(contours[0], full_contour[0]);
+
+	cv::Mat drawn_contour = cv::Mat::zeros(image.size(), CV_8UC1);
+
+	cv::drawContours(drawn_contour, full_contour, -1, 255, 1);// , cv::noArray(), 1);
+	cv::fillConvexPoly(drawn_contour, full_contour[0], 255);
+
+	// Extracting the brain region from the original image
+	cv::Mat brain_image = cv::Mat::zeros(cv::Size(image.rows, image.cols), CV_8UC1);
+	for (int row = 0; row < image.rows; ++row)
+	{
+		uchar* imgAfterMaskRow = image.ptr<uchar>(row);
+		uchar* drawnContourRow = drawn_contour.ptr<uchar>(row);
+		uchar* brain_imageRow = brain_image.ptr<uchar>(row);
+
+		for (int col = 0; col < image.cols; ++col)
+		{
+			if (drawnContourRow[col] == 255)
+				brain_imageRow[col] = imgAfterMaskRow[col];
+		}
+	}
+
+	return brain_image;
 }
 
 ALGORITHMSLIBRARY_API cv::Mat GradientTest(cv::Mat& image)
@@ -949,38 +1109,75 @@ ALGORITHMSLIBRARY_API cv::Mat GradientTest(cv::Mat& image)
 
 ALGORITHMSLIBRARY_API cv::Mat ImageAfterOpening_UsingBinaryMask(cv::Mat& image)
 {
-	cv::Mat hist;
-	int thresh2 = extractThresholdFromHistogram(image, hist, 1);
+	cv::Mat openedImage;
+	image.copyTo(openedImage);
 
-	cv::Mat binaryImgAfterMask = cv::Mat(image.rows, image.cols, CV_8UC1);
-	for (int row = 0; row < image.rows; ++row)
+	cv::erode(openedImage, openedImage, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(7, 7)));
+	cv::dilate(openedImage, openedImage, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(7, 7)));
+
+	return openedImage;
+}
+
+ALGORITHMSLIBRARY_API cv::Mat KMeansClustering_Brain(cv::Mat& image)
+{
+	cv::Mat samples = image.reshape(1, image.rows * image.cols);
+	samples.convertTo(samples, CV_32FC1);
+
+	cv::Mat bestLabels, centers;
+
+	cv::kmeans(samples, 3, bestLabels, cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 10, 1.0), 3, cv::KMEANS_PP_CENTERS, centers);
+
+	cv::Mat labelsImg = bestLabels.reshape(1, image.rows);
+	labelsImg.convertTo(labelsImg, CV_8U);
+
+	float maxIntensityCenter = -5000;
+	int threshValue = 0;
+	for (int col = 0; col < centers.cols; ++col)
 	{
-		uchar* imgAfterMaskRow = image.ptr<uchar>(row);
-		uchar* binaryImgAfterMaskRow = binaryImgAfterMask.ptr<uchar>(row);
-
-		for (int col = 0; col < image.cols; ++col)
+		float* imgCenterCol = centers.ptr<float>(0);
+		for (int row = 0; row < centers.rows; ++row)
 		{
-			if (imgAfterMaskRow[col] == 0)
-			{
-				binaryImgAfterMaskRow[col] = 0;
-				continue;
-			}
-			// 0/255 pentru gl
-			// 255/0 pt me
-			if (imgAfterMaskRow[col] >= thresh2)
-				binaryImgAfterMaskRow[col] = 0;
-			else
-				binaryImgAfterMaskRow[col] = 255;
+			maxIntensityCenter = std::max(maxIntensityCenter, imgCenterCol[row]);
+			if (imgCenterCol[row] == maxIntensityCenter)
+				threshValue = row;
 		}
 	}
 
-	cv::Mat openedImage;
-	binaryImgAfterMask.copyTo(openedImage);
+	std::vector<int> areas(centers.rows, 0);
+	for (int center_row = 0; center_row < centers.rows; ++center_row)
+	{
+		for (int row = 0; row < labelsImg.rows; ++row)
+		{
+			uchar* currentRow = labelsImg.ptr<uchar>(row);
 
-	cv::erode(openedImage, openedImage, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
-	cv::dilate(openedImage, openedImage, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5)));
+			for (int col = 0; col < labelsImg.cols; ++col)
+			{
+				if (currentRow[col] == center_row)
+					areas[center_row]++;
+			}
+		}
+	}
 
-	return openedImage;
+	// Min area cluster is the tumor region
+	int minElementIndex = std::min_element(areas.begin(), areas.end()) - areas.begin();
+
+	// Extracting the min area cluster from the image
+	cv::Mat tumorImg = cv::Mat::zeros(labelsImg.rows, labelsImg.cols, labelsImg.type());
+	for (int row = 0; row < labelsImg.rows; ++row)
+	{
+		uchar* currentRow = labelsImg.ptr<uchar>(row);
+		uchar* tumorImageRow = tumorImg.ptr<uchar>(row);
+
+		for (int col = 0; col < labelsImg.cols; ++col)
+		{
+			if (currentRow[col] == minElementIndex)
+				tumorImageRow[col] = 255;
+			else
+				tumorImageRow[col] = 0;
+		}
+	}
+
+	return tumorImg;
 }
 
 ALGORITHMSLIBRARY_API std::pair<cv::Mat, int> ConnectedComponents(cv::Mat& image)
@@ -1004,6 +1201,17 @@ ALGORITHMSLIBRARY_API std::pair<cv::Mat, int> ConnectedComponents(cv::Mat& image
 	}
 
 	return std::pair(labeledImage, indexMaxLabel);
+}
+
+ALGORITHMSLIBRARY_API cv::Mat ExtractTumorArea(cv::Mat& image)
+{
+	std::pair<cv::Mat, int> pair_result = ConnectedComponents(image);
+	cv::Mat labels_result = pair_result.first;
+	int max_index_result = pair_result.second;
+
+	cv::Mat tumora = ExtractTumorFromImage(labels_result, max_index_result);
+
+	return tumora;
 }
 
 ALGORITHMSLIBRARY_API cv::Mat ExtractTumorFromImage(cv::Mat& image, const int indexMaxLabel)

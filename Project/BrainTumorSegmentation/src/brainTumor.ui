@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1141</width>
+    <width>1140</width>
     <height>773</height>
    </rect>
   </property>
@@ -17,14 +17,17 @@
    <widget class="QPushButton" name="nestStep">
     <property name="geometry">
      <rect>
-      <x>950</x>
+      <x>620</x>
       <y>690</y>
-      <width>161</width>
+      <width>491</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
      <string>Next Step</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QWidget" name="layoutWidget">
@@ -176,7 +179,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1141</width>
+     <width>1140</width>
      <height>21</height>
     </rect>
    </property>
@@ -194,14 +197,15 @@
     </property>
     <addaction name="actionConvert_To_Grayscale"/>
     <addaction name="actionGaussian_Filter"/>
+    <addaction name="actionRemove_background_from_image"/>
     <addaction name="actionRemove_the_skull_from_the_image"/>
    </widget>
    <widget class="QMenu" name="menuSegmantation">
     <property name="title">
      <string>Segmentation</string>
     </property>
+    <addaction name="actionKmeans_clustering"/>
     <addaction name="actionOpen_Skull_Stripped"/>
-    <addaction name="actionConnected_Components"/>
     <addaction name="actionExtract_the_tumor_from_the_image"/>
    </widget>
    <widget class="QMenu" name="menuResult">
@@ -241,9 +245,9 @@
     <string>Apply opening on the skull stripped image</string>
    </property>
   </action>
-  <action name="actionConnected_Components">
+  <action name="actionKmeans_clustering">
    <property name="text">
-    <string>Connected Components With Stats</string>
+    <string>Apply K-means algorithm on the brain image</string>
    </property>
   </action>
   <action name="actionFinal_Image">
@@ -264,6 +268,11 @@
   <action name="actionExtract_the_tumor_from_the_image">
    <property name="text">
     <string>Extract the tumor from the image</string>
+   </property>
+  </action>
+  <action name="actionRemove_background_from_image">
+   <property name="text">
+    <string>Remove background from image</string>
    </property>
   </action>
  </widget>
