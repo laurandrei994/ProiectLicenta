@@ -41,6 +41,7 @@ extern "C" ALGORITHMSLIBRARY_API cv::Mat ImageAfterOpening_UsingBinaryMask(cv::M
 extern "C" ALGORITHMSLIBRARY_API cv::Mat KMeansClustering_Brain(cv::Mat & image);
 extern "C++" ALGORITHMSLIBRARY_API std::pair<cv::Mat, int> ConnectedComponents(cv::Mat & image);
 extern "C" ALGORITHMSLIBRARY_API cv::Mat ExtractTumorArea(cv::Mat & image);
+extern "C" ALGORITHMSLIBRARY_API cv::Mat ConstructFinalImage(cv::Mat & currentImage, cv::Mat& initialImage);
 
 
 

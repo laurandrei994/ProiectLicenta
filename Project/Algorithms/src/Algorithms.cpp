@@ -1214,6 +1214,41 @@ ALGORITHMSLIBRARY_API cv::Mat ExtractTumorArea(cv::Mat& image)
 	return tumora;
 }
 
+ALGORITHMSLIBRARY_API cv::Mat ConstructFinalImage(cv::Mat& currentImage, cv::Mat& initialImage)
+{
+	int from_to[] = { 0,0, 0,1, 0,2 };
+	cv::Mat threeChannelImage(initialImage.size(), CV_8UC3);
+	cv::mixChannels(&initialImage, 1, &threeChannelImage, 1, from_to, 3);
+	cv::Mat temp;
+	currentImage.copyTo(temp);
+
+	std::vector<std::vector<cv::Point>> contours;
+	std::vector<cv::Vec4i> hierarchy;
+	cv::findContours(temp, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+	cv::Point center;
+	int sumofx = 0, sumofy = 0;
+	for (int i = 0; i < contours[0].size(); ++i) {
+		sumofx = sumofx + contours[0][i].x;
+		sumofy = sumofy + contours[0][i].y;
+	}
+	center.x = sumofx / contours[0].size();
+	center.y = sumofy / contours[0].size();
+
+	double maxDist = 0.0;
+	double minDist = 5000.0;
+	for (int i = 0; i < contours[0].size(); ++i)
+	{
+		double distCentrePoint = cv::norm(center - contours[0][i]);
+		maxDist = std::max(maxDist, distCentrePoint);
+		minDist = std::min(minDist, distCentrePoint);
+	}
+
+	cv::circle(threeChannelImage, center, maxDist, cv::Scalar(255, 0, 0), 2);
+
+	return threeChannelImage;
+}
+
 ALGORITHMSLIBRARY_API cv::Mat ExtractTumorFromImage(cv::Mat& image, const int indexMaxLabel)
 {
 	cv::Mat tumora = cv::Mat::zeros(cv::Size(image.rows, image.cols), CV_8UC1);

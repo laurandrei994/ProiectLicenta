@@ -34,12 +34,13 @@ private slots:
 	void OpeningImage_UsingMask();
 	void KMeans_clustering();
 	void ExtractTumor();
+	void ConstructResult();
 	void NextStepClick();
 
 private:
 	Ui::MainWindow* ui;
 	cv::Mat image;
-	cv::Mat labeledImg;
+	cv::Mat initialImage;
 	int index;
 	int maxLabelIndex;
 
