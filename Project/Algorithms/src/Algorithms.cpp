@@ -1226,25 +1226,7 @@ ALGORITHMSLIBRARY_API cv::Mat ConstructFinalImage(cv::Mat& currentImage, cv::Mat
 	std::vector<cv::Vec4i> hierarchy;
 	cv::findContours(temp, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
-	cv::Point center;
-	int sumofx = 0, sumofy = 0;
-	for (int i = 0; i < contours[0].size(); ++i) {
-		sumofx = sumofx + contours[0][i].x;
-		sumofy = sumofy + contours[0][i].y;
-	}
-	center.x = sumofx / contours[0].size();
-	center.y = sumofy / contours[0].size();
-
-	double maxDist = 0.0;
-	double minDist = 5000.0;
-	for (int i = 0; i < contours[0].size(); ++i)
-	{
-		double distCentrePoint = cv::norm(center - contours[0][i]);
-		maxDist = std::max(maxDist, distCentrePoint);
-		minDist = std::min(minDist, distCentrePoint);
-	}
-
-	cv::circle(threeChannelImage, center, maxDist, cv::Scalar(255, 0, 0), 2);
+	cv::drawContours(threeChannelImage, contours, 0, cv::Scalar(255, 0, 0), 3);
 
 	return threeChannelImage;
 }

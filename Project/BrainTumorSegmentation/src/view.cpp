@@ -80,7 +80,6 @@ void MainWindow::ConvertToGrayScale()
 
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after applying the grayscale algorithm");
-
 }
 
 void MainWindow::ApplyGaussianFilter()
@@ -104,7 +103,6 @@ void MainWindow::RemoveBackground()
 	QImage convertedImage = Utils::ConvertMatToQImage(modifiedImg);
 	ui->preprocImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->preprocImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->preprocImgText->setText("Image after removing the background");
-
 }
 
 void MainWindow::SkullStripping()
@@ -153,7 +151,6 @@ void MainWindow::ExtractTumor()
 
 	ui->segmImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->segmImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->segmImgText->setText("Extracted tumor area from the MRI");
-
 }
 
 void MainWindow::ConstructResult()
@@ -163,6 +160,7 @@ void MainWindow::ConstructResult()
 	result.copyTo(image);
 
 	QImage convertedImg = Utils::ConvertMatToQImage(result);
+
 	ui->resultImg->setPixmap(QPixmap::fromImage(convertedImg).scaled(ui->resultImg->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->resultImgText->setText("Image with the tumor highlighted");
 }
