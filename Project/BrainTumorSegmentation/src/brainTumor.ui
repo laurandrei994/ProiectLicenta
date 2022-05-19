@@ -6,19 +6,28 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1140</width>
-    <height>773</height>
+    <width>1200</width>
+    <height>1000</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Brain Tumor Segmentation</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="nestStep">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>690</y>
+      <x>690</x>
+      <y>900</y>
       <width>491</width>
       <height>41</height>
      </rect>
@@ -35,8 +44,8 @@
      <rect>
       <x>30</x>
       <y>20</y>
-      <width>1081</width>
-      <height>661</height>
+      <width>1141</width>
+      <height>861</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_10">
@@ -45,6 +54,12 @@
      </property>
      <item row="0" column="1">
       <widget class="QLabel" name="preprocImg">
+       <property name="maximumSize">
+        <size>
+         <width>512</width>
+         <height>512</height>
+        </size>
+       </property>
        <property name="text">
         <string>Image after preprocessing stage</string>
        </property>
@@ -55,6 +70,12 @@
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="segmImg">
+       <property name="maximumSize">
+        <size>
+         <width>512</width>
+         <height>512</height>
+        </size>
+       </property>
        <property name="text">
         <string>Image after segmentation</string>
        </property>
@@ -125,6 +146,12 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>512</width>
+         <height>512</height>
+        </size>
+       </property>
        <property name="lineWidth">
         <number>1</number>
        </property>
@@ -154,6 +181,12 @@
      </item>
      <item row="2" column="1">
       <widget class="QLabel" name="resultImg">
+       <property name="maximumSize">
+        <size>
+         <width>512</width>
+         <height>512</height>
+        </size>
+       </property>
        <property name="text">
         <string>Final result</string>
        </property>
@@ -179,7 +212,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1140</width>
+     <width>1200</width>
      <height>21</height>
     </rect>
    </property>

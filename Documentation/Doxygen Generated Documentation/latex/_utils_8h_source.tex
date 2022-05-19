@@ -1,0 +1,23 @@
+\hypertarget{_utils_8h_source}{}\doxysection{Utils.\+h}
+\label{_utils_8h_source}\index{E:/FACULTATE/UniTBv/Anul III/Licenta/ProiectLicenta/Project/BrainTumorSegmentation/include/Utils.h@{E:/FACULTATE/UniTBv/Anul III/Licenta/ProiectLicenta/Project/BrainTumorSegmentation/include/Utils.h}}
+\mbox{\hyperlink{_utils_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <opencv2/highgui.hpp>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <opencv2/imgproc.hpp>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <QtCore/qstring.h>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <QtGui/qimage.h>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{class }\mbox{\hyperlink{class_utils}{Utils}}}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11 \textcolor{keyword}{public}:}
+\DoxyCodeLine{12     \textcolor{keyword}{inline} \textcolor{keyword}{static} std::string \mbox{\hyperlink{class_utils_a8592692fe2837485ae31e2b69e24c583}{dataSetPath}} = \textcolor{stringliteral}{"{}E:\(\backslash\)\(\backslash\)FACULTATE\(\backslash\)\(\backslash\)UniTBv\(\backslash\)\(\backslash\)Anul III\(\backslash\)\(\backslash\)Licenta\(\backslash\)\(\backslash\)ProiectLicenta\(\backslash\)\(\backslash\)TestData\(\backslash\)\(\backslash\)"{}};}
+\DoxyCodeLine{13     \textcolor{keyword}{static} cv::Mat \mbox{\hyperlink{class_utils_aab1320553c524488df483d46ccfb7e8f}{ReadImage}}(\textcolor{keyword}{const} std::string\& imagePath);}
+\DoxyCodeLine{14     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_utils_a331ab52dba625a625faff6b8828f7820}{ShowImage}}(\textcolor{keyword}{const} cv::Mat\& image);}
+\DoxyCodeLine{15     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_utils_ae734cd12aa80da4636b9a61b41f7071e}{ResizeImage}}(cv::Mat\& inputImage, cv::Size size);}
+\DoxyCodeLine{16     \textcolor{keyword}{static} QImage \mbox{\hyperlink{class_utils_a4268ff3e2c7ba9e6dda0058337e553ca}{ConvertMatToQImage}}(\textcolor{keyword}{const} cv::Mat\& source);}
+\DoxyCodeLine{17 \};}
+
+\end{DoxyCode}

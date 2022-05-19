@@ -1,0 +1,479 @@
+\hypertarget{_algorithms_8h}{}\doxysection{E\+:/\+FACULTATE/\+Uni\+TBv/\+Anul III/\+Licenta/\+Proiect\+Licenta/\+Project/\+Algorithms/include/\+Algorithms.h File Reference}
+\label{_algorithms_8h}\index{E:/FACULTATE/UniTBv/Anul III/Licenta/ProiectLicenta/Project/Algorithms/include/Algorithms.h@{E:/FACULTATE/UniTBv/Anul III/Licenta/ProiectLicenta/Project/Algorithms/include/Algorithms.h}}
+{\ttfamily \#include \char`\"{}Denoising\+Algorithms.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$opencv2/opencv.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/imgproc/imgproc.\+hpp$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$numbers$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$omp.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}}~\+\_\+\+\_\+declspec(dllimport)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{Indent}\textbf{ Graphical Algorithms}\par
+{\em Functions that are used to modify the input image }\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a3338a649247ac39250e7c781093847f3}{Gray\+Scale\+\_\+\+Average}} (const cv\+::\+Mat \&image)
+\begin{DoxyCompactList}\small\item\em Function that transforms an imput image into a grayscale image using the average grayscaling method. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_abef7e7b7b6f8fe47efc48eea416279cc}{Gaussian\+Filter}} (cv\+::\+Mat \&initial, const int kernel\+\_\+size, const double sigma)
+\begin{DoxyCompactList}\small\item\em Function applies a blur effect on the input image using the Gaussian Filter method. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a8cd33a2597781c26806348607f22e4ac}{Average\+Filter}} (cv\+::\+Mat \&initial, const int kernel\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Function applies a blur effect on the input image using an Average Filter method. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} uchar \mbox{\hyperlink{_algorithms_8h_a3bcb1d064e898b032de2273644efbc91}{Adaptive\+Process}} (cv\+::\+Mat \&initial, const int row, const int col, int kernel\+\_\+size, const int max\+Size)
+\begin{DoxyCompactList}\small\item\em Helper function for the Adaptive Median Filter function. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_ad4c50e836b212655cd9ae22983d86efc}{Adaptive\+Median\+Filter}} (cv\+::\+Mat \&initial)
+\begin{DoxyCompactList}\small\item\em Function applies a blur effect on the input image using an Adaptive Median Filter method. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_ac1c1138fd6981a8d42b5551ba19f0f7f}{Bilateral\+Filter}} (cv\+::\+Mat \&initial, const int kernel\+\_\+size, const double space\+\_\+sigma, const double color\+\_\+sigma)
+\begin{DoxyCompactList}\small\item\em Function applies a blur effect on the input image using a Bilateral Filter method. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_acb8868af6f7a392ad626c1a2fa2e610e}{Remove\+Background\+From\+Image}} (cv\+::\+Mat \&initial)
+\begin{DoxyCompactList}\small\item\em Function that makes all the background pixels from the input image equal to 0. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Skull Stripping Algorithms}\par
+{\em Functions that are used for removing the skull from the input image }\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_ad51d161628df2a58b61381fe7d1b935e}{Skull\+Stripping\+\_\+\+Dynamic\+Threshold}} (cv\+::\+Mat \&image)
+\begin{DoxyCompactList}\small\item\em Function that removes the skull from the MRI image using the threshold obtained from the input image. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_aca8ae8e13146023141301b956297dfc5}{Adaptive\+Window\+\_\+\+Threshold}} (cv\+::\+Mat \&input)
+\begin{DoxyCompactList}\small\item\em Function that removes the skull from the MRI image using the Adaptive Window method for calculating the threshold. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a0ffd0c40750cad5a82a75d83f7a9f9c3}{Skull\+Stripping\+\_\+\+Adaptive\+Window}} (cv\+::\+Mat \&image)
+\begin{DoxyCompactList}\small\item\em Function that removes the skull from the MRI image by calling the Adaptive\+Window\+\_\+\+Threshold function. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a55e75f4a9463fcb625f0180582074f82}{Skull\+Stripping\+\_\+\+Using\+Mask}} (cv\+::\+Mat \&image)
+\begin{DoxyCompactList}\small\item\em Function that removes the skull from the MRI image by using a mask based approach and generating different masks to get to the desired result. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a25515617d0aed0dd9671140875e01ba3}{Skull\+Stripping\+\_\+\+KMeans}} (cv\+::\+Mat \&image)
+\begin{DoxyCompactList}\small\item\em Function that removes the skull from the MRI image by using K-\/\+Means clustering. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Segmentation Algorithms}\par
+{\em Functions that are used for the segmentation stage of the application }\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_af58da09fec049e9656447b30b40c04b9}{Image\+After\+Opening\+\_\+\+Using\+Binary\+Mask}} (cv\+::\+Mat \&image)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_af91e711815381968c61d3722460739d9}{KMeans\+Clustering\+\_\+\+Brain}} (cv\+::\+Mat \&image)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::pair$<$ cv\+::\+Mat, int $>$ \mbox{\hyperlink{_algorithms_8h_a3a38976c39465ce65b6ecd4a443c87bf}{Connected\+Components}} (cv\+::\+Mat \&image)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a7ea4ece04febb7db77fce1ebad3da183}{Extract\+Tumor\+Area}} (cv\+::\+Mat \&image)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a483634f1a9fea3e0b8403c5eb700a011}{Construct\+Final\+Image}} (cv\+::\+Mat \&current\+Image, cv\+::\+Mat \&initial\+Image)
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Statistical Helper Algorithms}\par
+{\em Functions that are used for generating running times and comparing results of different algorithms }\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_ae3052169e868b88fdeb562acffdd987d}{Apply\+Denoising\+Algorithm}} (cv\+::\+Mat \&img, const int kernel\+\_\+size, \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} type)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{_algorithms_8h_af35a9f658f009a3adb96fc63dd6894e9}{Get\+File\+Paths}} (const std\+::string \&path)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} double \mbox{\hyperlink{_algorithms_8h_ad9d633b585a4a39c29a62733172a160f}{Get\+MSE}} (const cv\+::\+Mat \&initial, const cv\+::\+Mat \&modified)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ double $>$ \mbox{\hyperlink{_algorithms_8h_a6286e94f9171fa1a3d2d67b351c95cb4}{Get\+All\+MSE}} (const std\+::vector$<$ std\+::string $>$ \&files, const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&type, const int kernel\+\_\+size)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} double \mbox{\hyperlink{_algorithms_8h_a043b862d18e2a0cf691675e6687eed70}{Estimate\+Noise}} (const cv\+::\+Mat \&img)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ double $>$ \mbox{\hyperlink{_algorithms_8h_a92bf9ed384bb563878c640789ac0518a}{Get\+Sigma\+With\+Filter}} (const std\+::vector$<$ std\+::string $>$ \&files, const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&type, const int kernel\+\_\+size)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::chrono\+::milliseconds \mbox{\hyperlink{_algorithms_8h_ae28b451a2b6fa03808b9855e56776750}{Get\+Running\+Time}} (cv\+::\+Mat \&img, const int kernel\+\_\+size, const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&type)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ std\+::chrono\+::milliseconds $>$ \mbox{\hyperlink{_algorithms_8h_a9cf561dc881385afd991a66e00958aaa}{Get\+All\+Running\+Times}} (const std\+::vector$<$ std\+::string $>$ \&files, const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&type, const int kernel\+\_\+size)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void \mbox{\hyperlink{_algorithms_8h_a74134833e66c1b558e540164d3f16ac2}{Write\+MSECSVFile}} ()
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void \mbox{\hyperlink{_algorithms_8h_ab5bf5ea6c0737f90b3d4a22a082a0107}{Write\+Noise\+CSVFile}} ()
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void \mbox{\hyperlink{_algorithms_8h_a60290a8c6463645fca8a00ddeb7bbde1}{Write\+Times\+CSVFile}} ()
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Graphical Helper Algorithms}\par
+{\em Functions that are used for graphical algorithms visualization }\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} int \mbox{\hyperlink{_algorithms_8h_aac357ff1a1121ec5ec2fa9112469fda4}{extract\+Threshold\+From\+Histogram}} (cv\+::\+Mat \&img, cv\+::\+Mat \&hist\+Image, uchar thresh=0)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_ad978e24892c3f6c256060f8234948a18}{histogram\+Display}} (const std\+::vector$<$ int $>$ \&histogram, const cv\+::\+Point \&start\+Point, const cv\+::\+Point \&end\+Point, int thresh)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a32aaeba062da1eb7ecdcd539f0c4cbab}{Remove\+Background}} (cv\+::\+Mat \&initial)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a57461121207ce2585815783b3562b9bd}{Gradient\+Test}} (cv\+::\+Mat \&image)
+\item 
+\mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_ae81e8d20d8f8a230f48f68a2d9cde5fb}{Extract\+Tumor\+From\+Image}} (cv\+::\+Mat \&image, const int index\+Max\+Label)
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}\label{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}} 
+\index{Algorithms.h@{Algorithms.h}!ALGORITHMSLIBRARY\_API@{ALGORITHMSLIBRARY\_API}}
+\index{ALGORITHMSLIBRARY\_API@{ALGORITHMSLIBRARY\_API}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{ALGORITHMSLIBRARY\_API}{ALGORITHMSLIBRARY\_API}}
+{\footnotesize\ttfamily \#define ALGORITHMSLIBRARY\+\_\+\+API~\+\_\+\+\_\+declspec(dllimport)}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_algorithms_8h_ad4c50e836b212655cd9ae22983d86efc}\label{_algorithms_8h_ad4c50e836b212655cd9ae22983d86efc}} 
+\index{Algorithms.h@{Algorithms.h}!AdaptiveMedianFilter@{AdaptiveMedianFilter}}
+\index{AdaptiveMedianFilter@{AdaptiveMedianFilter}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{AdaptiveMedianFilter()}{AdaptiveMedianFilter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Adaptive\+Median\+Filter (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{initial }\end{DoxyParamCaption})}
+
+
+
+Function applies a blur effect on the input image using an Adaptive Median Filter method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing image with the Adaptive Median Filter applied on it 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_a3bcb1d064e898b032de2273644efbc91}\label{_algorithms_8h_a3bcb1d064e898b032de2273644efbc91}} 
+\index{Algorithms.h@{Algorithms.h}!AdaptiveProcess@{AdaptiveProcess}}
+\index{AdaptiveProcess@{AdaptiveProcess}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{AdaptiveProcess()}{AdaptiveProcess()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} uchar Adaptive\+Process (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{initial,  }\item[{const int}]{row,  }\item[{const int}]{col,  }\item[{int}]{kernel\+\_\+size,  }\item[{const int}]{max\+Size }\end{DoxyParamCaption})}
+
+
+
+Helper function for the Adaptive Median Filter function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\mbox{\texttt{ in}}  & {\em row} & integer that represents a row in the image \\
+\hline
+\mbox{\texttt{ in}}  & {\em col} & integer that represents a column in the image \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel\+\_\+size} & integer that represents the size of the kernel \\
+\hline
+\mbox{\texttt{ in}}  & {\em max\+Size} & integer that represents the maximum size of the kernel \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uchar that represents the median value of the pixels inside the kernel 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_aca8ae8e13146023141301b956297dfc5}\label{_algorithms_8h_aca8ae8e13146023141301b956297dfc5}} 
+\index{Algorithms.h@{Algorithms.h}!AdaptiveWindow\_Threshold@{AdaptiveWindow\_Threshold}}
+\index{AdaptiveWindow\_Threshold@{AdaptiveWindow\_Threshold}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{AdaptiveWindow\_Threshold()}{AdaptiveWindow\_Threshold()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Adaptive\+Window\+\_\+\+Threshold (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{input }\end{DoxyParamCaption})}
+
+
+
+Function that removes the skull from the MRI image using the Adaptive Window method for calculating the threshold. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the skull stripped image after the Adaptive Window method 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_ae3052169e868b88fdeb562acffdd987d}\label{_algorithms_8h_ae3052169e868b88fdeb562acffdd987d}} 
+\index{Algorithms.h@{Algorithms.h}!ApplyDenoisingAlgorithm@{ApplyDenoisingAlgorithm}}
+\index{ApplyDenoisingAlgorithm@{ApplyDenoisingAlgorithm}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{ApplyDenoisingAlgorithm()}{ApplyDenoisingAlgorithm()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Apply\+Denoising\+Algorithm (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{img,  }\item[{const int}]{kernel\+\_\+size,  }\item[{\mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}}}]{type }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a8cd33a2597781c26806348607f22e4ac}\label{_algorithms_8h_a8cd33a2597781c26806348607f22e4ac}} 
+\index{Algorithms.h@{Algorithms.h}!AverageFilter@{AverageFilter}}
+\index{AverageFilter@{AverageFilter}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{AverageFilter()}{AverageFilter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Average\+Filter (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{initial,  }\item[{const int}]{kernel\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Function applies a blur effect on the input image using an Average Filter method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel\+\_\+size} & integer that represents the size of the kernel \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing image with the Average filter applied on it 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_ac1c1138fd6981a8d42b5551ba19f0f7f}\label{_algorithms_8h_ac1c1138fd6981a8d42b5551ba19f0f7f}} 
+\index{Algorithms.h@{Algorithms.h}!BilateralFilter@{BilateralFilter}}
+\index{BilateralFilter@{BilateralFilter}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{BilateralFilter()}{BilateralFilter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Bilateral\+Filter (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{initial,  }\item[{const int}]{kernel\+\_\+size,  }\item[{const double}]{space\+\_\+sigma,  }\item[{const double}]{color\+\_\+sigma }\end{DoxyParamCaption})}
+
+
+
+Function applies a blur effect on the input image using a Bilateral Filter method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel\+\_\+size} & integer that represents the size of the kernel \\
+\hline
+\mbox{\texttt{ in}}  & {\em space\+\_\+sigma} & double that represent the sigma value of the filter in the coordinate space. If the value is large, it means that the farther the pixels will affect each other, so that the more similar colors in the larger area can get the same color. \\
+\hline
+\mbox{\texttt{ in}}  & {\em color\+\_\+sigma} & double that represents the sigma value of the color space filter. The larger the value of this parameter is, the wider the color in the neighborhood of the pixel will be mixed together, resulting in a larger semi equal color region. (this parameter can be understood as value domain kernel) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing image with the Bilateral Filter applied on it 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_a3a38976c39465ce65b6ecd4a443c87bf}\label{_algorithms_8h_a3a38976c39465ce65b6ecd4a443c87bf}} 
+\index{Algorithms.h@{Algorithms.h}!ConnectedComponents@{ConnectedComponents}}
+\index{ConnectedComponents@{ConnectedComponents}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{ConnectedComponents()}{ConnectedComponents()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::pair$<$ cv\+::\+Mat, int $>$ Connected\+Components (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a483634f1a9fea3e0b8403c5eb700a011}\label{_algorithms_8h_a483634f1a9fea3e0b8403c5eb700a011}} 
+\index{Algorithms.h@{Algorithms.h}!ConstructFinalImage@{ConstructFinalImage}}
+\index{ConstructFinalImage@{ConstructFinalImage}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{ConstructFinalImage()}{ConstructFinalImage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Construct\+Final\+Image (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{current\+Image,  }\item[{cv\+::\+Mat \&}]{initial\+Image }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a043b862d18e2a0cf691675e6687eed70}\label{_algorithms_8h_a043b862d18e2a0cf691675e6687eed70}} 
+\index{Algorithms.h@{Algorithms.h}!EstimateNoise@{EstimateNoise}}
+\index{EstimateNoise@{EstimateNoise}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{EstimateNoise()}{EstimateNoise()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} double Estimate\+Noise (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{img }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_aac357ff1a1121ec5ec2fa9112469fda4}\label{_algorithms_8h_aac357ff1a1121ec5ec2fa9112469fda4}} 
+\index{Algorithms.h@{Algorithms.h}!extractThresholdFromHistogram@{extractThresholdFromHistogram}}
+\index{extractThresholdFromHistogram@{extractThresholdFromHistogram}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{extractThresholdFromHistogram()}{extractThresholdFromHistogram()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} int extract\+Threshold\+From\+Histogram (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{img,  }\item[{cv\+::\+Mat \&}]{hist\+Image,  }\item[{uchar}]{thresh = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a7ea4ece04febb7db77fce1ebad3da183}\label{_algorithms_8h_a7ea4ece04febb7db77fce1ebad3da183}} 
+\index{Algorithms.h@{Algorithms.h}!ExtractTumorArea@{ExtractTumorArea}}
+\index{ExtractTumorArea@{ExtractTumorArea}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{ExtractTumorArea()}{ExtractTumorArea()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Extract\+Tumor\+Area (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_ae81e8d20d8f8a230f48f68a2d9cde5fb}\label{_algorithms_8h_ae81e8d20d8f8a230f48f68a2d9cde5fb}} 
+\index{Algorithms.h@{Algorithms.h}!ExtractTumorFromImage@{ExtractTumorFromImage}}
+\index{ExtractTumorFromImage@{ExtractTumorFromImage}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{ExtractTumorFromImage()}{ExtractTumorFromImage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Extract\+Tumor\+From\+Image (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image,  }\item[{const int}]{index\+Max\+Label }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_abef7e7b7b6f8fe47efc48eea416279cc}\label{_algorithms_8h_abef7e7b7b6f8fe47efc48eea416279cc}} 
+\index{Algorithms.h@{Algorithms.h}!GaussianFilter@{GaussianFilter}}
+\index{GaussianFilter@{GaussianFilter}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{GaussianFilter()}{GaussianFilter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Gaussian\+Filter (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{initial,  }\item[{const int}]{kernel\+\_\+size,  }\item[{const double}]{sigma }\end{DoxyParamCaption})}
+
+
+
+Function applies a blur effect on the input image using the Gaussian Filter method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel\+\_\+size} & integer that represents the size of the kernel \\
+\hline
+\mbox{\texttt{ in}}  & {\em sigma} & double that represents a parameter for calculating Gaussian function \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing image with the Gaussian filter applied on it 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_a6286e94f9171fa1a3d2d67b351c95cb4}\label{_algorithms_8h_a6286e94f9171fa1a3d2d67b351c95cb4}} 
+\index{Algorithms.h@{Algorithms.h}!GetAllMSE@{GetAllMSE}}
+\index{GetAllMSE@{GetAllMSE}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{GetAllMSE()}{GetAllMSE()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ double $>$ Get\+All\+MSE (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{files,  }\item[{const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&}]{type,  }\item[{const int}]{kernel\+\_\+size }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a9cf561dc881385afd991a66e00958aaa}\label{_algorithms_8h_a9cf561dc881385afd991a66e00958aaa}} 
+\index{Algorithms.h@{Algorithms.h}!GetAllRunningTimes@{GetAllRunningTimes}}
+\index{GetAllRunningTimes@{GetAllRunningTimes}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{GetAllRunningTimes()}{GetAllRunningTimes()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ std\+::chrono\+::milliseconds $>$ Get\+All\+Running\+Times (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{files,  }\item[{const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&}]{type,  }\item[{const int}]{kernel\+\_\+size }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_af35a9f658f009a3adb96fc63dd6894e9}\label{_algorithms_8h_af35a9f658f009a3adb96fc63dd6894e9}} 
+\index{Algorithms.h@{Algorithms.h}!GetFilePaths@{GetFilePaths}}
+\index{GetFilePaths@{GetFilePaths}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{GetFilePaths()}{GetFilePaths()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ std\+::string $>$ Get\+File\+Paths (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{path }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_ad9d633b585a4a39c29a62733172a160f}\label{_algorithms_8h_ad9d633b585a4a39c29a62733172a160f}} 
+\index{Algorithms.h@{Algorithms.h}!GetMSE@{GetMSE}}
+\index{GetMSE@{GetMSE}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{GetMSE()}{GetMSE()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} double Get\+MSE (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{initial,  }\item[{const cv\+::\+Mat \&}]{modified }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_ae28b451a2b6fa03808b9855e56776750}\label{_algorithms_8h_ae28b451a2b6fa03808b9855e56776750}} 
+\index{Algorithms.h@{Algorithms.h}!GetRunningTime@{GetRunningTime}}
+\index{GetRunningTime@{GetRunningTime}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{GetRunningTime()}{GetRunningTime()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::chrono\+::milliseconds Get\+Running\+Time (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{img,  }\item[{const int}]{kernel\+\_\+size,  }\item[{const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&}]{type }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a92bf9ed384bb563878c640789ac0518a}\label{_algorithms_8h_a92bf9ed384bb563878c640789ac0518a}} 
+\index{Algorithms.h@{Algorithms.h}!GetSigmaWithFilter@{GetSigmaWithFilter}}
+\index{GetSigmaWithFilter@{GetSigmaWithFilter}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{GetSigmaWithFilter()}{GetSigmaWithFilter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ double $>$ Get\+Sigma\+With\+Filter (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{files,  }\item[{const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&}]{type,  }\item[{const int}]{kernel\+\_\+size }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a57461121207ce2585815783b3562b9bd}\label{_algorithms_8h_a57461121207ce2585815783b3562b9bd}} 
+\index{Algorithms.h@{Algorithms.h}!GradientTest@{GradientTest}}
+\index{GradientTest@{GradientTest}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{GradientTest()}{GradientTest()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Gradient\+Test (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a3338a649247ac39250e7c781093847f3}\label{_algorithms_8h_a3338a649247ac39250e7c781093847f3}} 
+\index{Algorithms.h@{Algorithms.h}!GrayScale\_Average@{GrayScale\_Average}}
+\index{GrayScale\_Average@{GrayScale\_Average}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{GrayScale\_Average()}{GrayScale\_Average()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Gray\+Scale\+\_\+\+Average (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+
+
+Function that transforms an imput image into a grayscale image using the average grayscaling method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the grayscale image 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_ad978e24892c3f6c256060f8234948a18}\label{_algorithms_8h_ad978e24892c3f6c256060f8234948a18}} 
+\index{Algorithms.h@{Algorithms.h}!histogramDisplay@{histogramDisplay}}
+\index{histogramDisplay@{histogramDisplay}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{histogramDisplay()}{histogramDisplay()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat histogram\+Display (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ int $>$ \&}]{histogram,  }\item[{const cv\+::\+Point \&}]{start\+Point,  }\item[{const cv\+::\+Point \&}]{end\+Point,  }\item[{int}]{thresh }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_af58da09fec049e9656447b30b40c04b9}\label{_algorithms_8h_af58da09fec049e9656447b30b40c04b9}} 
+\index{Algorithms.h@{Algorithms.h}!ImageAfterOpening\_UsingBinaryMask@{ImageAfterOpening\_UsingBinaryMask}}
+\index{ImageAfterOpening\_UsingBinaryMask@{ImageAfterOpening\_UsingBinaryMask}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{ImageAfterOpening\_UsingBinaryMask()}{ImageAfterOpening\_UsingBinaryMask()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Image\+After\+Opening\+\_\+\+Using\+Binary\+Mask (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_af91e711815381968c61d3722460739d9}\label{_algorithms_8h_af91e711815381968c61d3722460739d9}} 
+\index{Algorithms.h@{Algorithms.h}!KMeansClustering\_Brain@{KMeansClustering\_Brain}}
+\index{KMeansClustering\_Brain@{KMeansClustering\_Brain}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{KMeansClustering\_Brain()}{KMeansClustering\_Brain()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat KMeans\+Clustering\+\_\+\+Brain (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a32aaeba062da1eb7ecdcd539f0c4cbab}\label{_algorithms_8h_a32aaeba062da1eb7ecdcd539f0c4cbab}} 
+\index{Algorithms.h@{Algorithms.h}!RemoveBackground@{RemoveBackground}}
+\index{RemoveBackground@{RemoveBackground}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{RemoveBackground()}{RemoveBackground()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Remove\+Background (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{initial }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_acb8868af6f7a392ad626c1a2fa2e610e}\label{_algorithms_8h_acb8868af6f7a392ad626c1a2fa2e610e}} 
+\index{Algorithms.h@{Algorithms.h}!RemoveBackgroundFromImage@{RemoveBackgroundFromImage}}
+\index{RemoveBackgroundFromImage@{RemoveBackgroundFromImage}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{RemoveBackgroundFromImage()}{RemoveBackgroundFromImage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Remove\+Background\+From\+Image (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{initial }\end{DoxyParamCaption})}
+
+
+
+Function that makes all the background pixels from the input image equal to 0. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing image with all the background pixels made 0 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_a0ffd0c40750cad5a82a75d83f7a9f9c3}\label{_algorithms_8h_a0ffd0c40750cad5a82a75d83f7a9f9c3}} 
+\index{Algorithms.h@{Algorithms.h}!SkullStripping\_AdaptiveWindow@{SkullStripping\_AdaptiveWindow}}
+\index{SkullStripping\_AdaptiveWindow@{SkullStripping\_AdaptiveWindow}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{SkullStripping\_AdaptiveWindow()}{SkullStripping\_AdaptiveWindow()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Skull\+Stripping\+\_\+\+Adaptive\+Window (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+
+
+Function that removes the skull from the MRI image by calling the Adaptive\+Window\+\_\+\+Threshold function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the skull stripped image after the Adaptive Window method 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_ad51d161628df2a58b61381fe7d1b935e}\label{_algorithms_8h_ad51d161628df2a58b61381fe7d1b935e}} 
+\index{Algorithms.h@{Algorithms.h}!SkullStripping\_DynamicThreshold@{SkullStripping\_DynamicThreshold}}
+\index{SkullStripping\_DynamicThreshold@{SkullStripping\_DynamicThreshold}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{SkullStripping\_DynamicThreshold()}{SkullStripping\_DynamicThreshold()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Skull\+Stripping\+\_\+\+Dynamic\+Threshold (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+
+
+Function that removes the skull from the MRI image using the threshold obtained from the input image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the skull stripped image after the Dynamic Threshold method 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_a25515617d0aed0dd9671140875e01ba3}\label{_algorithms_8h_a25515617d0aed0dd9671140875e01ba3}} 
+\index{Algorithms.h@{Algorithms.h}!SkullStripping\_KMeans@{SkullStripping\_KMeans}}
+\index{SkullStripping\_KMeans@{SkullStripping\_KMeans}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{SkullStripping\_KMeans()}{SkullStripping\_KMeans()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Skull\+Stripping\+\_\+\+KMeans (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+
+
+Function that removes the skull from the MRI image by using K-\/\+Means clustering. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the skull stripped image after the K-\/\+Means clustering method 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_a55e75f4a9463fcb625f0180582074f82}\label{_algorithms_8h_a55e75f4a9463fcb625f0180582074f82}} 
+\index{Algorithms.h@{Algorithms.h}!SkullStripping\_UsingMask@{SkullStripping\_UsingMask}}
+\index{SkullStripping\_UsingMask@{SkullStripping\_UsingMask}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{SkullStripping\_UsingMask()}{SkullStripping\_UsingMask()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Skull\+Stripping\+\_\+\+Using\+Mask (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+
+
+Function that removes the skull from the MRI image by using a mask based approach and generating different masks to get to the desired result. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the skull stripped image after the Mask Based Method 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_algorithms_8h_a74134833e66c1b558e540164d3f16ac2}\label{_algorithms_8h_a74134833e66c1b558e540164d3f16ac2}} 
+\index{Algorithms.h@{Algorithms.h}!WriteMSECSVFile@{WriteMSECSVFile}}
+\index{WriteMSECSVFile@{WriteMSECSVFile}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{WriteMSECSVFile()}{WriteMSECSVFile()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void Write\+MSECSVFile (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_ab5bf5ea6c0737f90b3d4a22a082a0107}\label{_algorithms_8h_ab5bf5ea6c0737f90b3d4a22a082a0107}} 
+\index{Algorithms.h@{Algorithms.h}!WriteNoiseCSVFile@{WriteNoiseCSVFile}}
+\index{WriteNoiseCSVFile@{WriteNoiseCSVFile}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{WriteNoiseCSVFile()}{WriteNoiseCSVFile()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void Write\+Noise\+CSVFile (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_algorithms_8h_a60290a8c6463645fca8a00ddeb7bbde1}\label{_algorithms_8h_a60290a8c6463645fca8a00ddeb7bbde1}} 
+\index{Algorithms.h@{Algorithms.h}!WriteTimesCSVFile@{WriteTimesCSVFile}}
+\index{WriteTimesCSVFile@{WriteTimesCSVFile}!Algorithms.h@{Algorithms.h}}
+\doxysubsubsection{\texorpdfstring{WriteTimesCSVFile()}{WriteTimesCSVFile()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void Write\+Times\+CSVFile (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+

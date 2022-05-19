@@ -1,0 +1,76 @@
+\hypertarget{_algorithms_8h_source}{}\doxysection{Algorithms.\+h}
+\label{_algorithms_8h_source}\index{E:/FACULTATE/UniTBv/Anul III/Licenta/ProiectLicenta/Project/Algorithms/include/Algorithms.h@{E:/FACULTATE/UniTBv/Anul III/Licenta/ProiectLicenta/Project/Algorithms/include/Algorithms.h}}
+\mbox{\hyperlink{_algorithms_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_denoising_algorithms_8h}{DenoisingAlgorithms.h}}"{}}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <opencv2/opencv.hpp>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <opencv2/imgproc/imgproc.hpp>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <filesystem>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <numbers>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <chrono>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <omp.h>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifdef G\_LIB\_as\_DLL}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define ALGORITHMSLIBRARY\_API \_\_declspec(dllexport)}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define ALGORITHMSLIBRARY\_API \_\_declspec(dllimport)}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{23 }
+\DoxyCodeLine{27 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_a3338a649247ac39250e7c781093847f3}{GrayScale\_Average}}(\textcolor{keyword}{const} cv::Mat \& image);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{34 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_abef7e7b7b6f8fe47efc48eea416279cc}{GaussianFilter}}(cv::Mat \& initial, \textcolor{keyword}{const} \textcolor{keywordtype}{int} kernel\_size, \textcolor{keyword}{const} \textcolor{keywordtype}{double} sigma);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{40 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_a8cd33a2597781c26806348607f22e4ac}{AverageFilter}}(cv::Mat \& initial, \textcolor{keyword}{const} \textcolor{keywordtype}{int} kernel\_size);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{49 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} uchar \mbox{\hyperlink{_algorithms_8h_a3bcb1d064e898b032de2273644efbc91}{AdaptiveProcess}}(cv::Mat \& initial, \textcolor{keyword}{const} \textcolor{keywordtype}{int} row, \textcolor{keyword}{const} \textcolor{keywordtype}{int} col, \textcolor{keywordtype}{int} kernel\_size, \textcolor{keyword}{const} \textcolor{keywordtype}{int} maxSize);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{54 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_ad4c50e836b212655cd9ae22983d86efc}{AdaptiveMedianFilter}}(cv::Mat \& initial);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{62 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_ac1c1138fd6981a8d42b5551ba19f0f7f}{BilateralFilter}}(cv::Mat \& initial, \textcolor{keyword}{const} \textcolor{keywordtype}{int} kernel\_size, \textcolor{keyword}{const} \textcolor{keywordtype}{double} space\_sigma, \textcolor{keyword}{const} \textcolor{keywordtype}{double} color\_sigma);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{67 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_acb8868af6f7a392ad626c1a2fa2e610e}{RemoveBackgroundFromImage}}(cv::Mat \& initial);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{77 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_ad51d161628df2a58b61381fe7d1b935e}{SkullStripping\_DynamicThreshold}}(cv::Mat \& image);}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{82 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_aca8ae8e13146023141301b956297dfc5}{AdaptiveWindow\_Threshold}}(cv::Mat \& input);}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{87 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_a0ffd0c40750cad5a82a75d83f7a9f9c3}{SkullStripping\_AdaptiveWindow}}(cv::Mat \& image);}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{92 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_a55e75f4a9463fcb625f0180582074f82}{SkullStripping\_UsingMask}}(cv::Mat \& image);}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{97 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_a25515617d0aed0dd9671140875e01ba3}{SkullStripping\_KMeans}}(cv::Mat \& image);}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{103 \textcolor{comment}{// Segmentation Algorithms}}
+\DoxyCodeLine{104 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_af58da09fec049e9656447b30b40c04b9}{ImageAfterOpening\_UsingBinaryMask}}(cv::Mat \& image);}
+\DoxyCodeLine{105 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_af91e711815381968c61d3722460739d9}{KMeansClustering\_Brain}}(cv::Mat \& image);}
+\DoxyCodeLine{106 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C++"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} std::pair<cv::Mat, int> \mbox{\hyperlink{_algorithms_8h_a3a38976c39465ce65b6ecd4a443c87bf}{ConnectedComponents}}(cv::Mat \& image);}
+\DoxyCodeLine{107 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_a7ea4ece04febb7db77fce1ebad3da183}{ExtractTumorArea}}(cv::Mat \& image);}
+\DoxyCodeLine{108 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_a483634f1a9fea3e0b8403c5eb700a011}{ConstructFinalImage}}(cv::Mat \& currentImage, cv::Mat\& initialImage);}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{114 \textcolor{comment}{// Helper Algorithms}}
+\DoxyCodeLine{115 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_ae3052169e868b88fdeb562acffdd987d}{ApplyDenoisingAlgorithm}}(cv::Mat \& img, \textcolor{keyword}{const} \textcolor{keywordtype}{int} kernel\_size, \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\_Algorithms}} type);}
+\DoxyCodeLine{116 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} std::vector<std::string> \mbox{\hyperlink{_algorithms_8h_af35a9f658f009a3adb96fc63dd6894e9}{GetFilePaths}}(\textcolor{keyword}{const} std::string \& path);}
+\DoxyCodeLine{117 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} \textcolor{keywordtype}{double} \mbox{\hyperlink{_algorithms_8h_ad9d633b585a4a39c29a62733172a160f}{GetMSE}}(\textcolor{keyword}{const} cv::Mat \& initial, \textcolor{keyword}{const} cv::Mat \& modified);}
+\DoxyCodeLine{118 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} std::vector<double> \mbox{\hyperlink{_algorithms_8h_a6286e94f9171fa1a3d2d67b351c95cb4}{GetAllMSE}}(\textcolor{keyword}{const} std::vector<std::string>\&files, \textcolor{keyword}{const} \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\_Algorithms}} \& type, \textcolor{keyword}{const} \textcolor{keywordtype}{int} kernel\_size);}
+\DoxyCodeLine{119 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} \textcolor{keywordtype}{double} \mbox{\hyperlink{_algorithms_8h_a043b862d18e2a0cf691675e6687eed70}{EstimateNoise}}(\textcolor{keyword}{const} cv::Mat \& img);}
+\DoxyCodeLine{120 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} std::vector<double> \mbox{\hyperlink{_algorithms_8h_a92bf9ed384bb563878c640789ac0518a}{GetSigmaWithFilter}}(\textcolor{keyword}{const} std::vector<std::string>\&files, \textcolor{keyword}{const} \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\_Algorithms}} \& type, \textcolor{keyword}{const} \textcolor{keywordtype}{int} kernel\_size);}
+\DoxyCodeLine{121 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} std::chrono::milliseconds \mbox{\hyperlink{_algorithms_8h_ae28b451a2b6fa03808b9855e56776750}{GetRunningTime}}(cv::Mat \& img, \textcolor{keyword}{const} \textcolor{keywordtype}{int} kernel\_size, \textcolor{keyword}{const} \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\_Algorithms}} \& type);}
+\DoxyCodeLine{122 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C++"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} std::vector<std::chrono::milliseconds> \mbox{\hyperlink{_algorithms_8h_a9cf561dc881385afd991a66e00958aaa}{GetAllRunningTimes}}(\textcolor{keyword}{const} std::vector<std::string>\&files, \textcolor{keyword}{const} \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\_Algorithms}} \& type, \textcolor{keyword}{const} \textcolor{keywordtype}{int} kernel\_size);}
+\DoxyCodeLine{123 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} \textcolor{keywordtype}{void} \mbox{\hyperlink{_algorithms_8h_a74134833e66c1b558e540164d3f16ac2}{WriteMSECSVFile}}();}
+\DoxyCodeLine{124 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} \textcolor{keywordtype}{void} \mbox{\hyperlink{_algorithms_8h_ab5bf5ea6c0737f90b3d4a22a082a0107}{WriteNoiseCSVFile}}();}
+\DoxyCodeLine{125 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} \textcolor{keywordtype}{void} \mbox{\hyperlink{_algorithms_8h_a60290a8c6463645fca8a00ddeb7bbde1}{WriteTimesCSVFile}}();}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{131 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} \textcolor{keywordtype}{int} \mbox{\hyperlink{_algorithms_8h_aac357ff1a1121ec5ec2fa9112469fda4}{extractThresholdFromHistogram}}(cv::Mat \& img, cv::Mat\& histImage, uchar thresh = 0);}
+\DoxyCodeLine{132 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_ad978e24892c3f6c256060f8234948a18}{histogramDisplay}}(\textcolor{keyword}{const} std::vector<int> \&histogram, \textcolor{keyword}{const} cv::Point \&startPoint, \textcolor{keyword}{const} cv::Point \&endPoint, \textcolor{keywordtype}{int} thresh);}
+\DoxyCodeLine{133 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_a32aaeba062da1eb7ecdcd539f0c4cbab}{RemoveBackground}}(cv::Mat \& initial);}
+\DoxyCodeLine{134 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_a57461121207ce2585815783b3562b9bd}{GradientTest}}(cv::Mat \& image);}
+\DoxyCodeLine{135 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\_API}} cv::Mat \mbox{\hyperlink{_algorithms_8h_ae81e8d20d8f8a230f48f68a2d9cde5fb}{ExtractTumorFromImage}}(cv::Mat \& image, \textcolor{keyword}{const} \textcolor{keywordtype}{int} indexMaxLabel);}
+
+\end{DoxyCode}
