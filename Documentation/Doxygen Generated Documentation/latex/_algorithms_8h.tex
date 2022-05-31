@@ -53,55 +53,55 @@
 {\em Functions that are used for the segmentation stage of the application }\begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_af58da09fec049e9656447b30b40c04b9}{Image\+After\+Opening\+\_\+\+Using\+Binary\+Mask}} (cv\+::\+Mat \&image)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that removes the unwanted pixels from an image using opening method (erode and dilate) \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_af91e711815381968c61d3722460739d9}{KMeans\+Clustering\+\_\+\+Brain}} (cv\+::\+Mat \&image)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that selects the tumor area from the image using the K-\/\+Means clustering algorithm. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::pair$<$ cv\+::\+Mat, int $>$ \mbox{\hyperlink{_algorithms_8h_a3a38976c39465ce65b6ecd4a443c87bf}{Connected\+Components}} (cv\+::\+Mat \&image)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that applies the Connected Component algorithm on an image to find the largest connected component. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a7ea4ece04febb7db77fce1ebad3da183}{Extract\+Tumor\+Area}} (cv\+::\+Mat \&image)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that extracts the tumor from the image using the infos from the Connected\+Components function. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a483634f1a9fea3e0b8403c5eb700a011}{Construct\+Final\+Image}} (cv\+::\+Mat \&current\+Image, cv\+::\+Mat \&initial\+Image)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Function that applies a contour on the initial image to highlight the tumor. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \end{Indent}
 \begin{Indent}\textbf{ Statistical Helper Algorithms}\par
 {\em Functions that are used for generating running times and comparing results of different algorithms }\begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_ae3052169e868b88fdeb562acffdd987d}{Apply\+Denoising\+Algorithm}} (cv\+::\+Mat \&img, const int kernel\+\_\+size, \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} type)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that applies a denoising algorithm on a given image. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{_algorithms_8h_af35a9f658f009a3adb96fc63dd6894e9}{Get\+File\+Paths}} (const std\+::string \&path)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that generates a list of all the file paths of the images used in the project. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} double \mbox{\hyperlink{_algorithms_8h_ad9d633b585a4a39c29a62733172a160f}{Get\+MSE}} (const cv\+::\+Mat \&initial, const cv\+::\+Mat \&modified)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that calculates the Mean Squared Error of two images. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ double $>$ \mbox{\hyperlink{_algorithms_8h_a6286e94f9171fa1a3d2d67b351c95cb4}{Get\+All\+MSE}} (const std\+::vector$<$ std\+::string $>$ \&files, const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&type, const int kernel\+\_\+size)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that calculates the Mean Squared Error for all the images in the dataset after applying all the denoising algorithms. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} double \mbox{\hyperlink{_algorithms_8h_a043b862d18e2a0cf691675e6687eed70}{Estimate\+Noise}} (const cv\+::\+Mat \&img)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that calculates the noise in a given image. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ double $>$ \mbox{\hyperlink{_algorithms_8h_a92bf9ed384bb563878c640789ac0518a}{Get\+Sigma\+With\+Filter}} (const std\+::vector$<$ std\+::string $>$ \&files, const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&type, const int kernel\+\_\+size)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that generates a list of calculated noise in every image of the dataset after applying all the denoising algorithms. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::chrono\+::milliseconds \mbox{\hyperlink{_algorithms_8h_ae28b451a2b6fa03808b9855e56776750}{Get\+Running\+Time}} (cv\+::\+Mat \&img, const int kernel\+\_\+size, const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&type)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that calculates the running time of a denoising algorithm. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ std\+::chrono\+::milliseconds $>$ \mbox{\hyperlink{_algorithms_8h_a9cf561dc881385afd991a66e00958aaa}{Get\+All\+Running\+Times}} (const std\+::vector$<$ std\+::string $>$ \&files, const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&type, const int kernel\+\_\+size)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that generates a list of calculated running times of all denoising algorithms for every image of the dataset. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void \mbox{\hyperlink{_algorithms_8h_a74134833e66c1b558e540164d3f16ac2}{Write\+MSECSVFile}} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Function that generates a CSV file with all the Mean Squared Error results calculated using {\itshape Get\+All\+MSE} function. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void \mbox{\hyperlink{_algorithms_8h_ab5bf5ea6c0737f90b3d4a22a082a0107}{Write\+Noise\+CSVFile}} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Function that generates a CSV file with all the estimated noise calculated using {\itshape Get\+Sigma\+With\+Filter} function. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void \mbox{\hyperlink{_algorithms_8h_a60290a8c6463645fca8a00ddeb7bbde1}{Write\+Times\+CSVFile}} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Function that generates a CSV file with all the running times calculated using {\itshape Get\+All\+Running\+Times} function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \end{Indent}
 \begin{Indent}\textbf{ Graphical Helper Algorithms}\par
 {\em Functions that are used for graphical algorithms visualization }\begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} int \mbox{\hyperlink{_algorithms_8h_aac357ff1a1121ec5ec2fa9112469fda4}{extract\+Threshold\+From\+Histogram}} (cv\+::\+Mat \&img, cv\+::\+Mat \&hist\+Image, uchar thresh=0)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that calculates the threshold from an image using the cumulative histogram of that image and the triangle method. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_ad978e24892c3f6c256060f8234948a18}{histogram\+Display}} (const std\+::vector$<$ int $>$ \&histogram, const cv\+::\+Point \&start\+Point, const cv\+::\+Point \&end\+Point, int thresh)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that draws the cumulative histogram of the image and highlight the threshold calculated using the {\itshape extract\+Threshold\+From\+Histogram} function. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a32aaeba062da1eb7ecdcd539f0c4cbab}{Remove\+Background}} (cv\+::\+Mat \&initial)
-\item 
+\begin{DoxyCompactList}\small\item\em Function removes the background from a given image. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_a57461121207ce2585815783b3562b9bd}{Gradient\+Test}} (cv\+::\+Mat \&image)
-\item 
+\begin{DoxyCompactList}\small\item\em Function that calculates the gradient of a given image. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat \mbox{\hyperlink{_algorithms_8h_ae81e8d20d8f8a230f48f68a2d9cde5fb}{Extract\+Tumor\+From\+Image}} (cv\+::\+Mat \&image, const int index\+Max\+Label)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Function extracts the tumor from a labeled image generated by {\itshape Connected} Components algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \end{Indent}
 
 
@@ -171,7 +171,7 @@ Function that removes the skull from the MRI image using the Adaptive Window met
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\mbox{\texttt{ in}}  & {\em input} & cv\+::\+Mat object containing the image that the user wants to modify \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -183,6 +183,22 @@ cv\+::\+Mat object containing the skull stripped image after the Adaptive Window
 \doxysubsubsection{\texorpdfstring{ApplyDenoisingAlgorithm()}{ApplyDenoisingAlgorithm()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Apply\+Denoising\+Algorithm (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{img,  }\item[{const int}]{kernel\+\_\+size,  }\item[{\mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}}}]{type }\end{DoxyParamCaption})}
 
+
+
+Function that applies a denoising algorithm on a given image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em img} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel\+\_\+size} & constant integer that represents the size of the kernel to be applied on the image \\
+\hline
+ & {\em \mbox{[}in\mbox{[}} & type Denoising\+\_\+\+Algoithms object representing the chosen type of the algorithm to be apllied \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the image after applying the denoising algorithm 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_a8cd33a2597781c26806348607f22e4ac}\label{_algorithms_8h_a8cd33a2597781c26806348607f22e4ac}} 
 \index{Algorithms.h@{Algorithms.h}!AverageFilter@{AverageFilter}}
 \index{AverageFilter@{AverageFilter}!Algorithms.h@{Algorithms.h}}
@@ -233,36 +249,116 @@ cv\+::\+Mat object containing image with the Bilateral Filter applied on it
 \doxysubsubsection{\texorpdfstring{ConnectedComponents()}{ConnectedComponents()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::pair$<$ cv\+::\+Mat, int $>$ Connected\+Components (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
 
+
+
+Function that applies the Connected Component algorithm on an image to find the largest connected component. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::pair$<$cv\+::\+Mat, int$>$ object containing the labeled image on the first place and the index of the largest component component on the second place 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_a483634f1a9fea3e0b8403c5eb700a011}\label{_algorithms_8h_a483634f1a9fea3e0b8403c5eb700a011}} 
 \index{Algorithms.h@{Algorithms.h}!ConstructFinalImage@{ConstructFinalImage}}
 \index{ConstructFinalImage@{ConstructFinalImage}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{ConstructFinalImage()}{ConstructFinalImage()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Construct\+Final\+Image (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{current\+Image,  }\item[{cv\+::\+Mat \&}]{initial\+Image }\end{DoxyParamCaption})}
 
+
+
+Function that applies a contour on the initial image to highlight the tumor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em current\+Image} & cv\+::\+Mat object containing the image with the tumor \\
+\hline
+\mbox{\texttt{ in}}  & {\em initial\+Image} & cv\+::\+Mat object containing the unmodified image which had been loaded in the project in the start \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing final image with the tumor highlighted 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_a043b862d18e2a0cf691675e6687eed70}\label{_algorithms_8h_a043b862d18e2a0cf691675e6687eed70}} 
 \index{Algorithms.h@{Algorithms.h}!EstimateNoise@{EstimateNoise}}
 \index{EstimateNoise@{EstimateNoise}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{EstimateNoise()}{EstimateNoise()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} double Estimate\+Noise (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{img }\end{DoxyParamCaption})}
 
+
+
+Function that calculates the noise in a given image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em img} & cv\+::\+Mat object containing the image for which the noise will be calculated \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double representing the estimated noise of the image 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_aac357ff1a1121ec5ec2fa9112469fda4}\label{_algorithms_8h_aac357ff1a1121ec5ec2fa9112469fda4}} 
 \index{Algorithms.h@{Algorithms.h}!extractThresholdFromHistogram@{extractThresholdFromHistogram}}
 \index{extractThresholdFromHistogram@{extractThresholdFromHistogram}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{extractThresholdFromHistogram()}{extractThresholdFromHistogram()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} int extract\+Threshold\+From\+Histogram (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{img,  }\item[{cv\+::\+Mat \&}]{hist\+Image,  }\item[{uchar}]{thresh = {\ttfamily 0} }\end{DoxyParamCaption})}
 
+
+
+Function that calculates the threshold from an image using the cumulative histogram of that image and the triangle method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em img} & cv\+::\+Mat object containing the image for which the threshold will be calculated \\
+\hline
+\mbox{\texttt{ in}}  & {\em hist\+Image} & cv\+::\+Mat object containing the histogram which is drawn using the {\itshape histogram\+Display} function \\
+\hline
+\mbox{\texttt{ in}}  & {\em thresh} & uchar representing the initial threshold for calculating the histogram ({\itshape default} = 0) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+integer representing the calculated threshold 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_a7ea4ece04febb7db77fce1ebad3da183}\label{_algorithms_8h_a7ea4ece04febb7db77fce1ebad3da183}} 
 \index{Algorithms.h@{Algorithms.h}!ExtractTumorArea@{ExtractTumorArea}}
 \index{ExtractTumorArea@{ExtractTumorArea}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{ExtractTumorArea()}{ExtractTumorArea()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Extract\+Tumor\+Area (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
 
+
+
+Function that extracts the tumor from the image using the infos from the Connected\+Components function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing only the tumor 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_ae81e8d20d8f8a230f48f68a2d9cde5fb}\label{_algorithms_8h_ae81e8d20d8f8a230f48f68a2d9cde5fb}} 
 \index{Algorithms.h@{Algorithms.h}!ExtractTumorFromImage@{ExtractTumorFromImage}}
 \index{ExtractTumorFromImage@{ExtractTumorFromImage}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{ExtractTumorFromImage()}{ExtractTumorFromImage()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Extract\+Tumor\+From\+Image (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image,  }\item[{const int}]{index\+Max\+Label }\end{DoxyParamCaption})}
 
+
+
+Function extracts the tumor from a labeled image generated by {\itshape Connected} Components algorithm. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the labeled image \\
+\hline
+\mbox{\texttt{ in}}  & {\em index\+Max\+Label} & constant integer representing the index of the label which will be used as a threshold for extracting the tumor area from the image \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the image with the tumor area extracted 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_abef7e7b7b6f8fe47efc48eea416279cc}\label{_algorithms_8h_abef7e7b7b6f8fe47efc48eea416279cc}} 
 \index{Algorithms.h@{Algorithms.h}!GaussianFilter@{GaussianFilter}}
 \index{GaussianFilter@{GaussianFilter}!Algorithms.h@{Algorithms.h}}
@@ -291,42 +387,145 @@ cv\+::\+Mat object containing image with the Gaussian filter applied on it
 \doxysubsubsection{\texorpdfstring{GetAllMSE()}{GetAllMSE()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ double $>$ Get\+All\+MSE (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{files,  }\item[{const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&}]{type,  }\item[{const int}]{kernel\+\_\+size }\end{DoxyParamCaption})}
 
+
+
+Function that calculates the Mean Squared Error for all the images in the dataset after applying all the denoising algorithms. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em files} & constant std\+::vector$<$string$>$ object with the file paths of all the dataset images \\
+\hline
+\mbox{\texttt{ in}}  & {\em type} & Denoising\+\_\+\+Algoithms object representing the chosen type of the algorithm to be apllied \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel\+\_\+size} & constant integer that represents the size of the kernel to be applied on the image \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$double$>$ object containing all the Mean Squared Error calculated for all the images in the dataset after applying all the denoising algorithms 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_a9cf561dc881385afd991a66e00958aaa}\label{_algorithms_8h_a9cf561dc881385afd991a66e00958aaa}} 
 \index{Algorithms.h@{Algorithms.h}!GetAllRunningTimes@{GetAllRunningTimes}}
 \index{GetAllRunningTimes@{GetAllRunningTimes}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{GetAllRunningTimes()}{GetAllRunningTimes()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ std\+::chrono\+::milliseconds $>$ Get\+All\+Running\+Times (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{files,  }\item[{const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&}]{type,  }\item[{const int}]{kernel\+\_\+size }\end{DoxyParamCaption})}
 
+
+
+Function that generates a list of calculated running times of all denoising algorithms for every image of the dataset. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em files} & constant std\+::vector$<$string$>$ object with the file paths of all the dataset images \\
+\hline
+\mbox{\texttt{ in}}  & {\em type} & Denoising\+\_\+\+Algoithms object representing the chosen type of the algorithm to be apllied \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel\+\_\+size} & constant integer that represents the size of the kernel to be applied on the image \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::chrono\+::milliseconds$>$ object containing all the times (in milliseconds) needed for all the denoising algorithm to run on every image in the dataset 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_af35a9f658f009a3adb96fc63dd6894e9}\label{_algorithms_8h_af35a9f658f009a3adb96fc63dd6894e9}} 
 \index{Algorithms.h@{Algorithms.h}!GetFilePaths@{GetFilePaths}}
 \index{GetFilePaths@{GetFilePaths}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{GetFilePaths()}{GetFilePaths()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ std\+::string $>$ Get\+File\+Paths (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{path }\end{DoxyParamCaption})}
 
+
+
+Function that generates a list of all the file paths of the images used in the project. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em path} & constant string that represents the path where the dataset is saved \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$string$>$ object containing all the file paths for the images of the dataset 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_ad9d633b585a4a39c29a62733172a160f}\label{_algorithms_8h_ad9d633b585a4a39c29a62733172a160f}} 
 \index{Algorithms.h@{Algorithms.h}!GetMSE@{GetMSE}}
 \index{GetMSE@{GetMSE}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{GetMSE()}{GetMSE()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} double Get\+MSE (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{initial,  }\item[{const cv\+::\+Mat \&}]{modified }\end{DoxyParamCaption})}
 
+
+
+Function that calculates the Mean Squared Error of two images. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image before applying a denoising algorithm \\
+\hline
+\mbox{\texttt{ in}}  & {\em modified} & cv\+::\+Mat object containing the image after applying a denoising algorithm \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double representing the Mean Squared Error between {\itshape initial} and {\itshape modified} 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_ae28b451a2b6fa03808b9855e56776750}\label{_algorithms_8h_ae28b451a2b6fa03808b9855e56776750}} 
 \index{Algorithms.h@{Algorithms.h}!GetRunningTime@{GetRunningTime}}
 \index{GetRunningTime@{GetRunningTime}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{GetRunningTime()}{GetRunningTime()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::chrono\+::milliseconds Get\+Running\+Time (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{img,  }\item[{const int}]{kernel\+\_\+size,  }\item[{const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&}]{type }\end{DoxyParamCaption})}
 
+
+
+Function that calculates the running time of a denoising algorithm. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em img} & cv\+::\+Mat object containing an image on which the denoising algorithm is applied \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel\+\_\+size} & constant integer that represents the size of the kernel to be applied on the image \\
+\hline
+\mbox{\texttt{ in}}  & {\em type} & Denoising\+\_\+\+Algoithms object representing the chosen type of the algorithm to be apllied \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::chrono\+::milliseconds object containing the time (in milliseconds) needed for the chosen denoising algorithm to run ~\newline
+ 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_a92bf9ed384bb563878c640789ac0518a}\label{_algorithms_8h_a92bf9ed384bb563878c640789ac0518a}} 
 \index{Algorithms.h@{Algorithms.h}!GetSigmaWithFilter@{GetSigmaWithFilter}}
 \index{GetSigmaWithFilter@{GetSigmaWithFilter}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{GetSigmaWithFilter()}{GetSigmaWithFilter()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} std\+::vector$<$ double $>$ Get\+Sigma\+With\+Filter (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{files,  }\item[{const \mbox{\hyperlink{_denoising_algorithms_8h_a2878bea0090a64ebf1747c476f97b240}{Denoising\+\_\+\+Algorithms}} \&}]{type,  }\item[{const int}]{kernel\+\_\+size }\end{DoxyParamCaption})}
 
+
+
+Function that generates a list of calculated noise in every image of the dataset after applying all the denoising algorithms. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em files} & constant std\+::vector$<$string$>$ object with the file paths of all the dataset images \\
+\hline
+\mbox{\texttt{ in}}  & {\em type} & Denoising\+\_\+\+Algoithms object representing the chosen type of the algorithm to be apllied \\
+\hline
+\mbox{\texttt{ in}}  & {\em kernel\+\_\+size} & constant integer that represents the size of the kernel to be applied on the image \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$double$>$ object containing all the calculated noise for every image in the dataset after apllying all the denoising algorithms 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_a57461121207ce2585815783b3562b9bd}\label{_algorithms_8h_a57461121207ce2585815783b3562b9bd}} 
 \index{Algorithms.h@{Algorithms.h}!GradientTest@{GradientTest}}
 \index{GradientTest@{GradientTest}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{GradientTest()}{GradientTest()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Gradient\+Test (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
 
+
+
+Function that calculates the gradient of a given image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image fow which the gradient will be calculated \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the gradient of the given image 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_a3338a649247ac39250e7c781093847f3}\label{_algorithms_8h_a3338a649247ac39250e7c781093847f3}} 
 \index{Algorithms.h@{Algorithms.h}!GrayScale\_Average@{GrayScale\_Average}}
 \index{GrayScale\_Average@{GrayScale\_Average}!Algorithms.h@{Algorithms.h}}
@@ -351,24 +550,78 @@ cv\+::\+Mat object containing the grayscale image
 \doxysubsubsection{\texorpdfstring{histogramDisplay()}{histogramDisplay()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat histogram\+Display (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ int $>$ \&}]{histogram,  }\item[{const cv\+::\+Point \&}]{start\+Point,  }\item[{const cv\+::\+Point \&}]{end\+Point,  }\item[{int}]{thresh }\end{DoxyParamCaption})}
 
+
+
+Function that draws the cumulative histogram of the image and highlight the threshold calculated using the {\itshape extract\+Threshold\+From\+Histogram} function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em histogram} & constant std\+::vector$<$int$>$ containing the values of the histogram \\
+\hline
+\mbox{\texttt{ in}}  & {\em start\+Point} & cv\+::\+Point object containing the start point coordinates of the line used for calculating the threshold \\
+\hline
+\mbox{\texttt{ in}}  & {\em end\+Point} & cv\+::\+Point object containing the end point coordinates of the line used for calculating the threshold \\
+\hline
+\mbox{\texttt{ in}}  & {\em thresh} & integer representing the threshold value to be used in drawing the histogram \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object with the drawn histogram 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_af58da09fec049e9656447b30b40c04b9}\label{_algorithms_8h_af58da09fec049e9656447b30b40c04b9}} 
 \index{Algorithms.h@{Algorithms.h}!ImageAfterOpening\_UsingBinaryMask@{ImageAfterOpening\_UsingBinaryMask}}
 \index{ImageAfterOpening\_UsingBinaryMask@{ImageAfterOpening\_UsingBinaryMask}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{ImageAfterOpening\_UsingBinaryMask()}{ImageAfterOpening\_UsingBinaryMask()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Image\+After\+Opening\+\_\+\+Using\+Binary\+Mask (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
 
+
+
+Function that removes the unwanted pixels from an image using opening method (erode and dilate) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the image after the opening process 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_af91e711815381968c61d3722460739d9}\label{_algorithms_8h_af91e711815381968c61d3722460739d9}} 
 \index{Algorithms.h@{Algorithms.h}!KMeansClustering\_Brain@{KMeansClustering\_Brain}}
 \index{KMeansClustering\_Brain@{KMeansClustering\_Brain}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{KMeansClustering\_Brain()}{KMeansClustering\_Brain()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat KMeans\+Clustering\+\_\+\+Brain (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
 
+
+
+Function that selects the tumor area from the image using the K-\/\+Means clustering algorithm. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing modified image after aplying the K-\/means clustering algorithm 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_a32aaeba062da1eb7ecdcd539f0c4cbab}\label{_algorithms_8h_a32aaeba062da1eb7ecdcd539f0c4cbab}} 
 \index{Algorithms.h@{Algorithms.h}!RemoveBackground@{RemoveBackground}}
 \index{RemoveBackground@{RemoveBackground}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{RemoveBackground()}{RemoveBackground()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} cv\+::\+Mat Remove\+Background (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{initial }\end{DoxyParamCaption})}
 
+
+
+Function removes the background from a given image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cv\+::\+Mat object containing the image with all the background pixels equal to 0 
+\end{DoxyReturn}
 \mbox{\Hypertarget{_algorithms_8h_acb8868af6f7a392ad626c1a2fa2e610e}\label{_algorithms_8h_acb8868af6f7a392ad626c1a2fa2e610e}} 
 \index{Algorithms.h@{Algorithms.h}!RemoveBackgroundFromImage@{RemoveBackgroundFromImage}}
 \index{RemoveBackgroundFromImage@{RemoveBackgroundFromImage}!Algorithms.h@{Algorithms.h}}
@@ -399,7 +652,7 @@ Function that removes the skull from the MRI image by calling the Adaptive\+Wind
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image that the user wants to modify \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -417,7 +670,7 @@ Function that removes the skull from the MRI image using the threshold obtained 
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image that the user wants to modify \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -435,7 +688,7 @@ Function that removes the skull from the MRI image by using K-\/\+Means clusteri
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image that the user wants to modify \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -453,7 +706,7 @@ Function that removes the skull from the MRI image by using a mask based approac
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em initial} & cv\+::\+Mat object containing the image that the user wants to modify \\
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image that the user wants to modify \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -465,15 +718,27 @@ cv\+::\+Mat object containing the skull stripped image after the Mask Based Meth
 \doxysubsubsection{\texorpdfstring{WriteMSECSVFile()}{WriteMSECSVFile()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void Write\+MSECSVFile (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+
+
+Function that generates a CSV file with all the Mean Squared Error results calculated using {\itshape Get\+All\+MSE} function. 
+
 \mbox{\Hypertarget{_algorithms_8h_ab5bf5ea6c0737f90b3d4a22a082a0107}\label{_algorithms_8h_ab5bf5ea6c0737f90b3d4a22a082a0107}} 
 \index{Algorithms.h@{Algorithms.h}!WriteNoiseCSVFile@{WriteNoiseCSVFile}}
 \index{WriteNoiseCSVFile@{WriteNoiseCSVFile}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{WriteNoiseCSVFile()}{WriteNoiseCSVFile()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void Write\+Noise\+CSVFile (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+
+
+Function that generates a CSV file with all the estimated noise calculated using {\itshape Get\+Sigma\+With\+Filter} function. 
+
 \mbox{\Hypertarget{_algorithms_8h_a60290a8c6463645fca8a00ddeb7bbde1}\label{_algorithms_8h_a60290a8c6463645fca8a00ddeb7bbde1}} 
 \index{Algorithms.h@{Algorithms.h}!WriteTimesCSVFile@{WriteTimesCSVFile}}
 \index{WriteTimesCSVFile@{WriteTimesCSVFile}!Algorithms.h@{Algorithms.h}}
 \doxysubsubsection{\texorpdfstring{WriteTimesCSVFile()}{WriteTimesCSVFile()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{_algorithms_8h_a775d0fd869085123fb0e42a59cee9b22}{ALGORITHMSLIBRARY\+\_\+\+API}} void Write\+Times\+CSVFile (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function that generates a CSV file with all the running times calculated using {\itshape Get\+All\+Running\+Times} function. 
 

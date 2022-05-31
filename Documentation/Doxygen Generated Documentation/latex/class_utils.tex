@@ -8,18 +8,18 @@
 \begin{DoxyCompactItemize}
 \item 
 static cv\+::\+Mat \mbox{\hyperlink{class_utils_aab1320553c524488df483d46ccfb7e8f}{Read\+Image}} (const std\+::string \&image\+Path)
-\item 
+\begin{DoxyCompactList}\small\item\em Function for reading an image. \end{DoxyCompactList}\item 
 static void \mbox{\hyperlink{class_utils_a331ab52dba625a625faff6b8828f7820}{Show\+Image}} (const cv\+::\+Mat \&image)
-\item 
+\begin{DoxyCompactList}\small\item\em Function for showing an image. \end{DoxyCompactList}\item 
 static void \mbox{\hyperlink{class_utils_ae734cd12aa80da4636b9a61b41f7071e}{Resize\+Image}} (cv\+::\+Mat \&input\+Image, cv\+::\+Size size)
-\item 
+\begin{DoxyCompactList}\small\item\em Function for resizing an image. \end{DoxyCompactList}\item 
 static QImage \mbox{\hyperlink{class_utils_a4268ff3e2c7ba9e6dda0058337e553ca}{Convert\+Mat\+To\+QImage}} (const cv\+::\+Mat \&source)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Function for converting a cv\+::\+Mat image into a QImage. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 static std\+::string \mbox{\hyperlink{class_utils_a8592692fe2837485ae31e2b69e24c583}{data\+Set\+Path}} = \char`\"{}E\+:\textbackslash{}\textbackslash{}\+FACULTATE\textbackslash{}\textbackslash{}\+Uni\+TBv\textbackslash{}\textbackslash{}\+Anul III\textbackslash{}\textbackslash{}\+Licenta\textbackslash{}\textbackslash{}\+Proiect\+Licenta\textbackslash{}\textbackslash{}\+Test\+Data\textbackslash{}\textbackslash{}\char`\"{}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em String representing the path where the dataset is saved. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}
@@ -29,18 +29,49 @@ static std\+::string \mbox{\hyperlink{class_utils_a8592692fe2837485ae31e2b69e24c
 \doxysubsubsection{\texorpdfstring{ConvertMatToQImage()}{ConvertMatToQImage()}}
 {\footnotesize\ttfamily QImage Utils\+::\+Convert\+Mat\+To\+QImage (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{source }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
+
+
+Function for converting a cv\+::\+Mat image into a QImage. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em source} & constant cv\+::\+Mat object containing the image which will be converted returns QImage object containing the converted image \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{class_utils_aab1320553c524488df483d46ccfb7e8f}\label{class_utils_aab1320553c524488df483d46ccfb7e8f}} 
 \index{Utils@{Utils}!ReadImage@{ReadImage}}
 \index{ReadImage@{ReadImage}!Utils@{Utils}}
 \doxysubsubsection{\texorpdfstring{ReadImage()}{ReadImage()}}
 {\footnotesize\ttfamily cv\+::\+Mat Utils\+::\+Read\+Image (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{image\+Path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
+
+
+Function for reading an image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image\+Path} & constant string containing the file path for the image which needs to be read returns cv\+::\+Mat object containing the image read from the given path \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{class_utils_ae734cd12aa80da4636b9a61b41f7071e}\label{class_utils_ae734cd12aa80da4636b9a61b41f7071e}} 
 \index{Utils@{Utils}!ResizeImage@{ResizeImage}}
 \index{ResizeImage@{ResizeImage}!Utils@{Utils}}
 \doxysubsubsection{\texorpdfstring{ResizeImage()}{ResizeImage()}}
 {\footnotesize\ttfamily void Utils\+::\+Resize\+Image (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{input\+Image,  }\item[{cv\+::\+Size}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
+
+
+Function for resizing an image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input\+Image} & cv\+::\+Mat object containing the image which will be resized \\
+\hline
+\mbox{\texttt{ in}}  & {\em size} & cv\+::\+Size object representing the new size for the {\itshape input\+Image} \\
+\hline
+\mbox{\texttt{ out}}  & {\em input\+Image} & cv\+::\+Mat object containing the resized image \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{class_utils_a331ab52dba625a625faff6b8828f7820}\label{class_utils_a331ab52dba625a625faff6b8828f7820}} 
 \index{Utils@{Utils}!ShowImage@{ShowImage}}
 \index{ShowImage@{ShowImage}!Utils@{Utils}}
@@ -49,12 +80,25 @@ static std\+::string \mbox{\hyperlink{class_utils_a8592692fe2837485ae31e2b69e24c
 
 
 
+Function for showing an image. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image} & cv\+::\+Mat object containing the image to be shown \\
+\hline
+\end{DoxyParams}
+
+
 \doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_utils_a8592692fe2837485ae31e2b69e24c583}\label{class_utils_a8592692fe2837485ae31e2b69e24c583}} 
 \index{Utils@{Utils}!dataSetPath@{dataSetPath}}
 \index{dataSetPath@{dataSetPath}!Utils@{Utils}}
 \doxysubsubsection{\texorpdfstring{dataSetPath}{dataSetPath}}
 {\footnotesize\ttfamily std\+::string Utils\+::data\+Set\+Path = \char`\"{}E\+:\textbackslash{}\textbackslash{}\+FACULTATE\textbackslash{}\textbackslash{}\+Uni\+TBv\textbackslash{}\textbackslash{}\+Anul III\textbackslash{}\textbackslash{}\+Licenta\textbackslash{}\textbackslash{}\+Proiect\+Licenta\textbackslash{}\textbackslash{}\+Test\+Data\textbackslash{}\textbackslash{}\char`\"{}\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+String representing the path where the dataset is saved. 
 
 
 

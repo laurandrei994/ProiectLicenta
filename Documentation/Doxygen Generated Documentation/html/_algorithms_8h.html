@@ -155,52 +155,73 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >Functions that are used for the segmentation stage of the application </p>
 </div></td></tr>
 <tr class="memitem:af58da09fec049e9656447b30b40c04b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#af58da09fec049e9656447b30b40c04b9">ImageAfterOpening_UsingBinaryMask</a> (cv::Mat &amp;image)</td></tr>
+<tr class="memdesc:af58da09fec049e9656447b30b40c04b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that removes the unwanted pixels from an image using opening method (erode and dilate)  <a href="_algorithms_8h.html#af58da09fec049e9656447b30b40c04b9">More...</a><br /></td></tr>
 <tr class="separator:af58da09fec049e9656447b30b40c04b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af91e711815381968c61d3722460739d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#af91e711815381968c61d3722460739d9">KMeansClustering_Brain</a> (cv::Mat &amp;image)</td></tr>
+<tr class="memdesc:af91e711815381968c61d3722460739d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that selects the tumor area from the image using the K-Means clustering algorithm.  <a href="_algorithms_8h.html#af91e711815381968c61d3722460739d9">More...</a><br /></td></tr>
 <tr class="separator:af91e711815381968c61d3722460739d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a38976c39465ce65b6ecd4a443c87bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> std::pair&lt; cv::Mat, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a3a38976c39465ce65b6ecd4a443c87bf">ConnectedComponents</a> (cv::Mat &amp;image)</td></tr>
+<tr class="memdesc:a3a38976c39465ce65b6ecd4a443c87bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that applies the Connected Component algorithm on an image to find the largest connected component.  <a href="_algorithms_8h.html#a3a38976c39465ce65b6ecd4a443c87bf">More...</a><br /></td></tr>
 <tr class="separator:a3a38976c39465ce65b6ecd4a443c87bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ea4ece04febb7db77fce1ebad3da183"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a7ea4ece04febb7db77fce1ebad3da183">ExtractTumorArea</a> (cv::Mat &amp;image)</td></tr>
+<tr class="memdesc:a7ea4ece04febb7db77fce1ebad3da183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that extracts the tumor from the image using the infos from the ConnectedComponents function.  <a href="_algorithms_8h.html#a7ea4ece04febb7db77fce1ebad3da183">More...</a><br /></td></tr>
 <tr class="separator:a7ea4ece04febb7db77fce1ebad3da183"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a483634f1a9fea3e0b8403c5eb700a011"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a483634f1a9fea3e0b8403c5eb700a011">ConstructFinalImage</a> (cv::Mat &amp;currentImage, cv::Mat &amp;initialImage)</td></tr>
+<tr class="memdesc:a483634f1a9fea3e0b8403c5eb700a011"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that applies a contour on the initial image to highlight the tumor.  <a href="_algorithms_8h.html#a483634f1a9fea3e0b8403c5eb700a011">More...</a><br /></td></tr>
 <tr class="separator:a483634f1a9fea3e0b8403c5eb700a011"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Statistical Helper Algorithms</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >Functions that are used for generating running times and comparing results of different algorithms </p>
 </div></td></tr>
 <tr class="memitem:ae3052169e868b88fdeb562acffdd987d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#ae3052169e868b88fdeb562acffdd987d">ApplyDenoisingAlgorithm</a> (cv::Mat &amp;img, const int kernel_size, <a class="el" href="_denoising_algorithms_8h.html#a2878bea0090a64ebf1747c476f97b240">Denoising_Algorithms</a> type)</td></tr>
+<tr class="memdesc:ae3052169e868b88fdeb562acffdd987d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that applies a denoising algorithm on a given image.  <a href="_algorithms_8h.html#ae3052169e868b88fdeb562acffdd987d">More...</a><br /></td></tr>
 <tr class="separator:ae3052169e868b88fdeb562acffdd987d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af35a9f658f009a3adb96fc63dd6894e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#af35a9f658f009a3adb96fc63dd6894e9">GetFilePaths</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:af35a9f658f009a3adb96fc63dd6894e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that generates a list of all the file paths of the images used in the project.  <a href="_algorithms_8h.html#af35a9f658f009a3adb96fc63dd6894e9">More...</a><br /></td></tr>
 <tr class="separator:af35a9f658f009a3adb96fc63dd6894e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9d633b585a4a39c29a62733172a160f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#ad9d633b585a4a39c29a62733172a160f">GetMSE</a> (const cv::Mat &amp;initial, const cv::Mat &amp;modified)</td></tr>
+<tr class="memdesc:ad9d633b585a4a39c29a62733172a160f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that calculates the Mean Squared Error of two images.  <a href="_algorithms_8h.html#ad9d633b585a4a39c29a62733172a160f">More...</a><br /></td></tr>
 <tr class="separator:ad9d633b585a4a39c29a62733172a160f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6286e94f9171fa1a3d2d67b351c95cb4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a6286e94f9171fa1a3d2d67b351c95cb4">GetAllMSE</a> (const std::vector&lt; std::string &gt; &amp;files, const <a class="el" href="_denoising_algorithms_8h.html#a2878bea0090a64ebf1747c476f97b240">Denoising_Algorithms</a> &amp;type, const int kernel_size)</td></tr>
+<tr class="memdesc:a6286e94f9171fa1a3d2d67b351c95cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that calculates the Mean Squared Error for all the images in the dataset after applying all the denoising algorithms.  <a href="_algorithms_8h.html#a6286e94f9171fa1a3d2d67b351c95cb4">More...</a><br /></td></tr>
 <tr class="separator:a6286e94f9171fa1a3d2d67b351c95cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a043b862d18e2a0cf691675e6687eed70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a043b862d18e2a0cf691675e6687eed70">EstimateNoise</a> (const cv::Mat &amp;img)</td></tr>
+<tr class="memdesc:a043b862d18e2a0cf691675e6687eed70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that calculates the noise in a given image.  <a href="_algorithms_8h.html#a043b862d18e2a0cf691675e6687eed70">More...</a><br /></td></tr>
 <tr class="separator:a043b862d18e2a0cf691675e6687eed70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92bf9ed384bb563878c640789ac0518a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a92bf9ed384bb563878c640789ac0518a">GetSigmaWithFilter</a> (const std::vector&lt; std::string &gt; &amp;files, const <a class="el" href="_denoising_algorithms_8h.html#a2878bea0090a64ebf1747c476f97b240">Denoising_Algorithms</a> &amp;type, const int kernel_size)</td></tr>
+<tr class="memdesc:a92bf9ed384bb563878c640789ac0518a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that generates a list of calculated noise in every image of the dataset after applying all the denoising algorithms.  <a href="_algorithms_8h.html#a92bf9ed384bb563878c640789ac0518a">More...</a><br /></td></tr>
 <tr class="separator:a92bf9ed384bb563878c640789ac0518a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae28b451a2b6fa03808b9855e56776750"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#ae28b451a2b6fa03808b9855e56776750">GetRunningTime</a> (cv::Mat &amp;img, const int kernel_size, const <a class="el" href="_denoising_algorithms_8h.html#a2878bea0090a64ebf1747c476f97b240">Denoising_Algorithms</a> &amp;type)</td></tr>
+<tr class="memdesc:ae28b451a2b6fa03808b9855e56776750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that calculates the running time of a denoising algorithm.  <a href="_algorithms_8h.html#ae28b451a2b6fa03808b9855e56776750">More...</a><br /></td></tr>
 <tr class="separator:ae28b451a2b6fa03808b9855e56776750"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cf561dc881385afd991a66e00958aaa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> std::vector&lt; std::chrono::milliseconds &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a9cf561dc881385afd991a66e00958aaa">GetAllRunningTimes</a> (const std::vector&lt; std::string &gt; &amp;files, const <a class="el" href="_denoising_algorithms_8h.html#a2878bea0090a64ebf1747c476f97b240">Denoising_Algorithms</a> &amp;type, const int kernel_size)</td></tr>
+<tr class="memdesc:a9cf561dc881385afd991a66e00958aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that generates a list of calculated running times of all denoising algorithms for every image of the dataset.  <a href="_algorithms_8h.html#a9cf561dc881385afd991a66e00958aaa">More...</a><br /></td></tr>
 <tr class="separator:a9cf561dc881385afd991a66e00958aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74134833e66c1b558e540164d3f16ac2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a74134833e66c1b558e540164d3f16ac2">WriteMSECSVFile</a> ()</td></tr>
+<tr class="memdesc:a74134833e66c1b558e540164d3f16ac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that generates a CSV file with all the Mean Squared Error results calculated using <em>GetAllMSE</em> function.  <a href="_algorithms_8h.html#a74134833e66c1b558e540164d3f16ac2">More...</a><br /></td></tr>
 <tr class="separator:a74134833e66c1b558e540164d3f16ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5bf5ea6c0737f90b3d4a22a082a0107"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#ab5bf5ea6c0737f90b3d4a22a082a0107">WriteNoiseCSVFile</a> ()</td></tr>
+<tr class="memdesc:ab5bf5ea6c0737f90b3d4a22a082a0107"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that generates a CSV file with all the estimated noise calculated using <em>GetSigmaWithFilter</em> function.  <a href="_algorithms_8h.html#ab5bf5ea6c0737f90b3d4a22a082a0107">More...</a><br /></td></tr>
 <tr class="separator:ab5bf5ea6c0737f90b3d4a22a082a0107"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60290a8c6463645fca8a00ddeb7bbde1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a60290a8c6463645fca8a00ddeb7bbde1">WriteTimesCSVFile</a> ()</td></tr>
+<tr class="memdesc:a60290a8c6463645fca8a00ddeb7bbde1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that generates a CSV file with all the running times calculated using <em>GetAllRunningTimes</em> function.  <a href="_algorithms_8h.html#a60290a8c6463645fca8a00ddeb7bbde1">More...</a><br /></td></tr>
 <tr class="separator:a60290a8c6463645fca8a00ddeb7bbde1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Graphical Helper Algorithms</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >Functions that are used for graphical algorithms visualization </p>
 </div></td></tr>
 <tr class="memitem:aac357ff1a1121ec5ec2fa9112469fda4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#aac357ff1a1121ec5ec2fa9112469fda4">extractThresholdFromHistogram</a> (cv::Mat &amp;img, cv::Mat &amp;histImage, uchar thresh=0)</td></tr>
+<tr class="memdesc:aac357ff1a1121ec5ec2fa9112469fda4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that calculates the threshold from an image using the cumulative histogram of that image and the triangle method.  <a href="_algorithms_8h.html#aac357ff1a1121ec5ec2fa9112469fda4">More...</a><br /></td></tr>
 <tr class="separator:aac357ff1a1121ec5ec2fa9112469fda4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad978e24892c3f6c256060f8234948a18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#ad978e24892c3f6c256060f8234948a18">histogramDisplay</a> (const std::vector&lt; int &gt; &amp;histogram, const cv::Point &amp;startPoint, const cv::Point &amp;endPoint, int thresh)</td></tr>
+<tr class="memdesc:ad978e24892c3f6c256060f8234948a18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that draws the cumulative histogram of the image and highlight the threshold calculated using the <em>extractThresholdFromHistogram</em> function.  <a href="_algorithms_8h.html#ad978e24892c3f6c256060f8234948a18">More...</a><br /></td></tr>
 <tr class="separator:ad978e24892c3f6c256060f8234948a18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32aaeba062da1eb7ecdcd539f0c4cbab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a32aaeba062da1eb7ecdcd539f0c4cbab">RemoveBackground</a> (cv::Mat &amp;initial)</td></tr>
+<tr class="memdesc:a32aaeba062da1eb7ecdcd539f0c4cbab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function removes the background from a given image.  <a href="_algorithms_8h.html#a32aaeba062da1eb7ecdcd539f0c4cbab">More...</a><br /></td></tr>
 <tr class="separator:a32aaeba062da1eb7ecdcd539f0c4cbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57461121207ce2585815783b3562b9bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#a57461121207ce2585815783b3562b9bd">GradientTest</a> (cv::Mat &amp;image)</td></tr>
+<tr class="memdesc:a57461121207ce2585815783b3562b9bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that calculates the gradient of a given image.  <a href="_algorithms_8h.html#a57461121207ce2585815783b3562b9bd">More...</a><br /></td></tr>
 <tr class="separator:a57461121207ce2585815783b3562b9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae81e8d20d8f8a230f48f68a2d9cde5fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_algorithms_8h.html#a775d0fd869085123fb0e42a59cee9b22">ALGORITHMSLIBRARY_API</a> cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_algorithms_8h.html#ae81e8d20d8f8a230f48f68a2d9cde5fb">ExtractTumorFromImage</a> (cv::Mat &amp;image, const int indexMaxLabel)</td></tr>
+<tr class="memdesc:ae81e8d20d8f8a230f48f68a2d9cde5fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function extracts the tumor from a labeled image generated by <em>Connected</em> Components algorithm.  <a href="_algorithms_8h.html#ae81e8d20d8f8a230f48f68a2d9cde5fb">More...</a><br /></td></tr>
 <tr class="separator:ae81e8d20d8f8a230f48f68a2d9cde5fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -324,7 +345,7 @@ Functions</h2></td></tr>
 <p>Function that removes the skull from the MRI image using the Adaptive Window method for calculating the threshold. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">initial</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
   </table>
   </dd>
 </dl>
@@ -363,6 +384,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function that applies a denoising algorithm on a given image. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">img</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel_size</td><td>constant integer that represents the size of the kernel to be applied on the image </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">[in[</td><td>type Denoising_Algoithms object representing the chosen type of the algorithm to be apllied </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>cv::Mat object containing the image after applying the denoising algorithm </dd></dl>
 
 </div>
 </div>
@@ -472,6 +504,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that applies the Connected Component algorithm on an image to find the largest connected component. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::pair&lt;cv::Mat, int&gt; object containing the labeled image on the first place and the index of the largest component component on the second place </dd></dl>
+
 </div>
 </div>
 <a id="a483634f1a9fea3e0b8403c5eb700a011" name="a483634f1a9fea3e0b8403c5eb700a011"></a>
@@ -500,6 +541,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that applies a contour on the initial image to highlight the tumor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">currentImage</td><td>cv::Mat object containing the image with the tumor </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">initialImage</td><td>cv::Mat object containing the unmodified image which had been loaded in the project in the start </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>cv::Mat object containing final image with the tumor highlighted </dd></dl>
+
 </div>
 </div>
 <a id="a043b862d18e2a0cf691675e6687eed70" name="a043b862d18e2a0cf691675e6687eed70"></a>
@@ -517,6 +568,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function that calculates the noise in a given image. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">img</td><td>cv::Mat object containing the image for which the noise will be calculated </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double representing the estimated noise of the image </dd></dl>
 
 </div>
 </div>
@@ -552,6 +612,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that calculates the threshold from an image using the cumulative histogram of that image and the triangle method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">img</td><td>cv::Mat object containing the image for which the threshold will be calculated </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">histImage</td><td>cv::Mat object containing the histogram which is drawn using the <em>histogramDisplay</em> function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thresh</td><td>uchar representing the initial threshold for calculating the histogram (<em>default</em> = 0) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>integer representing the calculated threshold </dd></dl>
+
 </div>
 </div>
 <a id="a7ea4ece04febb7db77fce1ebad3da183" name="a7ea4ece04febb7db77fce1ebad3da183"></a>
@@ -569,6 +640,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function that extracts the tumor from the image using the infos from the ConnectedComponents function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>cv::Mat object containing only the tumor </dd></dl>
 
 </div>
 </div>
@@ -597,6 +677,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function extracts the tumor from a labeled image generated by <em>Connected</em> Components algorithm. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the labeled image </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">indexMaxLabel</td><td>constant integer representing the index of the label which will be used as a threshold for extracting the tumor area from the image </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>cv::Mat object containing the image with the tumor area extracted </dd></dl>
 
 </div>
 </div>
@@ -677,6 +767,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that calculates the Mean Squared Error for all the images in the dataset after applying all the denoising algorithms. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">files</td><td>constant std::vector&lt;string&gt; object with the file paths of all the dataset images </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Denoising_Algoithms object representing the chosen type of the algorithm to be apllied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel_size</td><td>constant integer that represents the size of the kernel to be applied on the image </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;double&gt; object containing all the Mean Squared Error calculated for all the images in the dataset after applying all the denoising algorithms </dd></dl>
+
 </div>
 </div>
 <a id="a9cf561dc881385afd991a66e00958aaa" name="a9cf561dc881385afd991a66e00958aaa"></a>
@@ -711,6 +812,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that generates a list of calculated running times of all denoising algorithms for every image of the dataset. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">files</td><td>constant std::vector&lt;string&gt; object with the file paths of all the dataset images </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Denoising_Algoithms object representing the chosen type of the algorithm to be apllied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel_size</td><td>constant integer that represents the size of the kernel to be applied on the image </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::chrono::milliseconds&gt; object containing all the times (in milliseconds) needed for all the denoising algorithm to run on every image in the dataset </dd></dl>
+
 </div>
 </div>
 <a id="af35a9f658f009a3adb96fc63dd6894e9" name="af35a9f658f009a3adb96fc63dd6894e9"></a>
@@ -728,6 +840,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function that generates a list of all the file paths of the images used in the project. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>constant string that represents the path where the dataset is saved </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;string&gt; object containing all the file paths for the images of the dataset </dd></dl>
 
 </div>
 </div>
@@ -756,6 +877,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function that calculates the Mean Squared Error of two images. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">initial</td><td>cv::Mat object containing the image before applying a denoising algorithm </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">modified</td><td>cv::Mat object containing the image after applying a denoising algorithm </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double representing the Mean Squared Error between <em>initial</em> and <em>modified</em> </dd></dl>
 
 </div>
 </div>
@@ -791,6 +922,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that calculates the running time of a denoising algorithm. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">img</td><td>cv::Mat object containing an image on which the denoising algorithm is applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel_size</td><td>constant integer that represents the size of the kernel to be applied on the image </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Denoising_Algoithms object representing the chosen type of the algorithm to be apllied </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::chrono::milliseconds object containing the time (in milliseconds) needed for the chosen denoising algorithm to run <br  />
+ </dd></dl>
+
 </div>
 </div>
 <a id="a92bf9ed384bb563878c640789ac0518a" name="a92bf9ed384bb563878c640789ac0518a"></a>
@@ -825,6 +968,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that generates a list of calculated noise in every image of the dataset after applying all the denoising algorithms. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">files</td><td>constant std::vector&lt;string&gt; object with the file paths of all the dataset images </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>Denoising_Algoithms object representing the chosen type of the algorithm to be apllied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">kernel_size</td><td>constant integer that represents the size of the kernel to be applied on the image </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;double&gt; object containing all the calculated noise for every image in the dataset after apllying all the denoising algorithms </dd></dl>
+
 </div>
 </div>
 <a id="a57461121207ce2585815783b3562b9bd" name="a57461121207ce2585815783b3562b9bd"></a>
@@ -842,6 +996,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function that calculates the gradient of a given image. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the image fow which the gradient will be calculated </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>cv::Mat object containing the gradient of the given image </dd></dl>
 
 </div>
 </div>
@@ -910,6 +1073,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that draws the cumulative histogram of the image and highlight the threshold calculated using the <em>extractThresholdFromHistogram</em> function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">histogram</td><td>constant std::vector&lt;int&gt; containing the values of the histogram </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">startPoint</td><td>cv::Point object containing the start point coordinates of the line used for calculating the threshold </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">endPoint</td><td>cv::Point object containing the end point coordinates of the line used for calculating the threshold </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thresh</td><td>integer representing the threshold value to be used in drawing the histogram </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>cv::Mat object with the drawn histogram </dd></dl>
+
 </div>
 </div>
 <a id="af58da09fec049e9656447b30b40c04b9" name="af58da09fec049e9656447b30b40c04b9"></a>
@@ -927,6 +1102,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function that removes the unwanted pixels from an image using opening method (erode and dilate) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>cv::Mat object containing the image after the opening process </dd></dl>
 
 </div>
 </div>
@@ -946,6 +1130,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that selects the tumor area from the image using the K-Means clustering algorithm. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>cv::Mat object containing modified image after aplying the K-means clustering algorithm </dd></dl>
+
 </div>
 </div>
 <a id="a32aaeba062da1eb7ecdcd539f0c4cbab" name="a32aaeba062da1eb7ecdcd539f0c4cbab"></a>
@@ -963,6 +1156,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function removes the background from a given image. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">initial</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>cv::Mat object containing the image with all the background pixels equal to 0 </dd></dl>
 
 </div>
 </div>
@@ -1012,7 +1214,7 @@ Functions</h2></td></tr>
 <p>Function that removes the skull from the MRI image by calling the AdaptiveWindow_Threshold function. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">initial</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
   </table>
   </dd>
 </dl>
@@ -1039,7 +1241,7 @@ Functions</h2></td></tr>
 <p>Function that removes the skull from the MRI image using the threshold obtained from the input image. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">initial</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
   </table>
   </dd>
 </dl>
@@ -1066,7 +1268,7 @@ Functions</h2></td></tr>
 <p>Function that removes the skull from the MRI image by using K-Means clustering. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">initial</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
   </table>
   </dd>
 </dl>
@@ -1093,7 +1295,7 @@ Functions</h2></td></tr>
 <p>Function that removes the skull from the MRI image by using a mask based approach and generating different masks to get to the desired result. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">initial</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">image</td><td>cv::Mat object containing the image that the user wants to modify </td></tr>
   </table>
   </dd>
 </dl>
@@ -1116,6 +1318,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that generates a CSV file with all the Mean Squared Error results calculated using <em>GetAllMSE</em> function. </p>
+
 </div>
 </div>
 <a id="ab5bf5ea6c0737f90b3d4a22a082a0107" name="ab5bf5ea6c0737f90b3d4a22a082a0107"></a>
@@ -1132,6 +1336,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Function that generates a CSV file with all the estimated noise calculated using <em>GetSigmaWithFilter</em> function. </p>
 
 </div>
 </div>
@@ -1150,6 +1356,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Function that generates a CSV file with all the running times calculated using <em>GetAllRunningTimes</em> function. </p>
+
 </div>
 </div>
 </div><!-- contents -->
@@ -1157,7 +1365,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_885cc87fac2d91e269af0a5a959fa5f6.html">E:</a></li><li class="navelem"><a class="el" href="dir_8326c680ae16c5b9a3bf61d83f3cc95f.html">FACULTATE</a></li><li class="navelem"><a class="el" href="dir_c6d98ba3c29a60f26ca215f5f99b41c6.html">UniTBv</a></li><li class="navelem"><a class="el" href="dir_a7a0eac06cc90dd4d8f43dc8183564f8.html">Anul III</a></li><li class="navelem"><a class="el" href="dir_e2f294b7849b16d85be17a76964391cc.html">Licenta</a></li><li class="navelem"><a class="el" href="dir_22c2fe1cae1f229f02ccea3bdd82a98a.html">ProiectLicenta</a></li><li class="navelem"><a class="el" href="dir_fba447a8c12503d3631abef905b8b354.html">Project</a></li><li class="navelem"><a class="el" href="dir_48742d4be12027bde6e5abb146bb4d22.html">Algorithms</a></li><li class="navelem"><a class="el" href="dir_8533f2a4dc8df58cf6954ca53bbe1946.html">include</a></li><li class="navelem"><a class="el" href="_algorithms_8h.html">Algorithms.h</a></li>
+    <li class="navelem"><a class="el" href="dir_ffd1f789ec7bd0a45fc6ad92579c5070.html">Project</a></li><li class="navelem"><a class="el" href="dir_21bbd98758fd2b68d2a59fb3803faa13.html">Algorithms</a></li><li class="navelem"><a class="el" href="dir_b2c831d6564a6b826c63daf4bd9eb6f0.html">include</a></li><li class="navelem"><a class="el" href="_algorithms_8h.html">Algorithms.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
