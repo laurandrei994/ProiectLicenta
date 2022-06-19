@@ -48,4 +48,5 @@ private:
 	cv::Mat OpenImage();
 	cv::Mat OpenRandomImage();
 	void ClearLabels();
+	void DisableMenuItems();
 };

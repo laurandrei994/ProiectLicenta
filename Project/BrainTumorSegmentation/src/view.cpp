@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget* parent)
 	maxLabelIndex = 0;
 	CreateActions();
 	ClearLabels();
+	DisableMenuItems();
 }
 
 MainWindow::~MainWindow()
@@ -47,12 +48,13 @@ void MainWindow::CreateActions()
 void MainWindow::OpenFile()
 {
 	ClearLabels();
+	DisableMenuItems();
 	ui->nestStep->setDisabled(false);
+	ui->actionConvert_To_Grayscale->setDisabled(false);
+
 	ui->nestStep->setText("Convert image to grayscale");
 	index = 1;
-
 	cv::Mat img = OpenImage();
-  //Utils::ResizeImage(img, cv::Size(ui->inputImg->width(), ui->inputImg->height()));
 
 	QImage convertedImage = Utils::ConvertMatToQImage(img);
 
@@ -63,10 +65,14 @@ void MainWindow::OpenFile()
 void MainWindow::OpenRandomFile()
 {
 	ClearLabels();
+	DisableMenuItems();
 	ui->nestStep->setDisabled(false);
+	ui->actionConvert_To_Grayscale->setDisabled(false);
+
 	ui->nestStep->setText("Convert image to grayscale");
 	index = 1;
 	cv::Mat img = OpenRandomImage();
+
 	QImage convertedImage = Utils::ConvertMatToQImage(img);
 
 	ui->inputImg->setPixmap(QPixmap::fromImage(convertedImage).scaled(ui->inputImg->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -76,6 +82,7 @@ void MainWindow::OpenRandomFile()
 void MainWindow::ConvertToGrayScale()
 {
 	ui->nestStep->setText("Apply Gaussian Blurring algorithm");
+	ui->actionGaussian_Filter->setDisabled(false);
 	cv::Mat grayImg = GrayScale_Average(image);
 	grayImg.copyTo(image);
 	
@@ -88,6 +95,7 @@ void MainWindow::ConvertToGrayScale()
 void MainWindow::ApplyGaussianFilter()
 {
 	ui->nestStep->setText("Remove background from the image");
+	ui->actionRemove_background_from_image->setDisabled(false);
 	cv::Mat modifiedImg = GaussianFilter(image, 5, 0.8);
 	modifiedImg.copyTo(image);
 
@@ -100,6 +108,7 @@ void MainWindow::ApplyGaussianFilter()
 void MainWindow::RemoveBackground()
 {
 	ui->nestStep->setText("Apply skull stripping algorithm");
+	ui->actionRemove_the_skull_from_the_image->setDisabled(false);
 	cv::Mat modifiedImg = RemoveBackgroundFromImage(image);
 	modifiedImg.copyTo(image);
 
@@ -111,6 +120,7 @@ void MainWindow::RemoveBackground()
 void MainWindow::SkullStripping()
 {
 	ui->nestStep->setText("Begin segmentation process");
+	ui->actionKmeans_clustering->setDisabled(false);
 	cv::Mat brainImage = SkullStripping_KMeans(this->image);
 	brainImage.copyTo(image);
 
@@ -123,6 +133,7 @@ void MainWindow::SkullStripping()
 void MainWindow::OpeningImage_UsingMask()
 {
 	ui->nestStep->setText("Connected Components With Stats");
+	ui->actionExtract_the_tumor_from_the_image->setDisabled(false);
 	cv::Mat openedImage = ImageAfterOpening_UsingBinaryMask(this->image);
 	openedImage.copyTo(image);
 
@@ -135,6 +146,7 @@ void MainWindow::OpeningImage_UsingMask()
 void MainWindow::KMeans_clustering()
 {
 	ui->nestStep->setText("Apply opening on the image to remove unwanted pixels");
+	ui->actionOpen_Skull_Stripped->setDisabled(false);
 	cv::Mat tumorImg = KMeansClustering_Brain(this->image);
 	tumorImg.copyTo(image);
 
@@ -147,6 +159,7 @@ void MainWindow::KMeans_clustering()
 void MainWindow::ExtractTumor()
 {
 	ui->nestStep->setText("Final Image");
+	ui->actionFinal_Image->setDisabled(false);
 	cv::Mat tumora = ExtractTumorArea(this->image);
 	tumora.copyTo(this->image);
 	
@@ -159,6 +172,7 @@ void MainWindow::ExtractTumor()
 void MainWindow::ConstructResult()
 {
 	ui->nestStep->setDisabled(true);
+	DisableMenuItems();
 	cv::Mat result = ConstructFinalImage(this->image, this->initialImage);
 	result.copyTo(image);
 
@@ -193,6 +207,7 @@ void MainWindow::NextStepClick()
 		RemoveBackground();
 		index++;
 		ui->nestStep->setText("Apply skull stripping algorithm");
+		break;
 	case 4:
 		SkullStripping();
 		index++;
@@ -279,4 +294,16 @@ void MainWindow::ClearLabels()
 	ui->resultImg->clear();
 	ui->resultImgText->clear();
 	ui->nestStep->setText("Open Image");
+}
+
+void MainWindow::DisableMenuItems()
+{
+	ui->actionConvert_To_Grayscale->setDisabled(true);
+	ui->actionGaussian_Filter->setDisabled(true);
+	ui->actionRemove_background_from_image->setDisabled(true);
+	ui->actionRemove_the_skull_from_the_image->setDisabled(true);
+	ui->actionOpen_Skull_Stripped->setDisabled(true);
+	ui->actionKmeans_clustering->setDisabled(true);
+	ui->actionExtract_the_tumor_from_the_image->setDisabled(true);
+	ui->actionFinal_Image->setDisabled(true);
 }
