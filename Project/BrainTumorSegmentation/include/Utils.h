@@ -10,7 +10,7 @@ class Utils
 {
 public:
 	///\brief										String representing the path where the dataset is saved
-	inline static std::string dataSetPath = "E:\\FACULTATE\\UniTBv\\Anul III\\Licenta\\ProiectLicenta\\TestData\\";
+	inline static std::string dataSetPath = "E:\\Licenta\\ProiectLicenta\\TestData\\";
 
 	///\brief										Function for reading an image
 	///\param [in] imagePath		constant string containing the file path for the image which needs to be read

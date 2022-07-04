@@ -8,7 +8,7 @@
 #include <chrono>
 #include <omp.h>
 
-static std::string RELATIVE_PATH = "E:\\FACULTATE\\UniTBv\\Anul III\\Licenta\\ProiectLicenta\\TestData\\";
+static std::string RELATIVE_PATH = "E:\\Licenta\\ProiectLicenta\\TestData\\";
 
 //Graphical Algorithms
 ALGORITHMSLIBRARY_API cv::Mat GrayScale_Average(const cv::Mat& image)
